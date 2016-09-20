@@ -1,0 +1,38 @@
+{
+    "name": "lav45/yii2-settings",
+    "description": "This extension helps you to easily store and retrieve data for your application.",
+    "keywords": [
+        "yii2",
+        "extension",
+        "settings",
+        "quick access"
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ],
+    "homepage": "https://github.com/lav45/yii2-settings",
+    "type": "yii2-extension",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Alexey Loban",
+            "email": "lav451@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "lav45\\settings\\": "src"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
