@@ -31,7 +31,7 @@ in ```require``` section in `composer.json` file.
 
 Apply with the console command:
 ```
-~$ yii migrations/up --migrationPath=vendor/lav45/yii2-settings/migrations
+~$ yii migrate/up --migrationPath=vendor/lav45/yii2-settings/migrations
 ```
 
 ## Component Setup
