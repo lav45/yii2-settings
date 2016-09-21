@@ -94,6 +94,15 @@ $settings->get('null'); // => null
 
 // delete data by key
 $settings->delete('array'); // => true
+
+// Use as array
+$settings['array'] = ['data'];
+
+echo $settings['array']; // => [0 => 'data']
+
+isset($settings['array']) // => true
+
+unset($settings['array']);
 ```
 
 ### CacheBehavior
@@ -125,6 +134,9 @@ $settings->set('array', $data); // => true
 
 // Get data by key
 $settings->get('array.options.js'); // => ['jquery', 'bootstrap.js']
+
+// Use as array
+echo $settings['array.options.js']; // => ['jquery', 'bootstrap.js']
 
 // Get not exist key
 $settings->get('array.options.img'); // => null

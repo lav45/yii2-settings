@@ -69,6 +69,7 @@ class QuickAccessSettingsTest extends \PHPUnit_Framework_TestCase
         static::assertEquals($settings->get('array.options.js'), $data['options']['js']);
         static::assertEquals($settings->get('array.options.js.0'), $data['options']['js'][0]);
         static::assertEquals($settings->get('array.options.css'), $data['options']['css']);
+        static::assertEquals($settings['array.options.css'], $data['options']['css']);
 
         static::assertTrue($settings->cache->flush());
         // find in storage & cache again
