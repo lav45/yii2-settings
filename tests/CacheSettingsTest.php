@@ -26,9 +26,6 @@ class CacheSettingsTest extends \PHPUnit_Framework_TestCase
             'class' => 'lav45\settings\Settings',
             'as cache' => [
                 'class' => 'lav45\settings\behaviors\CacheBehavior',
-                'cache' => [
-                    'class' => 'yii\caching\MemCache',
-                ],
             ]
         ]);
     }

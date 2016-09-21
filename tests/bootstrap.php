@@ -17,10 +17,18 @@ new \yii\console\Application([
             'class' => 'yii\db\Connection',
             'dsn' => 'sqlite::memory:',
         ],
+        'cache' => [
+            'class' => 'yii\caching\DbCache',
+        ],
     ]
 ]);
 
 Yii::$app->runAction('migrate/up', [
     'migrationPath' => __DIR__ . '/../migrations',
+    'interactive' => 0
+]);
+
+Yii::$app->runAction('migrate/up', [
+    'migrationPath' => __DIR__ . '/../vendor/yiisoft/yii2/caching/migrations',
     'interactive' => 0
 ]);
