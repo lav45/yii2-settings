@@ -37,6 +37,10 @@ class DbStorage extends Object implements StorageInterface
         $this->db = Instance::ensure($this->db, Connection::className());
     }
 
+    /**
+     * @param string $key
+     * @return false|null|string
+     */
     public function getValue($key)
     {
         return (new Query())
@@ -48,6 +52,11 @@ class DbStorage extends Object implements StorageInterface
             ->queryScalar();
     }
 
+    /**
+     * @param string $key
+     * @param string $value
+     * @return bool
+     */
     public function setValue($key, $value)
     {
         $query = (new Query())->createCommand($this->db);
@@ -58,6 +67,10 @@ class DbStorage extends Object implements StorageInterface
         return $result > 0;
     }
 
+    /**
+     * @param string $key
+     * @return bool
+     */
     public function deleteValue($key)
     {
         $result = (new Query())->createCommand($this->db)

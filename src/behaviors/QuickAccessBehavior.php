@@ -12,6 +12,7 @@ use yii\base\Behavior;
 use yii\helpers\ArrayHelper;
 use lav45\settings\Settings;
 use lav45\settings\events\GetEvent;
+use lav45\settings\events\DecodeEvent;
 
 /**
  * Class QuickAccessBehavior
@@ -22,7 +23,7 @@ use lav45\settings\events\GetEvent;
 class QuickAccessBehavior extends Behavior
 {
     /**
-     * @var bool
+     * @var string
      */
     private $_originKey;
 
@@ -44,7 +45,7 @@ class QuickAccessBehavior extends Behavior
         }
     }
 
-    public function afterDecodeValue(GetEvent $event)
+    public function afterDecodeValue(DecodeEvent $event)
     {
         if ($this->_originKey !== null) {
             $key = substr($this->_originKey, strlen($event->key) + 1);

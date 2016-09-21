@@ -13,6 +13,7 @@ use yii\base\Component;
 use yii\helpers\StringHelper;
 use lav45\settings\events\GetEvent;
 use lav45\settings\events\SetEvent;
+use lav45\settings\events\DecodeEvent;
 use lav45\settings\events\DeleteEvent;
 use lav45\settings\storage\StorageInterface;
 
@@ -38,16 +39,23 @@ class Settings extends Component implements \ArrayAccess
      */
     public $serializer;
     /**
-     * @var StorageInterface|string|array|callable
+     * @var StorageInterface|string|array
      */
     public $storage = 'lav45\settings\storage\DbStorage';
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();
         $this->storage = Instance::ensure($this->storage, 'lav45\settings\storage\StorageInterface');
     }
 
+    /**
+     * @param string $key
+     * @return string
+     */
     public function buildKey($key)
     {
         if (is_string($key)) {
@@ -58,6 +66,10 @@ class Settings extends Component implements \ArrayAccess
         return $this->keyPrefix . $key;
     }
 
+    /**
+     * @param mixed $value
+     * @return string
+     */
     public function encode($value)
     {
         if ($this->serializer === null) {
@@ -69,6 +81,10 @@ class Settings extends Component implements \ArrayAccess
         }
     }
 
+    /**
+     * @param string $value
+     * @return mixed
+     */
     public function decode($value)
     {
         if ($this->serializer === null) {
@@ -80,6 +96,11 @@ class Settings extends Component implements \ArrayAccess
         }
     }
 
+    /**
+     * @param string $key
+     * @param null $default
+     * @return mixed
+     */
     public function get($key, $default = null)
     {
         $value = $this->beforeGetValue($key);
@@ -98,6 +119,11 @@ class Settings extends Component implements \ArrayAccess
         return $value;
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @return boolean
+     */
     public function set($key, $value)
     {
         $this->beforeSetValue($key, $value);
@@ -111,6 +137,10 @@ class Settings extends Component implements \ArrayAccess
         return $result;
     }
 
+    /**
+     * @param string $key
+     * @return boolean
+     */
     public function delete($key)
     {
         $this->beforeDeleteValue($key);
@@ -123,6 +153,10 @@ class Settings extends Component implements \ArrayAccess
         return $result;
     }
 
+    /**
+     * @param string $key
+     * @return string
+     */
     protected function beforeGetValue(&$key)
     {
         $event = new GetEvent();
@@ -131,6 +165,11 @@ class Settings extends Component implements \ArrayAccess
         return $event->value;
     }
 
+    /**
+     * @param string $key
+     * @param string $value
+     * @return string
+     */
     protected function afterGetValue($key, $value)
     {
         $event = new GetEvent();
@@ -140,9 +179,15 @@ class Settings extends Component implements \ArrayAccess
         return $event->value;
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @param mixed $default
+     * @return mixed
+     */
     protected function afterDecodeValue($key, $value, $default)
     {
-        $event = new GetEvent();
+        $event = new DecodeEvent();
         $event->key = $key;
         $event->value = $value;
         $event->default = $default;
@@ -150,6 +195,10 @@ class Settings extends Component implements \ArrayAccess
         return $event->value;
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     */
     protected function beforeSetValue($key, $value)
     {
         $event = new SetEvent();
@@ -158,6 +207,10 @@ class Settings extends Component implements \ArrayAccess
         $this->trigger(self::EVENT_BEFORE_SET, $event);
     }
 
+    /**
+     * @param string $key
+     * @param string $value
+     */
     protected function afterSetValue($key, $value)
     {
         $event = new SetEvent();
@@ -166,6 +219,9 @@ class Settings extends Component implements \ArrayAccess
         $this->trigger(self::EVENT_AFTER_SET, $event);
     }
 
+    /**
+     * @param string $key
+     */
     protected function beforeDeleteValue($key)
     {
         $event = new DeleteEvent();
@@ -173,6 +229,9 @@ class Settings extends Component implements \ArrayAccess
         $this->trigger(self::EVENT_BEFORE_DELETE, $event);
     }
 
+    /**
+     * @param string $key
+     */
     protected function afterDeleteValue($key)
     {
         $event = new DeleteEvent();
@@ -180,21 +239,36 @@ class Settings extends Component implements \ArrayAccess
         $this->trigger(self::EVENT_AFTER_DELETE, $event);
     }
 
+    /**
+     * @param string $key
+     * @return boolean
+     */
     public function offsetExists($key)
     {
         return $this->get($key) !== null;
     }
 
+    /**
+     * @param string $key
+     * @return mixed
+     */
     public function offsetGet($key)
     {
         return $this->get($key);
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     */
     public function offsetSet($key, $value)
     {
         $this->set($key, $value);
     }
 
+    /**
+     * @param string $key
+     */
     public function offsetUnset($key)
     {
         $this->delete($key);

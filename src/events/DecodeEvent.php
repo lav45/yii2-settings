@@ -11,17 +11,21 @@ namespace lav45\settings\events;
 use yii\base\Event;
 
 /**
- * Class GetEvent
+ * Class DecodeEvent
  * @package lav45\settings\events
  */
-class GetEvent extends Event
+class DecodeEvent extends Event
 {
     /**
      * @var string
      */
     public $key;
     /**
-     * @var string
+     * @var mixed
      */
     public $value;
+    /**
+     * @var mixed
+     */
+    public $default;
 }

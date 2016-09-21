@@ -101,7 +101,7 @@ $settings->delete('array'); // => true
 // Use as array
 $settings['array'] = ['data'];
 
-echo $settings['array']; // => [0 => 'data']
+print_r($settings['array']); // => [0 => 'data']
 
 isset($settings['array']) // => true
 
@@ -139,7 +139,7 @@ $settings->set('array', $data); // => true
 $settings->get('array.options.js'); // => ['jquery', 'bootstrap.js']
 
 // Use as array
-echo $settings['array.options.js']; // => ['jquery', 'bootstrap.js']
+print_r($settings['array.options.js']); // => ['jquery', 'bootstrap.js']
 
 // Get not exist key
 $settings->get('array.options.img'); // => null

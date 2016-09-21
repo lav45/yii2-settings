@@ -14,9 +14,22 @@ namespace lav45\settings\storage;
  */
 interface StorageInterface
 {
+    /**
+     * @param string $key
+     * @return false|null|string
+     */
     public function getValue($key);
 
+    /**
+     * @param string $key
+     * @param string $value
+     * @return boolean
+     */
     public function setValue($key, $value);
 
+    /**
+     * @param string $key
+     * @return boolean
+     */
     public function deleteValue($key);
 }
