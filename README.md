@@ -8,7 +8,7 @@ yii2-settings
 [![Code Coverage](https://scrutinizer-ci.com/g/lav45/yii2-settings/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/lav45/yii2-settings/)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/lav45/yii2-settings/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/lav45/yii2-settings/)
 
-This extension helps you to easily store and retrieve data for your application.
+This extension is very useful for storing any settings, for your application.
 
 ## Installation
 
@@ -23,12 +23,12 @@ $ composer require "lav45/yii2-settings" --prefer-dist
 or add
 
 ```
-"lav45/yii2-settings": "1.0.*"
+"lav45/yii2-settings": "^1.0"
 ```
 
 in ```require``` section in `composer.json` file.
 
-### migrate
+### Migrate
 
 [migrations/m160426_220525_settings.php](migrations/m160426_220525_settings.php)
 
@@ -140,6 +140,7 @@ $settings->get('array.options.js'); // => ['jquery', 'bootstrap.js']
 
 // Use as array
 print_r($settings['array.options.js']); // => ['jquery', 'bootstrap.js']
+print_r($settings['array']['options']['js']); // => ['jquery', 'bootstrap.js']
 
 // Get not exist key
 $settings->get('array.options.img'); // => null
@@ -161,6 +162,13 @@ $settings->context('en-US')->get('key'); // => ['data']
 
 $settings->context('ru-RU')->get('key'); // => null
 ```
+
+### Practical use: you can see in
+
+* [SettingsForm](example/models/SettingsForm.php)
+* [SettingsController](example/controllers/SettingsController.php)
+* [settings](example/views/settings/settings.php)
+
 
 ## License
 
