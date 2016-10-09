@@ -7,6 +7,7 @@ yii2-settings
 [![Build Status](https://travis-ci.org/LAV45/yii2-settings.svg?branch=master)](https://travis-ci.org/LAV45/yii2-settings)
 [![Code Coverage](https://scrutinizer-ci.com/g/lav45/yii2-settings/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/lav45/yii2-settings/)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/lav45/yii2-settings/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/lav45/yii2-settings/)
+[![Code Climate](https://codeclimate.com/github/LAV45/yii2-settings/badges/gpa.svg)](https://codeclimate.com/github/LAV45/yii2-settings)
 
 This extension is very useful for storing any settings, for your application.
 
