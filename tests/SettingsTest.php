@@ -1,6 +1,6 @@
 <?php
 
-namespace tests;
+namespace lav45\settings\tests;
 
 use Yii;
 use yii\db\Query;
@@ -12,12 +12,11 @@ use yii\helpers\Json;
  */
 class SettingsTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @return \lav45\settings\Settings
-     */
     protected function getSettings()
     {
-        return Yii::$app->get('settings');
+        /** @var \lav45\settings\Settings $object */
+        $object = Yii::$app->get('settings');
+        return $object;
     }
 
     public static function setUpBeforeClass()

@@ -1,6 +1,6 @@
 <?php
 
-namespace tests;
+namespace lav45\settings\tests;
 
 use Yii;
 use yii\db\Query;
@@ -11,12 +11,11 @@ use yii\db\Query;
  */
 class CacheSettingsTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @return \lav45\settings\Settings|\lav45\settings\behaviors\CacheBehavior
-     */
     protected function getSettings()
     {
-        return Yii::$app->get('settings');
+        /** @var \lav45\settings\Settings|\lav45\settings\behaviors\CacheBehavior $object */
+        $object = Yii::$app->get('settings');
+        return $object;
     }
 
     public static function setUpBeforeClass()

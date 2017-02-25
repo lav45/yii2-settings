@@ -27,7 +27,8 @@
     },
     "autoload": {
         "psr-4": {
-            "lav45\\settings\\": "src"
+            "lav45\\settings\\": "src",
+            "lav45\\settings\\tests\\": "tests"
         }
     },
     "extra": {

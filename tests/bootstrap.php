@@ -9,9 +9,6 @@ require(__DIR__ . '/../vendor/yiisoft/yii2/Yii.php');
 new \yii\console\Application([
     'id' => 'unit',
     'basePath' => __DIR__,
-    'aliases' => [
-        '@tests' => __DIR__,
-    ],
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
