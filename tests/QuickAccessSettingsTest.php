@@ -3,7 +3,6 @@
 namespace lav45\settings\tests;
 
 use Yii;
-use yii\db\Query;
 
 /**
  * Class QuickAccessSettingsTest
@@ -23,6 +22,7 @@ class QuickAccessSettingsTest extends \PHPUnit_Framework_TestCase
         parent::setUpBeforeClass();
         Yii::$app->set('settings', [
             'class' => 'lav45\settings\Settings',
+            'storage' => 'lav45\settings\tests\FakeStorage',
             'as cache' => [
                 'class' => 'lav45\settings\behaviors\CacheBehavior',
             ],
@@ -41,12 +41,9 @@ class QuickAccessSettingsTest extends \PHPUnit_Framework_TestCase
 
     protected function clearStorage()
     {
-        /** @var \lav45\settings\storage\DbStorage $storage */
+        /** @var \lav45\settings\tests\FakeStorage $storage */
         $storage = $this->getSettings()->storage;
-        return (new Query())
-            ->createCommand()
-            ->delete($storage->tableName)
-            ->execute();
+        $storage->flushValues();
     }
 
     public function testGetValue()

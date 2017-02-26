@@ -3,7 +3,6 @@
 namespace lav45\settings\tests;
 
 use Yii;
-use yii\db\Query;
 use yii\helpers\Json;
 
 /**
@@ -23,7 +22,8 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUpBeforeClass();
         Yii::$app->set('settings', [
-            'class' => 'lav45\settings\Settings'
+            'class' => 'lav45\settings\Settings',
+            'storage' => 'lav45\settings\tests\FakeStorage',
         ]);
     }
 
@@ -35,12 +35,9 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
 
     protected function clearStorage()
     {
-        /** @var \lav45\settings\storage\DbStorage $storage */
+        /** @var \lav45\settings\tests\FakeStorage $storage */
         $storage = $this->getSettings()->storage;
-        return (new Query())
-            ->createCommand()
-            ->delete($storage->tableName)
-            ->execute();
+        $storage->flushValues();
     }
 
     public function testGetNotExistKey()
@@ -144,14 +141,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
 
     protected function getOriginalData($key)
     {
-        /** @var \lav45\settings\storage\DbStorage $storage */
-        $storage = $this->getSettings()->storage;
-        return (new Query())
-            ->select(['data'])
-            ->from($storage->tableName)
-            ->where(['id' => $key])
-            ->limit(1)
-            ->createCommand()
-            ->queryScalar();
+        return $this->getSettings()->storage->getValue($key);
     }
 }

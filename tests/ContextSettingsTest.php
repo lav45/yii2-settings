@@ -3,7 +3,6 @@
 namespace lav45\settings\tests;
 
 use Yii;
-use yii\db\Query;
 
 /**
  * Class ContextSettingsTest
@@ -23,6 +22,7 @@ class ContextSettingsTest extends \PHPUnit_Framework_TestCase
         parent::setUpBeforeClass();
         Yii::$app->set('settings', [
             'class' => 'lav45\settings\Settings',
+            'storage' => 'lav45\settings\tests\FakeStorage',
             'as access' => [
                 'class' => 'lav45\settings\behaviors\ContextBehavior',
             ],
@@ -37,12 +37,9 @@ class ContextSettingsTest extends \PHPUnit_Framework_TestCase
 
     protected function clearStorage()
     {
-        /** @var \lav45\settings\storage\DbStorage $storage */
+        /** @var \lav45\settings\tests\FakeStorage $storage */
         $storage = $this->getSettings()->storage;
-        return (new Query())
-            ->createCommand()
-            ->delete($storage->tableName)
-            ->execute();
+        return $storage->flushValues();
     }
 
     public function testUsageContext()
