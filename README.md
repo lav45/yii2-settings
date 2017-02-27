@@ -32,8 +32,6 @@ in ```require``` section in `composer.json` file.
 
 ### Migrate
 
-[migrations/m160426_220525_settings.php](migrations/m160426_220525_settings.php)
-
 Apply with the console command:
 ```
 ~$ yii migrate/up --migrationPath=vendor/lav45/yii2-settings/migrations
@@ -48,6 +46,14 @@ return [
     'components' => [
         'settings' => [
             'class' => 'lav45\settings\Settings',
+
+            // Use as default storage
+            // 'storage' => [
+            //    'class' => 'lav45\settings\storage\DbStorage',
+            //    'tableName' => '{{%settings}}',
+            //    'db' => 'db',
+            // ],
+
             'as cache' => [
                 'class' => 'lav45\settings\behaviors\CacheBehavior',
             ],
@@ -56,6 +62,19 @@ return [
             ],
             'as context' => [
                 'class' => 'lav45\settings\behaviors\ContextBehavior',
+            ],
+        ],
+
+        /**
+         * It may be useful to store the settings necessary for your project
+         */
+        'config' => [
+            'class' => 'lav45\settings\Settings',
+            'storage' => [
+                'class' => 'lav45\settings\storage\FileStorage',
+                // it is desirable to determine the storage location 
+                // of your configuration files in a convenient place
+                'path' => '@runtime/settings',
             ],
         ]
     ]
