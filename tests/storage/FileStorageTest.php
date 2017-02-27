@@ -30,6 +30,6 @@ class FileStorageTest extends TestCase
         $message = array_pop(Yii::getLogger()->messages);
 
         static::assertEquals('lav45\settings\storage\FileStorage::setValue', $message[2]);
-        static::assertStringEndsWith('failed to open stream: Permission denied', $message[0]);
+        static::assertStringEndsWith('Permission denied', $message[0]);
     }
 }
