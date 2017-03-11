@@ -47,7 +47,7 @@ return [
         'settings' => [
             'class' => 'lav45\settings\Settings',
 
-            // Use as default storage
+            // DbStorage use as default storage
             // 'storage' => [
             //    'class' => 'lav45\settings\storage\DbStorage',
             //    'tableName' => '{{%settings}}',
@@ -66,9 +66,9 @@ return [
         ],
 
         /**
-         * It may be useful to store the settings necessary for your project
+         * FileStorage this is the adapter allows you to store your settings in a simple file
          */
-        'config' => [
+        'configFile' => [
             'class' => 'lav45\settings\Settings',
             'storage' => [
                 'class' => 'lav45\settings\storage\FileStorage',
@@ -76,7 +76,20 @@ return [
                 // of your configuration files in a convenient place
                 'path' => '@runtime/settings',
             ],
-        ]
+        ],
+
+        /**
+         * PhpFileStorage this is an adapter to store data in php file
+         * the serializer can be disabled to increase performance
+         */
+        'configPhpFile' => [
+            'class' => 'lav45\settings\Settings',
+            'serializer' => false,
+            'storage' => [
+                'class' => 'lav45\settings\storage\PhpFileStorage',
+                'path' => '@runtime/settings',
+            ],
+        ],
     ]
 ];
 ```

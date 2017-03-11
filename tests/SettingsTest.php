@@ -2,8 +2,8 @@
 
 namespace lav45\settings\tests;
 
-use Yii;
 use yii\helpers\Json;
+use lav45\settings\Settings;
 
 /**
  * Class SettingsTest
@@ -11,33 +11,14 @@ use yii\helpers\Json;
  */
 class SettingsTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @return Settings
+     */
     protected function getSettings()
     {
-        /** @var \lav45\settings\Settings $object */
-        $object = Yii::$app->get('settings');
-        return $object;
-    }
-
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-        Yii::$app->set('settings', [
-            'class' => 'lav45\settings\Settings',
+        return new Settings([
             'storage' => 'lav45\settings\tests\FakeStorage',
         ]);
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->clearStorage();
-    }
-
-    protected function clearStorage()
-    {
-        /** @var \lav45\settings\tests\FakeStorage $storage */
-        $storage = $this->getSettings()->storage;
-        $storage->flushValues();
     }
 
     public function testGetNotExistKey()
@@ -47,29 +28,45 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
         static::assertEquals($settings->get('key', []), []);
     }
 
-    public function testSetData()
+    /**
+     * Data provider for [[testDisabledSerializer(), testSetData()]]
+     * @return array test data
+     */
+    public function dataProviderExport()
     {
-        $items = [
-            new \stdClass(),
-            ['data'],
-            123,
-            123.5,
-            'string',
-            true,
-            false,
-            null,
-            '',
-            0
+        return [
+            [new \stdClass()],
+            [['key' => 'value']],
+            [123],
+            [123.5],
+            ['string'],
+            [true],
+            [false],
+            [null],
+            [''],
+            [0],
         ];
+    }
 
+    /**
+     * @dataProvider dataProviderExport
+     *
+     * @param mixed $value
+     */
+    public function testSetData($value)
+    {
         $settings = $this->getSettings();
 
-        foreach ($items as $data) {
-            static::assertTrue($settings->set('key', $data));
-            static::assertEquals($settings->get('key'), $data);
-        }
+        $key = 'key';
 
-        static::assertTrue($settings->delete('key'));
+        static::assertTrue($settings->set($key, $value));
+        static::assertEquals($settings->get($key), $value);
+
+        // test disabled serializer
+        $settings->serializer = false;
+
+        static::assertTrue($settings->set($key, $value));
+        static::assertEquals($settings->get($key), $value);
     }
 
     public function testUsageAsArray()
@@ -101,7 +98,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
         static::assertTrue($settings->set($key, $data));
         static::assertEquals($settings->get($key), $data);
 
-        $encodeData = $this->getOriginalData($key);
+        $encodeData = $settings->storage->getValue($key);
         $expected = Json::encode($data);
 
         static::assertEquals($expected, $encodeData);
@@ -124,23 +121,5 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
 
         $settings->keyPrefix = null;
         static::assertEquals($settings->get($key), $data);
-    }
-
-    public function testDisabledSerializer()
-    {
-        $settings = $this->getSettings();
-        $settings->serializer = false;
-
-        $key = 'key';
-        $data = base64_encode(json_encode(['data']));
-
-        static::assertTrue($settings->set($key, $data));
-        $encodeData = $this->getOriginalData($key);
-        static::assertEquals($settings->get($key), $encodeData);
-    }
-
-    protected function getOriginalData($key)
-    {
-        return $this->getSettings()->storage->getValue($key);
     }
 }

@@ -11,12 +11,29 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
      */
     abstract protected function getStorage();
 
-    public function testStorage()
+    /**
+     * Data provider for [[testStorage()]]
+     * @return array test data
+     */
+    public function dataProviderExport()
+    {
+        return [
+            [
+                md5(uniqid()) . md5(uniqid()), // key max length 64
+                'a:1:{s:13:"template";s:1:"1";}'
+            ]
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderExport
+     *
+     * @param string $key
+     * @param mixed $value
+     */
+    public function testStorage($key, $value)
     {
         $storage = $this->getStorage();
-
-        $key = md5(uniqid()) . md5(uniqid()); // key max length 64
-        $value = 'a:1:{s:13:"template";s:1:"1";}';
 
         // setValue
         static::assertTrue($storage->setValue($key, $value));
