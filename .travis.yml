@@ -16,16 +16,16 @@ install:
 
 before_script:
   - |
-    if [ $TRAVIS_PHP_VERSION = '5.4' ]; then
+    if [ $TRAVIS_PHP_VERSION = '7.0' ]; then
       PHPUNIT_FLAGS="--coverage-clover=coverage.clover"
     fi
 
 script:
-  - phpunit --verbose $PHPUNIT_FLAGS
+  - vendor/bin/phpunit --verbose $PHPUNIT_FLAGS
 
 after_script:
   - |
-    if [ $TRAVIS_PHP_VERSION = '5.4' ]; then
+    if [ $TRAVIS_PHP_VERSION = '7.0' ]; then
       wget https://scrutinizer-ci.com/ocular.phar
       php ocular.phar code-coverage:upload --format=php-clover coverage.clover
     fi
