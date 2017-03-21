@@ -2,7 +2,8 @@
 
 namespace lav45\settings\tests;
 
-use Yii;
+use lav45\settings\Settings;
+use lav45\settings\behaviors\ContextBehavior;
 
 /**
  * Class ContextSettingsTest
@@ -10,36 +11,17 @@ use Yii;
  */
 class ContextSettingsTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @return Settings|ContextBehavior
+     */
     protected function getSettings()
     {
-        /** @var \lav45\settings\Settings|\lav45\settings\behaviors\ContextBehavior $object */
-        $object = Yii::$app->get('settings');
-        return $object;
-    }
-
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-        Yii::$app->set('settings', [
-            'class' => 'lav45\settings\Settings',
+        return new Settings([
             'storage' => 'lav45\settings\tests\FakeStorage',
             'as access' => [
                 'class' => 'lav45\settings\behaviors\ContextBehavior',
             ],
         ]);
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->clearStorage();
-    }
-
-    protected function clearStorage()
-    {
-        /** @var \lav45\settings\tests\FakeStorage $storage */
-        $storage = $this->getSettings()->storage;
-        return $storage->flushValues();
     }
 
     public function testUsageContext()
@@ -65,8 +47,5 @@ class ContextSettingsTest extends \PHPUnit_Framework_TestCase
             static::assertEquals($enSettings->get($key), 'en' . $data);
             static::assertEquals($ruSettings->get($key), 'ru' . $data);
         }
-
-        $rows = $this->clearStorage();
-        static::assertEquals($rows, count($items) * 2);
     }
 }
