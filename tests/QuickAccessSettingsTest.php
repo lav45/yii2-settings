@@ -2,7 +2,9 @@
 
 namespace lav45\settings\tests;
 
-use Yii;
+use lav45\settings\Settings;
+use lav45\settings\behaviors\CacheBehavior;
+use lav45\settings\behaviors\QuickAccessBehavior;
 
 /**
  * Class QuickAccessSettingsTest
@@ -10,18 +12,13 @@ use Yii;
  */
 class QuickAccessSettingsTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @return Settings|CacheBehavior|QuickAccessBehavior
+     */
     protected function getSettings()
     {
-        /** @var \lav45\settings\Settings|\lav45\settings\behaviors\CacheBehavior $object */
-        $object = Yii::$app->get('settings');
-        return $object;
-    }
-
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-        Yii::$app->set('settings', [
-            'class' => 'lav45\settings\Settings',
+        /** @var Settings|CacheBehavior|QuickAccessBehavior $settings */
+        $settings = new Settings([
             'storage' => 'lav45\settings\tests\FakeStorage',
             'as cache' => [
                 'class' => 'lav45\settings\behaviors\CacheBehavior',
@@ -30,20 +27,10 @@ class QuickAccessSettingsTest extends \PHPUnit_Framework_TestCase
                 'class' => 'lav45\settings\behaviors\QuickAccessBehavior',
             ],
         ]);
-    }
 
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->clearStorage();
-        $this->getSettings()->cache->flush();
-    }
+        $settings->cache->flush();
 
-    protected function clearStorage()
-    {
-        /** @var \lav45\settings\tests\FakeStorage $storage */
-        $storage = $this->getSettings()->storage;
-        $storage->flushValues();
+        return $settings;
     }
 
     public function testGetValue()
@@ -76,5 +63,53 @@ class QuickAccessSettingsTest extends \PHPUnit_Framework_TestCase
         $settings = $this->getSettings();
         static::assertNull($settings->get('array.options.img'));
         static::assertEquals($settings->get('array.options.img', []), []);
+    }
+
+    public function testSetValue()
+    {
+        $settings = $this->getSettings();
+
+        $key = 'array';
+        $data = [
+            'options' => [
+                'css' => ['bootstrap.css'],
+                'js' => ['jquery', 'bootstrap.js']
+            ]
+        ];
+
+        static::assertTrue($settings->set($key, $data));
+
+
+        $expected = [
+            'options' => [
+                'css' => ['bootstrap.css'],
+                'js' => ['jquery', 'bootstrap.js'],
+                'img' => ['img.png', 'img.jpg']
+            ]
+        ];
+        static::assertTrue($settings->replace($key, 'options.img', ['img.png', 'img.jpg']));
+        static::assertEquals($expected, $settings->get($key));
+
+
+        $expected = [
+            'options' => [
+                'css' => ['bootstrap.css'],
+                'js' => ['jquery', 'bootstrap.js'],
+                'img' => ['img.png']
+            ]
+        ];
+        static::assertTrue($settings->replace($key, 'options.img', ['img.png']));
+        static::assertEquals($expected, $settings->get($key));
+
+
+        $expected = [
+            'options' => [
+                'css' => ['bootstrap.css'],
+                'js' => ['jquery', 'bootstrap.js'],
+                'img' => ['new.png']
+            ]
+        ];
+        static::assertTrue($settings->replace($key, 'options.img.0', 'new.png'));
+        static::assertEquals($expected, $settings->get($key));
     }
 }

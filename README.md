@@ -181,6 +181,21 @@ $settings->get('array.options.img'); // => null
 
 // Get default value if key exist
 $settings->get('array.options.imgs', []); // => []
+
+// Replace value by path key 
+$settings->replace('array', 'options.js', ['jquery']);
+$settings->replace('array', 'options.img', ['icon.jpg', 'icon.png']);
+$settings->get('array.options.js'); // => ['jquery']
+$settings->get('array');
+/**
+ * [
+ *     'options' => [
+ *         'css' => ['bootstrap.css'],
+ *         'js' => ['jquery'],                  // rewrite
+ *         'img' => ['icon.jpg', 'icon.png'],   // added
+ *     ]
+ * ]
+ */
 ```
 
 ### ContextBehavior

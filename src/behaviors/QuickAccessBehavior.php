@@ -9,10 +9,10 @@
 namespace lav45\settings\behaviors;
 
 use yii\base\Behavior;
-use yii\helpers\ArrayHelper;
 use lav45\settings\Settings;
 use lav45\settings\events\GetEvent;
 use lav45\settings\events\DecodeEvent;
+use lav45\settings\helpers\ArrayHelper;
 
 /**
  * Class QuickAccessBehavior
@@ -27,6 +27,9 @@ class QuickAccessBehavior extends Behavior
      */
     private $_originKey;
 
+    /**
+     * @param Settings $owner
+     */
     public function attach($owner)
     {
         parent::attach($owner);
@@ -34,6 +37,9 @@ class QuickAccessBehavior extends Behavior
         $owner->on(Settings::EVENT_AFTER_DECODE_VALUE, [$this, 'afterDecodeValue']);
     }
 
+    /**
+     * @param GetEvent $event
+     */
     public function beforeGetValue(GetEvent $event)
     {
         if (!is_string($event->key)) {
@@ -48,6 +54,9 @@ class QuickAccessBehavior extends Behavior
         }
     }
 
+    /**
+     * @param DecodeEvent $event
+     */
     public function afterDecodeValue(DecodeEvent $event)
     {
         if (!is_string($event->key)) {
@@ -59,5 +68,18 @@ class QuickAccessBehavior extends Behavior
 
         $key = substr($this->_originKey, strlen($event->key) + 1);
         $event->value = ArrayHelper::getValue($event->value, $key, $event->default);
+    }
+
+    /**
+     * @param string|array $key
+     * @param string $path
+     * @param mixed $value
+     * @return bool
+     */
+    public function replace($key, $path, $value)
+    {
+        $data = $this->owner->get($key, []);
+        $data = ArrayHelper::setValue($data, $path, $value);
+        return $this->owner->set($key, $data);
     }
 }
