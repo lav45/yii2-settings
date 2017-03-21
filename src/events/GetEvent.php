@@ -17,7 +17,7 @@ use yii\base\Event;
 class GetEvent extends Event
 {
     /**
-     * @var string
+     * @var string|array
      */
     public $key;
     /**

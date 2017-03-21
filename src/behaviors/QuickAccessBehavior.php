@@ -36,6 +36,9 @@ class QuickAccessBehavior extends Behavior
 
     public function beforeGetValue(GetEvent $event)
     {
+        if (!is_string($event->key)) {
+            return;
+        }
         $key = $event->key;
         if (($pos = strpos($key, '.')) === false) {
             $this->_originKey = null;
@@ -47,9 +50,14 @@ class QuickAccessBehavior extends Behavior
 
     public function afterDecodeValue(DecodeEvent $event)
     {
-        if ($this->_originKey !== null) {
-            $key = substr($this->_originKey, strlen($event->key) + 1);
-            $event->value = ArrayHelper::getValue($event->value, $key, $event->default);
+        if (!is_string($event->key)) {
+            return;
         }
+        if ($this->_originKey === null) {
+            return;
+        }
+
+        $key = substr($this->_originKey, strlen($event->key) + 1);
+        $event->value = ArrayHelper::getValue($event->value, $key, $event->default);
     }
 }

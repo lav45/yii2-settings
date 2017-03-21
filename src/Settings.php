@@ -53,7 +53,7 @@ class Settings extends Component implements \ArrayAccess
     }
 
     /**
-     * @param string $key
+     * @param string|array $key
      * @return string
      */
     public function buildKey($key)
@@ -97,7 +97,7 @@ class Settings extends Component implements \ArrayAccess
     }
 
     /**
-     * @param string $key
+     * @param string|array $key
      * @param null $default
      * @return mixed
      */
@@ -120,13 +120,13 @@ class Settings extends Component implements \ArrayAccess
     }
 
     /**
-     * @param string $key
+     * @param string|array $key
      * @param mixed $value
      * @return boolean
      */
     public function set($key, $value)
     {
-        $this->beforeSetValue($key, $value);
+        $value = $this->beforeSetValue($key, $value);
 
         $key = $this->buildKey($key);
         $value = $this->encode($value);
@@ -154,7 +154,7 @@ class Settings extends Component implements \ArrayAccess
     }
 
     /**
-     * @param string $key
+     * @param string|array $key
      * @return string
      */
     protected function beforeGetValue(&$key)
@@ -180,7 +180,7 @@ class Settings extends Component implements \ArrayAccess
     }
 
     /**
-     * @param string $key
+     * @param string|array $key
      * @param mixed $value
      * @param mixed $default
      * @return mixed
@@ -196,8 +196,9 @@ class Settings extends Component implements \ArrayAccess
     }
 
     /**
-     * @param string $key
+     * @param string|array $key
      * @param mixed $value
+     * @return mixed
      */
     protected function beforeSetValue($key, $value)
     {
@@ -205,6 +206,7 @@ class Settings extends Component implements \ArrayAccess
         $event->key = $key;
         $event->value = $value;
         $this->trigger(self::EVENT_BEFORE_SET, $event);
+        return $event->value;
     }
 
     /**
