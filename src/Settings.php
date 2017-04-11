@@ -105,8 +105,7 @@ class Settings extends Component implements \ArrayAccess
     {
         $value = $this->beforeGetValue($key);
         if ($value === null) {
-            $key = $this->buildKey($key);
-            $value = $this->storage->getValue($key);
+            $value = $this->storage->getValue($this->buildKey($key));
             $value = $this->afterGetValue($key, $value);
         }
         if ($value === false) {

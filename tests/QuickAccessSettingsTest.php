@@ -19,7 +19,9 @@ class QuickAccessSettingsTest extends \PHPUnit_Framework_TestCase
     {
         /** @var Settings|CacheBehavior|QuickAccessBehavior $settings */
         $settings = new Settings([
-            'storage' => 'lav45\settings\tests\FakeStorage',
+            'storage' => [
+                'class' => 'lav45\settings\tests\FakeStorage',
+            ],
             'as cache' => [
                 'class' => 'lav45\settings\behaviors\CacheBehavior',
             ],
@@ -63,6 +65,20 @@ class QuickAccessSettingsTest extends \PHPUnit_Framework_TestCase
         $settings = $this->getSettings();
         static::assertNull($settings->get('array.options.img'));
         static::assertEquals($settings->get('array.options.img', []), []);
+    }
+    
+    public function testDefaultValueDisabledSerialize()
+    {
+        $settings = $this->getSettings();
+        $settings->serializer = false;
+        $settings->detachBehavior('cache');
+
+        $settings->set('app-config', [
+            'db_name' => 'test',
+            'db_host' => 'localhost',
+        ]);
+
+        static::assertEquals($settings->get('app-config.user-list', []), []);
     }
 
     public function testSetValue()
