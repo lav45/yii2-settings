@@ -57,7 +57,7 @@ return [
             'as cache' => [
                 'class' => 'lav45\settings\behaviors\CacheBehavior',
             ],
-            'as quick_access' => [
+            'as access' => [
                 'class' => 'lav45\settings\behaviors\QuickAccessBehavior',
             ],
             'as context' => [
@@ -214,10 +214,8 @@ $settings->context('ru-RU')->get('key'); // => null
 
 ### Practical use: you can see in
 
-* [SettingsForm](example/models/SettingsForm.php)
-* [SettingsController](example/controllers/SettingsController.php)
-* [settings](example/views/settings/settings.php)
-
+* [SettingsForm](examples/SettingsForm)
+* [ProjectConfiguration](examples/ProjectConfiguration)
 
 ## License
 

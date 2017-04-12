@@ -10,12 +10,13 @@ class SettingsForm extends Model
 {
     /**
      * Settings key
+     * @var string
      */
-    const SETTINGS_KEY = 'main.settings';
+    public $settingsKey = 'main.settings';
     /**
      * @var Settings|string|array
      */
-    protected $settings;
+    public $settings = 'settings';
     /**
      * @var string
      */
@@ -30,23 +31,25 @@ class SettingsForm extends Model
     public $meta_description;
 
     /**
-     * SettingsForm constructor.
-     * @param Settings|string|array $settings
-     * @param array $config
-     */
-    public function __construct($settings = 'settings', $config = [])
-    {
-        parent::__construct($config);
-        $this->settings = Instance::ensure($settings, Settings::className());
-    }
-
-    /**
      * @inheritdoc
      */
     public function init()
     {
         parent::init();
-        $this->setAttributes($this->settings->get(self::SETTINGS_KEY));
+        $this->settings = Instance::ensure($this->settings, Settings::className());
+        $this->setAttributes($this->settings->get($this->settingsKey));
+    }
+
+    /**
+     * @return bool
+     */
+    public function save()
+    {
+        if ($this->validate() === true) {
+            $attributes = $this->getAttributes($this->safeAttributes());
+            return $this->settings->set($this->settingsKey, $attributes);
+        }
+        return false;
     }
 
     /**
@@ -76,18 +79,5 @@ class SettingsForm extends Model
             'meta_keywords' => 'Meta keywords',
             'meta_description' => 'Meta description',
         ];
-    }
-
-    /**
-     * @param bool $validate
-     * @return bool
-     */
-    public function save($validate = true)
-    {
-        if ($validate === true && $this->validate() === false) {
-            return false;
-        } else {
-            return $this->settings->set(self::SETTINGS_KEY, $this->getAttributes());
-        }
     }
 }
