@@ -67,7 +67,9 @@ class QuickAccessBehavior extends Behavior
         }
 
         $key = substr($this->_originKey, strlen($event->key) + 1);
-        $event->value = ArrayHelper::getValue($event->value, $key, $event->default);
+        if ($key !== false) {
+            $event->value = ArrayHelper::getValue($event->value, $key, $event->default);
+        }
     }
 
     /**
