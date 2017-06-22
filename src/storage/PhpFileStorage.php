@@ -13,7 +13,7 @@ use yii\helpers\VarDumper;
 class PhpFileStorage extends FileStorage
 {
     /**
-     * @var string settings file suffix. Defaults to '.php'.
+     * @var string settings file suffix.
      */
     public $fileSuffix = '.php';
 
@@ -23,9 +23,9 @@ class PhpFileStorage extends FileStorage
      */
     public function getValue($key)
     {
-        $file = $this->getFile($key);
-        if (file_exists($file)) {
-            return include $file;
+        $fileName = $this->getFile($key);
+        if (file_exists($fileName)) {
+            return include $fileName;
         }
         return false;
     }
@@ -42,11 +42,31 @@ class PhpFileStorage extends FileStorage
 
         $result = parent::setValue($key, $value);
 
-        if (function_exists('opcache_compile_file') && ini_get('opcache.enable')) {
-            $file = $this->getFile($key);
-            @opcache_compile_file($file);
+        if ($result === true) {
+            $fileName = $this->getFile($key);
+            $this->forceScriptCache($fileName);
         }
 
         return $result;
+    }
+
+    /**
+     * Forcibly caches data of this file in OPCache or APC.
+     * @param string $fileName file name.
+     * @since 1.0.4
+     */
+    protected function forceScriptCache($fileName)
+    {
+        if (
+            PHP_SAPI !== 'cli' && ini_get('opcache.enable') ||
+            ini_get('opcache.enable_cli')
+        ) {
+            opcache_invalidate($fileName, true);
+            opcache_compile_file($fileName);
+        }
+        if (ini_get('apc.enabled')) {
+            apc_delete_file($fileName); // @codeCoverageIgnore
+            apc_bin_loadfile($fileName); // @codeCoverageIgnore
+        }
     }
 }

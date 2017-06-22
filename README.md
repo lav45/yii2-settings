@@ -74,7 +74,9 @@ return [
                 'class' => 'lav45\settings\storage\FileStorage',
                 // it is desirable to determine the storage location 
                 // of your configuration files in a convenient place
-                'path' => '@runtime/settings',
+                // 'path' => '@runtime/settings',
+                // 'dirMode' => 0755,
+                // 'fileSuffix' => '.bin',
             ],
         ],
 
@@ -87,7 +89,8 @@ return [
             'serializer' => false,
             'storage' => [
                 'class' => 'lav45\settings\storage\PhpFileStorage',
-                'path' => '@runtime/settings',
+                // 'path' => '@runtime/settings',
+                // 'fileSuffix' => '.php',
             ],
         ],
     ]
