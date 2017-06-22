@@ -59,7 +59,7 @@ class Settings extends Component implements \ArrayAccess
     public function buildKey($key)
     {
         if (is_string($key)) {
-            $key = ctype_alnum($key) && StringHelper::byteLength($key) <= 32 ? $key : md5($key);
+            $key = StringHelper::byteLength($key) <= 32 ? $key : md5($key);
         } else {
             $key = md5(json_encode($key));
         }
@@ -103,9 +103,10 @@ class Settings extends Component implements \ArrayAccess
      */
     public function get($key, $default = null)
     {
+        $key = $this->buildKey($key);
         $value = $this->beforeGetValue($key);
         if ($value === null) {
-            $value = $this->storage->getValue($this->buildKey($key));
+            $value = $this->storage->getValue($key);
             $value = $this->afterGetValue($key, $value);
         }
         if ($value === false) {
@@ -153,7 +154,7 @@ class Settings extends Component implements \ArrayAccess
     }
 
     /**
-     * @param string|array $key
+     * @param string $key
      * @return string
      */
     protected function beforeGetValue(&$key)
