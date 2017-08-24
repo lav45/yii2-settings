@@ -218,7 +218,7 @@ $settings->context('ru-RU')->get('key'); // => null
 ### Practical use: you can see in
 
 * [SettingsForm](examples/SettingsForm)
-* [ProjectConfiguration](examples/ProjectConfiguration)
+* [ProjectConfiguration](https://github.com/LAV45/yii2-project-configuration)
 
 ## License
 
