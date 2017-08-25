@@ -1,7 +1,6 @@
 yii2-settings
 ===================
 
-[![Yii2](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg?style=flat)](http://www.yiiframework.com/)
 [![Latest Stable Version](https://poser.pugx.org/lav45/yii2-settings/v/stable)](https://packagist.org/packages/lav45/yii2-settings)
 [![License](https://poser.pugx.org/lav45/yii2-settings/license)](https://packagist.org/packages/lav45/yii2-settings)
 [![Total Downloads](https://poser.pugx.org/lav45/yii2-settings/downloads)](https://packagist.org/packages/lav45/yii2-settings)
