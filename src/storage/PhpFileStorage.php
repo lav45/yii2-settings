@@ -58,11 +58,11 @@ class PhpFileStorage extends FileStorage
     protected function forceScriptCache($fileName)
     {
         if (
-            PHP_SAPI !== 'cli' && ini_get('opcache.enable') ||
+            (PHP_SAPI !== 'cli' && ini_get('opcache.enable')) ||
             ini_get('opcache.enable_cli')
         ) {
-            opcache_invalidate($fileName, true);
-            opcache_compile_file($fileName);
+            opcache_invalidate($fileName, true); // @codeCoverageIgnore
+            opcache_compile_file($fileName); // @codeCoverageIgnore
         }
         if (ini_get('apc.enabled')) {
             apc_delete_file($fileName); // @codeCoverageIgnore
