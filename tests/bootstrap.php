@@ -15,17 +15,13 @@ new \yii\console\Application([
             'dsn' => 'sqlite::memory:',
         ],
         'cache' => [
-            'class' => 'yii\caching\DbCache',
+            'class' => 'yii\caching\MemCache',
+            'useMemcached' => extension_loaded('memcached'),
         ],
     ]
 ]);
 
 Yii::$app->runAction('migrate/up', [
     'migrationPath' => __DIR__ . '/../migrations',
-    'interactive' => 0
-]);
-
-Yii::$app->runAction('migrate/up', [
-    'migrationPath' => __DIR__ . '/../vendor/yiisoft/yii2/caching/migrations',
     'interactive' => 0
 ]);
