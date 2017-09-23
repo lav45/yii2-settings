@@ -18,13 +18,13 @@ The preferred way to install this extension through [composer](http://getcompose
 You can set the console
 
 ```
-$ composer require "lav45/yii2-settings" --prefer-dist
+~$ composer require lav45/yii2-settings
 ```
 
 or add
 
 ```
-"lav45/yii2-settings": "^1.0"
+    "lav45/yii2-settings": "^1.1"
 ```
 
 in ```require``` section in `composer.json` file.
