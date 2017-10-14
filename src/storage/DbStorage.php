@@ -11,13 +11,13 @@ namespace lav45\settings\storage;
 use yii\db\Query;
 use yii\db\Connection;
 use yii\di\Instance;
-use yii\base\Object;
+use yii\base\BaseObject;
 
 /**
  * Class DbStorage
  * @package lav45\settings\storage
  */
-class DbStorage extends Object implements StorageInterface
+class DbStorage extends BaseObject implements StorageInterface
 {
     /**
      * @var Connection|array|string

@@ -9,10 +9,10 @@
 namespace lav45\settings\behaviors;
 
 use yii\base\Behavior;
+use yii\helpers\ArrayHelper;
 use lav45\settings\Settings;
 use lav45\settings\events\GetEvent;
 use lav45\settings\events\DecodeEvent;
-use lav45\settings\helpers\ArrayHelper;
 
 /**
  * Class QuickAccessBehavior
@@ -75,7 +75,7 @@ class QuickAccessBehavior extends Behavior
     public function replace($key, $path, $value)
     {
         $data = $this->owner->get($key, []);
-        $data = ArrayHelper::setValue($data, $path, $value);
+        ArrayHelper::setValue($data, $path, $value);
         return $this->owner->set($key, $data);
     }
 }

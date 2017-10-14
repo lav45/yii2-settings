@@ -9,14 +9,14 @@
 namespace lav45\settings\storage;
 
 use Yii;
-use yii\base\Object;
+use yii\base\BaseObject;
 use yii\helpers\FileHelper;
 
 /**
  * Class FileStorage
  * @package lav45\settings\storage
  */
-class FileStorage extends Object implements StorageInterface
+class FileStorage extends BaseObject implements StorageInterface
 {
     /**
      * @var string the directory to store settings files. You may use path alias here.
