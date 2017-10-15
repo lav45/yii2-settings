@@ -2,9 +2,10 @@ yii2-settings
 ===================
 
 [![Latest Stable Version](https://poser.pugx.org/lav45/yii2-settings/v/stable)](https://packagist.org/packages/lav45/yii2-settings)
+[![Latest tested version of PHP](https://img.shields.io/badge/php-7.2-green.svg)](https://travis-ci.org/lav45/yii2-settings)
 [![License](https://poser.pugx.org/lav45/yii2-settings/license)](https://packagist.org/packages/lav45/yii2-settings)
 [![Total Downloads](https://poser.pugx.org/lav45/yii2-settings/downloads)](https://packagist.org/packages/lav45/yii2-settings)
-[![Build Status](https://travis-ci.org/LAV45/yii2-settings.svg?branch=master)](https://travis-ci.org/LAV45/yii2-settings)
+[![Build Status](https://travis-ci.org/lav45/yii2-settings.svg?branch=master)](https://travis-ci.org/lav45/yii2-settings)
 [![Code Coverage](https://scrutinizer-ci.com/g/lav45/yii2-settings/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/lav45/yii2-settings/)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/lav45/yii2-settings/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/lav45/yii2-settings/)
 [![Code Climate](https://codeclimate.com/github/LAV45/yii2-settings/badges/gpa.svg)](https://codeclimate.com/github/LAV45/yii2-settings)
@@ -24,7 +25,7 @@ You can set the console
 or add
 
 ```
-    "lav45/yii2-settings": "^1.1"
+"lav45/yii2-settings": "^1.2"
 ```
 
 in ```require``` section in `composer.json` file.
@@ -46,6 +47,9 @@ return [
         'settings' => [
             'class' => 'lav45\settings\Settings',
 
+            // You can add an arbitrary prefix to all keys
+            // 'keyPrefix' => 'key_',
+
             // DbStorage use as default storage
             // 'storage' => [
             //    'class' => 'lav45\settings\storage\DbStorage',
@@ -55,6 +59,8 @@ return [
 
             'as cache' => [
                 'class' => 'lav45\settings\behaviors\CacheBehavior',
+                // 'cache' => 'cache',
+                // 'cacheDuration' => 3600,
             ],
             'as access' => [
                 'class' => 'lav45\settings\behaviors\QuickAccessBehavior',
@@ -69,6 +75,10 @@ return [
          */
         'configFile' => [
             'class' => 'lav45\settings\Settings',
+
+            // Be used for data serialization
+            'serializer' => ['serialize', 'unserialize'],
+
             'storage' => [
                 'class' => 'lav45\settings\storage\FileStorage',
                 // it is desirable to determine the storage location 
