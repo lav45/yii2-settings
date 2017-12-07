@@ -5,6 +5,7 @@
         "yii2",
         "extension",
         "settings",
+        "config",
         "quick access"
     ],
     "repositories": [
