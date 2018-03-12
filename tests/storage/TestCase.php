@@ -4,7 +4,7 @@ namespace lav45\settings\tests\storage;
 
 use lav45\settings\storage\StorageInterface;
 
-abstract class TestCase extends \PHPUnit_Framework_TestCase
+abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
     /**
      * @return StorageInterface

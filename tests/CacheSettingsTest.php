@@ -3,12 +3,13 @@
 namespace lav45\settings\tests;
 
 use Yii;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class CacheSettingsTest
  * @package tests
  */
-class CacheSettingsTest extends \PHPUnit_Framework_TestCase
+class CacheSettingsTest extends TestCase
 {
     protected function getSettings()
     {

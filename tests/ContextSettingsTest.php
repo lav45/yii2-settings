@@ -4,12 +4,13 @@ namespace lav45\settings\tests;
 
 use lav45\settings\Settings;
 use lav45\settings\behaviors\ContextBehavior;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class ContextSettingsTest
  * @package tests
  */
-class ContextSettingsTest extends \PHPUnit_Framework_TestCase
+class ContextSettingsTest extends TestCase
 {
     /**
      * @return Settings|ContextBehavior

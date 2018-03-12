@@ -5,12 +5,13 @@ namespace lav45\settings\tests;
 use lav45\settings\Settings;
 use lav45\settings\behaviors\CacheBehavior;
 use lav45\settings\behaviors\QuickAccessBehavior;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class QuickAccessSettingsTest
  * @package tests
  */
-class QuickAccessSettingsTest extends \PHPUnit_Framework_TestCase
+class QuickAccessSettingsTest extends TestCase
 {
     /**
      * @return Settings|CacheBehavior|QuickAccessBehavior

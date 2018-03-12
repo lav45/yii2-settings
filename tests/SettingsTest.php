@@ -4,12 +4,13 @@ namespace lav45\settings\tests;
 
 use yii\helpers\Json;
 use lav45\settings\Settings;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class SettingsTest
  * @package tests
  */
-class SettingsTest extends \PHPUnit_Framework_TestCase
+class SettingsTest extends TestCase
 {
     /**
      * @return Settings
