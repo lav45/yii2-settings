@@ -2,21 +2,10 @@
 
 namespace example\models;
 
-use yii\base\Model;
-use yii\di\Instance;
-use lav45\settings\Settings;
+use lav45\settings\Model;
 
 class SettingsForm extends Model
 {
-    /**
-     * Settings key
-     * @var string
-     */
-    public $settingsKey = 'main.settings';
-    /**
-     * @var Settings|string|array
-     */
-    public $settings = 'settings';
     /**
      * @var string
      */
@@ -29,28 +18,6 @@ class SettingsForm extends Model
      * @var string
      */
     public $meta_description;
-
-    /**
-     * @inheritdoc
-     */
-    public function init()
-    {
-        parent::init();
-        $this->settings = Instance::ensure($this->settings, Settings::className());
-        $this->setAttributes($this->settings->get($this->settingsKey));
-    }
-
-    /**
-     * @return bool
-     */
-    public function save()
-    {
-        if ($this->validate() === true) {
-            $attributes = $this->getAttributes($this->safeAttributes());
-            return $this->settings->set($this->settingsKey, $attributes);
-        }
-        return false;
-    }
 
     /**
      * @inheritdoc
