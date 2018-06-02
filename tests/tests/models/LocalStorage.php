@@ -1,10 +1,10 @@
 <?php
 
-namespace lav45\settings\tests;
+namespace lav45\settings\tests\models;
 
 use lav45\settings\storage\StorageInterface;
 
-class FakeStorage implements StorageInterface
+class LocalStorage implements StorageInterface
 {
     private $data = [];
 
@@ -28,10 +28,13 @@ class FakeStorage implements StorageInterface
         return false;
     }
 
-    public function flushValues()
+    public function count()
     {
-        $count = count($this->data);
+        return count($this->data);
+    }
+
+    public function flush()
+    {
         $this->data = [];
-        return $count;
     }
 }

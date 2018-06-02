@@ -40,7 +40,7 @@ class CacheBehavior extends Behavior
     public function init()
     {
         parent::init();
-        $this->cache = clone Instance::ensure($this->cache, Cache::className());
+        $this->cache = clone Instance::ensure($this->cache, Cache::class);
         $this->cache->serializer = false;
     }
 

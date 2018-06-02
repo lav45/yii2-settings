@@ -58,7 +58,7 @@ class FileStorage extends BaseObject implements StorageInterface
     {
         $file = $this->getFile($key);
 
-        $fp = @fopen($file, 'r');
+        $fp = @fopen($file, 'rb');
         if ($fp !== false) {
             @flock($fp, LOCK_SH);
             $value = @stream_get_contents($fp);
@@ -84,11 +84,10 @@ class FileStorage extends BaseObject implements StorageInterface
                 @chmod($file, $this->fileMode);
             }
             return true;
-        } else {
-            $error = error_get_last();
-            Yii::warning("Unable to write file '{$file}': {$error['message']}", __METHOD__);
-            return false;
         }
+        $error = error_get_last();
+        Yii::warning("Unable to write file '{$file}': {$error['message']}", __METHOD__);
+        return false;
     }
 
     /**
@@ -97,9 +96,7 @@ class FileStorage extends BaseObject implements StorageInterface
      */
     public function deleteValue($key)
     {
-        $file = $this->getFile($key);
-
-        return @unlink($file);
+        return @unlink($this->getFile($key));
     }
 
     /**

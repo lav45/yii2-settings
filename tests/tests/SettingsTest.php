@@ -4,6 +4,7 @@ namespace lav45\settings\tests;
 
 use yii\helpers\Json;
 use lav45\settings\Settings;
+use lav45\settings\tests\models\LocalStorage;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -18,15 +19,15 @@ class SettingsTest extends TestCase
     protected function getSettings()
     {
         return new Settings([
-            'storage' => 'lav45\settings\tests\FakeStorage',
+            'storage' => LocalStorage::class,
         ]);
     }
 
     public function testGetNotExistKey()
     {
         $settings = $this->getSettings();
-        static::assertNull($settings->get('key'));
-        static::assertEquals($settings->get('key', []), []);
+        $this->assertNull($settings->get('key'));
+        $this->assertEquals($settings->get('key', []), []);
     }
 
     /**
@@ -60,14 +61,14 @@ class SettingsTest extends TestCase
 
         $key = 'key';
 
-        static::assertTrue($settings->set($key, $value));
-        static::assertEquals($settings->get($key), $value);
+        $this->assertTrue($settings->set($key, $value));
+        $this->assertEquals($settings->get($key), $value);
 
         // test disabled serializer
         $settings->serializer = false;
 
-        static::assertTrue($settings->set($key, $value));
-        static::assertEquals($settings->get($key), $value);
+        $this->assertTrue($settings->set($key, $value));
+        $this->assertEquals($settings->get($key), $value);
     }
 
     public function testUsageAsArray()
@@ -75,10 +76,10 @@ class SettingsTest extends TestCase
         $settings = $this->getSettings();
         $data = ['data'];
         $settings['key'] = $data;
-        static::assertTrue(isset($settings['key']));
-        static::assertEquals($settings['key'], $data);
+        $this->assertTrue(isset($settings['key']));
+        $this->assertEquals($settings['key'], $data);
         unset($settings['key']);
-        static::assertFalse(isset($settings['key']));
+        $this->assertFalse(isset($settings['key']));
     }
 
     public function testArrayAccess()
@@ -86,7 +87,7 @@ class SettingsTest extends TestCase
         $settings = $this->getSettings();
         $data = ['data'];
         $key = ['key'];
-        static::assertTrue($settings->set($key, $data));
+        $this->assertTrue($settings->set($key, $data));
     }
 
     public function testSerialize()
@@ -96,13 +97,13 @@ class SettingsTest extends TestCase
 
         $data = ['data' => ['json_encode', 'json_decode']];
         $key = 'key';
-        static::assertTrue($settings->set($key, $data));
-        static::assertEquals($settings->get($key), $data);
+        $this->assertTrue($settings->set($key, $data));
+        $this->assertEquals($settings->get($key), $data);
 
         $encodeData = $settings->storage->getValue($key);
         $expected = Json::encode($data);
 
-        static::assertEquals($expected, $encodeData);
+        $this->assertEquals($expected, $encodeData);
     }
 
     public function testKeyPrefix()
@@ -111,16 +112,16 @@ class SettingsTest extends TestCase
 
         $key = md5('key');
         $data = ['data'];
-        static::assertTrue($settings->set($key, $data));
-        static::assertEquals($settings->get($key), $data);
+        $this->assertTrue($settings->set($key, $data));
+        $this->assertEquals($settings->get($key), $data);
 
         $settings->keyPrefix = md5('keyPrefix');
-        static::assertNull($settings->get($key));
+        $this->assertNull($settings->get($key));
         $data2 = ['data2'];
-        static::assertTrue($settings->set($key, $data2));
-        static::assertEquals($settings->get($key), $data2);
+        $this->assertTrue($settings->set($key, $data2));
+        $this->assertEquals($settings->get($key), $data2);
 
         $settings->keyPrefix = null;
-        static::assertEquals($settings->get($key), $data);
+        $this->assertEquals($settings->get($key), $data);
     }
 }

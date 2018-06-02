@@ -1,9 +1,10 @@
 <?php
 
-namespace lav45\settings\tests;
+namespace lav45\settings\tests\behaviors;
 
 use lav45\settings\Settings;
 use lav45\settings\behaviors\ContextBehavior;
+use lav45\settings\tests\models\LocalStorage;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -18,9 +19,9 @@ class ContextSettingsTest extends TestCase
     protected function getSettings()
     {
         return new Settings([
-            'storage' => 'lav45\settings\tests\FakeStorage',
+            'storage' => LocalStorage::class,
             'as access' => [
-                'class' => 'lav45\settings\behaviors\ContextBehavior',
+                'class' => ContextBehavior::class,
             ],
         ]);
     }
@@ -39,14 +40,14 @@ class ContextSettingsTest extends TestCase
         ];
 
         foreach ($items as $key => $data) {
-            static::assertTrue($enSettings->set($key, 'en' . $data));
-            static::assertNull($ruSettings->get($key));
-            static::assertTrue($ruSettings->set($key, 'ru' . $data));
-            static::assertNotNull($ruSettings->get($key));
+            $this->assertTrue($enSettings->set($key, 'en' . $data));
+            $this->assertNull($ruSettings->get($key));
+            $this->assertTrue($ruSettings->set($key, 'ru' . $data));
+            $this->assertNotNull($ruSettings->get($key));
         }
         foreach ($items as $key => $data) {
-            static::assertEquals($enSettings->get($key), 'en' . $data);
-            static::assertEquals($ruSettings->get($key), 'ru' . $data);
+            $this->assertEquals($enSettings->get($key), 'en' . $data);
+            $this->assertEquals($ruSettings->get($key), 'ru' . $data);
         }
     }
 }

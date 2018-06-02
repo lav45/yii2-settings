@@ -15,6 +15,7 @@ use lav45\settings\events\GetEvent;
 use lav45\settings\events\SetEvent;
 use lav45\settings\events\DecodeEvent;
 use lav45\settings\events\DeleteEvent;
+use lav45\settings\storage\DbStorage;
 use lav45\settings\storage\StorageInterface;
 
 /**
@@ -41,7 +42,7 @@ class Settings extends Component implements \ArrayAccess
     /**
      * @var StorageInterface|string|array
      */
-    public $storage = 'lav45\settings\storage\DbStorage';
+    public $storage = DbStorage::class;
 
     /**
      * @inheritdoc
@@ -49,7 +50,7 @@ class Settings extends Component implements \ArrayAccess
     public function init()
     {
         parent::init();
-        $this->storage = Instance::ensure($this->storage, 'lav45\settings\storage\StorageInterface');
+        $this->storage = Instance::ensure($this->storage, StorageInterface::class);
     }
 
     /**
@@ -74,11 +75,11 @@ class Settings extends Component implements \ArrayAccess
     {
         if ($this->serializer === null) {
             return serialize($value);
-        } elseif ($this->serializer !== false) {
-            return call_user_func($this->serializer[0], $value);
-        } else {
-            return $value;
         }
+        if ($this->serializer !== false) {
+            return call_user_func($this->serializer[0], $value);
+        }
+        return $value;
     }
 
     /**
@@ -89,11 +90,11 @@ class Settings extends Component implements \ArrayAccess
     {
         if ($this->serializer === null) {
             return unserialize($value);
-        } elseif ($this->serializer !== false) {
-            return call_user_func($this->serializer[1], $value);
-        } else {
-            return $value;
         }
+        if ($this->serializer !== false) {
+            return call_user_func($this->serializer[1], $value);
+        }
+        return $value;
     }
 
     /**

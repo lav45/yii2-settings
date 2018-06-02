@@ -36,13 +36,13 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         $storage = $this->getStorage();
 
         // setValue
-        static::assertTrue($storage->setValue($key, $value));
+        $this->assertTrue($storage->setValue($key, $value));
 
         // getValue
-        static::assertEquals($storage->getValue($key), $value);
+        $this->assertEquals($storage->getValue($key), $value);
 
         // deleteValue
-        static::assertTrue($storage->deleteValue($key));
-        static::assertFalse($storage->getValue($key));
+        $this->assertTrue($storage->deleteValue($key));
+        $this->assertFalse($storage->getValue($key));
     }
 }

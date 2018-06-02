@@ -11,11 +11,11 @@ new \yii\console\Application([
     'basePath' => __DIR__,
     'components' => [
         'db' => [
-            'class' => 'yii\db\Connection',
+            'class' => \yii\db\Connection::class,
             'dsn' => 'sqlite::memory:',
         ],
         'cache' => [
-            'class' => 'yii\caching\MemCache',
+            'class' => \yii\caching\MemCache::class,
             'useMemcached' => extension_loaded('memcached'),
         ],
     ]

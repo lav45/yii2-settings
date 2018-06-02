@@ -1,10 +1,11 @@
 <?php
 
-namespace lav45\settings\tests;
+namespace lav45\settings\tests\behaviors;
 
 use lav45\settings\Settings;
 use lav45\settings\behaviors\CacheBehavior;
 use lav45\settings\behaviors\QuickAccessBehavior;
+use lav45\settings\tests\models\LocalStorage;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -21,13 +22,13 @@ class QuickAccessSettingsTest extends TestCase
         /** @var Settings|CacheBehavior|QuickAccessBehavior $settings */
         $settings = new Settings([
             'storage' => [
-                'class' => 'lav45\settings\tests\FakeStorage',
+                'class' => LocalStorage::class,
             ],
             'as cache' => [
-                'class' => 'lav45\settings\behaviors\CacheBehavior',
+                'class' => CacheBehavior::class,
             ],
             'as access' => [
-                'class' => 'lav45\settings\behaviors\QuickAccessBehavior',
+                'class' => QuickAccessBehavior::class,
             ],
         ]);
 
@@ -47,25 +48,25 @@ class QuickAccessSettingsTest extends TestCase
             ]
         ];
 
-        static::assertTrue($settings->set('array', $data));
+        $this->assertTrue($settings->set('array', $data));
         // find in cache
-        static::assertEquals($settings->get('array.options.js'), $data['options']['js']);
-        static::assertEquals($settings->get('array.options.js.0'), $data['options']['js'][0]);
-        static::assertEquals($settings->get('array.options.css'), $data['options']['css']);
-        static::assertEquals($settings['array.options.css'], $data['options']['css']);
+        $this->assertEquals($settings->get('array.options.js'), $data['options']['js']);
+        $this->assertEquals($settings->get('array.options.js.0'), $data['options']['js'][0]);
+        $this->assertEquals($settings->get('array.options.css'), $data['options']['css']);
+        $this->assertEquals($settings['array.options.css'], $data['options']['css']);
 
-        static::assertTrue($settings->cache->flush());
+        $this->assertTrue($settings->cache->flush());
         // find in storage & cache again
-        static::assertEquals($settings->get('array.options.js'), $data['options']['js']);
-        static::assertEquals($settings->get('array.options.css'), $data['options']['css']);
-        static::assertEquals($settings->get('array'), $data);
+        $this->assertEquals($settings->get('array.options.js'), $data['options']['js']);
+        $this->assertEquals($settings->get('array.options.css'), $data['options']['css']);
+        $this->assertEquals($settings->get('array'), $data);
     }
 
     public function testGetDefaultValue()
     {
         $settings = $this->getSettings();
-        static::assertNull($settings->get('array.options.img'));
-        static::assertEquals($settings->get('array.options.img', []), []);
+        $this->assertNull($settings->get('array.options.img'));
+        $this->assertEquals($settings->get('array.options.img', []), []);
     }
     
     public function testDefaultValueDisabledSerialize()
@@ -79,7 +80,7 @@ class QuickAccessSettingsTest extends TestCase
             'db_host' => 'localhost',
         ]);
 
-        static::assertEquals($settings->get('app-config.user-list', []), []);
+        $this->assertEquals($settings->get('app-config.user-list', []), []);
     }
 
     public function testSetValue()
@@ -94,7 +95,7 @@ class QuickAccessSettingsTest extends TestCase
             ]
         ];
 
-        static::assertTrue($settings->set($key, $data));
+        $this->assertTrue($settings->set($key, $data));
 
 
         $expected = [
@@ -104,8 +105,8 @@ class QuickAccessSettingsTest extends TestCase
                 'img' => ['img.png', 'img.jpg']
             ]
         ];
-        static::assertTrue($settings->replace($key, 'options.img', ['img.png', 'img.jpg']));
-        static::assertEquals($expected, $settings->get($key));
+        $this->assertTrue($settings->replace($key, 'options.img', ['img.png', 'img.jpg']));
+        $this->assertEquals($expected, $settings->get($key));
 
 
         $expected = [
@@ -115,8 +116,8 @@ class QuickAccessSettingsTest extends TestCase
                 'img' => ['img.png']
             ]
         ];
-        static::assertTrue($settings->replace($key, 'options.img', ['img.png']));
-        static::assertEquals($expected, $settings->get($key));
+        $this->assertTrue($settings->replace($key, 'options.img', ['img.png']));
+        $this->assertEquals($expected, $settings->get($key));
 
 
         $expected = [
@@ -126,7 +127,7 @@ class QuickAccessSettingsTest extends TestCase
                 'img' => ['new.png']
             ]
         ];
-        static::assertTrue($settings->replace($key, 'options.img.0', 'new.png'));
-        static::assertEquals($expected, $settings->get($key));
+        $this->assertTrue($settings->replace($key, 'options.img.0', 'new.png'));
+        $this->assertEquals($expected, $settings->get($key));
     }
 }

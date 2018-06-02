@@ -23,13 +23,13 @@ class FileStorageTest extends TestCase
 
         chmod($storage->path, 0444);
 
-        static::assertFalse($storage->setValue($key, $value));
+        $this->assertFalse($storage->setValue($key, $value));
 
         chmod($storage->path, $storage->dirMode);
 
         $message = array_pop(Yii::getLogger()->messages);
 
-        static::assertEquals('lav45\settings\storage\FileStorage::setValue', $message[2]);
-        static::assertStringEndsWith('Permission denied', $message[0]);
+        $this->assertEquals('lav45\settings\storage\FileStorage::setValue', $message[2]);
+        $this->assertStringEndsWith('Permission denied', $message[0]);
     }
 }

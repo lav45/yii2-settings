@@ -34,7 +34,7 @@ class DbStorage extends BaseObject implements StorageInterface
     public function init()
     {
         parent::init();
-        $this->db = Instance::ensure($this->db, Connection::className());
+        $this->db = Instance::ensure($this->db, Connection::class);
     }
 
     /**
@@ -61,7 +61,7 @@ class DbStorage extends BaseObject implements StorageInterface
     {
         $query = (new Query())->createCommand($this->db);
         $result = $query->update($this->tableName, ['data' => $value], ['id' => $key])->execute();
-        if ($result == 0) {
+        if ($result === 0) {
             $result = $query->insert($this->tableName, ['id' => $key, 'data' => $value])->execute();
         }
         return $result > 0;
