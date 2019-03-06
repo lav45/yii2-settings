@@ -59,9 +59,16 @@ class DbStorage extends BaseObject implements StorageInterface
      */
     public function setValue($key, $value)
     {
+        $exists = (new Query())
+            ->from($this->tableName)
+            ->where(['id' => $key])
+            ->exists($this->db);
+
         $query = (new Query())->createCommand($this->db);
-        $result = $query->update($this->tableName, ['data' => $value], ['id' => $key])->execute();
-        if ($result === 0) {
+
+        if ($exists) {
+            $result = $query->update($this->tableName, ['data' => $value], ['id' => $key])->execute();
+        } else {
             $result = $query->insert($this->tableName, ['id' => $key, 'data' => $value])->execute();
         }
         return $result > 0;
