@@ -56,7 +56,9 @@ class Model extends \yii\base\Model
     protected function getSaveAttributes()
     {
         $data = $this->getAttributes($this->safeAttributes());
-        return array_filter($data);
+        return array_filter($data, function ($val) {
+            return $val !== '' || $val !== [] || $val !== null ;
+        });
     }
 
     /**
