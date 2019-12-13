@@ -8,6 +8,7 @@
 
 namespace lav45\settings\storage;
 
+use Yii;
 use yii\db\Query;
 use yii\db\Connection;
 use yii\di\Instance;
@@ -66,12 +67,17 @@ class DbStorage extends BaseObject implements StorageInterface
 
         $query = (new Query())->createCommand($this->db);
 
-        if ($exists) {
-            $result = $query->update($this->tableName, ['data' => $value], ['id' => $key])->execute();
-        } else {
-            $result = $query->insert($this->tableName, ['id' => $key, 'data' => $value])->execute();
+        try {
+            if ($exists) {
+                $query->update($this->tableName, ['data' => $value], ['id' => $key])->execute();
+            } else {
+                $query->insert($this->tableName, ['id' => $key, 'data' => $value])->execute();
+            }
+        } catch (\Exception $e) {
+            Yii::error(get_class($e) . '[' . $e->getCode() . '] ' . $e->getMessage());
+            return false;
         }
-        return $result > 0;
+        return true;
     }
 
     /**
