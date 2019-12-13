@@ -18,7 +18,7 @@ class FileStorageTest extends TestCase
     {
         $storage = $this->getStorage();
 
-        $key = md5(uniqid());
+        $key = md5(uniqid('', false));
         $value = 'a:1:{s:13:"template";s:1:"1";}';
 
         chmod($storage->path, 0444);
@@ -29,7 +29,7 @@ class FileStorageTest extends TestCase
 
         $message = array_pop(Yii::getLogger()->messages);
 
-        $this->assertEquals('lav45\settings\storage\FileStorage::setValue', $message[2]);
+        $this->assertEquals('application', $message[2]);
         $this->assertStringEndsWith('Permission denied', $message[0]);
     }
 }

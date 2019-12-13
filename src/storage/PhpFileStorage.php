@@ -10,6 +10,10 @@ namespace lav45\settings\storage;
 
 use yii\helpers\VarDumper;
 
+/**
+ * Class PhpFileStorage
+ * @package lav45\settings\storage
+ */
 class PhpFileStorage extends FileStorage
 {
     /**

@@ -86,7 +86,7 @@ class FileStorage extends BaseObject implements StorageInterface
             return true;
         }
         $error = error_get_last();
-        Yii::warning("Unable to write file '{$file}': {$error['message']}", __METHOD__);
+        Yii::error("Unable to write file '{$file}': {$error['message']}");
         return false;
     }
 
