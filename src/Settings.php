@@ -89,7 +89,7 @@ class Settings extends Component implements \ArrayAccess
     public function decode($value)
     {
         if ($this->serializer === null) {
-            return unserialize($value);
+            return @unserialize($value);
         }
         if ($this->serializer !== false) {
             return call_user_func($this->serializer[1], $value);
