@@ -51,11 +51,21 @@ class Model extends \yii\base\Model
     }
 
     /**
+     * List of attributes to save
+     * @return string[]
+     * @since 1.2.2
+     */
+    protected function getSaveAttributeList()
+    {
+        return $this->safeAttributes();
+    }
+
+    /**
      * @return array
      */
     protected function getSaveAttributes()
     {
-        $data = $this->getAttributes($this->safeAttributes());
+        $data = $this->getAttributes($this->getSaveAttributeList());
         return array_filter($data, function ($val) {
             return $val !== '' || $val !== [] || $val !== null ;
         });
