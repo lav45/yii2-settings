@@ -27,7 +27,7 @@ class Model extends \yii\base\Model
     public function init()
     {
         $this->settings = Instance::ensure($this->settings, Settings::class);
-        $this->setAttributes($this->getData());
+        $this->setAttributes($this->getData(), false);
     }
 
     /**
