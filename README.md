@@ -2,7 +2,6 @@ yii2-settings
 ===================
 
 [![Latest Stable Version](https://poser.pugx.org/lav45/yii2-settings/v/stable)](https://packagist.org/packages/lav45/yii2-settings)
-[![Latest tested version of PHP](https://img.shields.io/badge/php-7.2-green.svg)](https://travis-ci.org/lav45/yii2-settings)
 [![License](https://poser.pugx.org/lav45/yii2-settings/license)](https://packagist.org/packages/lav45/yii2-settings)
 [![Total Downloads](https://poser.pugx.org/lav45/yii2-settings/downloads)](https://packagist.org/packages/lav45/yii2-settings)
 [![Build Status](https://travis-ci.org/lav45/yii2-settings.svg?branch=master)](https://travis-ci.org/lav45/yii2-settings)
