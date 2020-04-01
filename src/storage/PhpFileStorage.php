@@ -68,9 +68,5 @@ class PhpFileStorage extends FileStorage
             opcache_invalidate($fileName, true); // @codeCoverageIgnore
             opcache_compile_file($fileName); // @codeCoverageIgnore
         }
-        if (ini_get('apc.enabled')) {
-            apc_delete_file($fileName); // @codeCoverageIgnore
-            apc_bin_loadfile($fileName); // @codeCoverageIgnore
-        }
     }
 }
