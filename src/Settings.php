@@ -8,15 +8,15 @@
 
 namespace lav45\settings;
 
-use yii\di\Instance;
-use yii\base\Component;
-use yii\helpers\StringHelper;
-use lav45\settings\events\GetEvent;
-use lav45\settings\events\SetEvent;
 use lav45\settings\events\DecodeEvent;
 use lav45\settings\events\DeleteEvent;
+use lav45\settings\events\GetEvent;
+use lav45\settings\events\SetEvent;
 use lav45\settings\storage\DbStorage;
 use lav45\settings\storage\StorageInterface;
+use yii\base\Component;
+use yii\di\Instance;
+use yii\helpers\StringHelper;
 
 /**
  * Class Settings
@@ -31,10 +31,15 @@ class Settings extends Component implements \ArrayAccess
     const EVENT_AFTER_SET = 'afterSetValue';
     const EVENT_BEFORE_DELETE = 'beforeDeleteValue';
     const EVENT_AFTER_DELETE = 'afterDeleteValue';
+
     /**
      * @var string
      */
     public $keyPrefix;
+    /**
+     * @var bool
+     */
+    public $buildKey = true;
     /**
      * @var array|boolean
      */
@@ -59,10 +64,12 @@ class Settings extends Component implements \ArrayAccess
      */
     public function buildKey($key)
     {
-        if (is_string($key)) {
-            $key = StringHelper::byteLength($key) <= 32 ? $key : md5($key);
-        } else {
-            $key = md5(json_encode($key));
+        if ($this->buildKey === true) {
+            if (is_string($key)) {
+                $key = StringHelper::byteLength($key) <= 32 ? $key : md5($key);
+            } else {
+                $key = md5(json_encode($key));
+            }
         }
         return $this->keyPrefix . $key;
     }
