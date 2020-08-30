@@ -64,8 +64,5 @@ class PhpFileStorage extends FileStorage
         if (function_exists('opcache_invalidate')) {
             opcache_invalidate($fileName, true); // @codeCoverageIgnore
         }
-        if (function_exists('opcache_compile_file')) {
-            opcache_compile_file($fileName); // @codeCoverageIgnore
-        }
     }
 }
