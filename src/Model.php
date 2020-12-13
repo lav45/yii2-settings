@@ -19,15 +19,34 @@ class Model extends \yii\base\Model
     /**
      * @var Settings|string|array
      */
-    public $settings = 'settings';
+    private $settings = 'settings';
 
     /**
      * @inheritdoc
      */
     public function init()
     {
-        $this->settings = Instance::ensure($this->settings, Settings::class);
         $this->setAttributes($this->getData(), false);
+    }
+
+    /**
+     * @return Settings
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function getSettings()
+    {
+        if ($this->settings instanceof Settings === false) {
+            $this->settings = Instance::ensure($this->settings, Settings::class);
+        }
+        return $this->settings;
+    }
+
+    /**
+     * @param Settings|string|array $data
+     */
+    public function setSettings($data)
+    {
+        $this->settings = $data;
     }
 
     /**
@@ -37,7 +56,7 @@ class Model extends \yii\base\Model
     public function save($runValidation = true)
     {
         if ($runValidation === false || $this->validate()) {
-            return $this->setData($this->getSaveAttributes());
+            return $this->setData($this->getSaveAttributes($runValidation));
         }
         return false;
     }
@@ -52,22 +71,24 @@ class Model extends \yii\base\Model
 
     /**
      * List of attributes to save
+     * @param bool $safeOnly
      * @return string[]
      * @since 1.2.2
      */
-    protected function getSaveAttributeList()
+    protected function getSaveAttributeList($safeOnly = false)
     {
-        return $this->safeAttributes();
+        return $safeOnly ? $this->safeAttributes() : $this->attributes();
     }
 
     /**
+     * @param bool $safeOnly
      * @return array
      */
-    protected function getSaveAttributes()
+    protected function getSaveAttributes($safeOnly = false)
     {
-        $data = $this->getAttributes($this->getSaveAttributeList());
+        $data = $this->getAttributes($this->getSaveAttributeList($safeOnly));
         return array_filter($data, function ($val) {
-            return $val !== '' || $val !== [] || $val !== null ;
+            return $val !== '' || $val !== [] || $val !== null;
         });
     }
 
@@ -76,7 +97,7 @@ class Model extends \yii\base\Model
      */
     protected function getData()
     {
-        return $this->settings->get($this->getSettingsKey(), []);
+        return $this->getSettings()->get($this->getSettingsKey(), []);
     }
 
     /**
@@ -85,7 +106,7 @@ class Model extends \yii\base\Model
      */
     protected function setData($data)
     {
-        return $this->settings->set($this->getSettingsKey(), $data);
+        return $this->getSettings()->set($this->getSettingsKey(), $data);
     }
 
     /**
@@ -93,7 +114,7 @@ class Model extends \yii\base\Model
      */
     public function flush()
     {
-        $this->setAttributes(array_fill_keys($this->safeAttributes(), null));
-        return $this->settings->delete($this->getSettingsKey());
+        $this->setAttributes(array_fill_keys($this->getSaveAttributeList(), null));
+        return $this->getSettings()->delete($this->getSettingsKey());
     }
 }

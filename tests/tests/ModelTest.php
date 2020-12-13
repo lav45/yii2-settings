@@ -2,6 +2,7 @@
 
 namespace lav45\settings\tests;
 
+use lav45\settings\tests\models\SettingsDTO;
 use Yii;
 use lav45\settings\Settings;
 use lav45\settings\tests\models\LocalStorage;
@@ -50,5 +51,27 @@ class ModelTest extends TestCase
         $model = SettingsForm::instance(false);
         $this->assertNull($model->title);
         $this->assertNull($model->emails);
+    }
+
+    public function testSaveDataWithoutValidation()
+    {
+        $data = [
+            'title' => 'Mailing',
+            'emails' => [
+                'mail1@gmail.com',
+                'mail2@gmail.com',
+                'mail3@gmail.com',
+            ],
+        ];
+
+        $model = new SettingsDTO($data);
+        $this->assertEquals($data['title'], $model->title);
+        $this->assertEquals($data['emails'], $model->emails);
+
+        $this->assertTrue($model->save(false));
+
+        $model = SettingsDTO::instance();
+        $this->assertEquals($data['title'], $model->title);
+        $this->assertEquals($data['emails'], $model->emails);
     }
 }
