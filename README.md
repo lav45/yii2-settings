@@ -24,7 +24,7 @@ You can set the console
 or add
 
 ```
-"lav45/yii2-settings": "^1.2"
+"lav45/yii2-settings": "1.3.*"
 ```
 
 in ```require``` section in `composer.json` file.
