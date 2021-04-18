@@ -36,6 +36,22 @@ Apply with the console command:
 ~$ yii migrate/up --migrationPath=vendor/lav45/yii2-settings/migrations
 ```
 
+or add it to your console config file ( console/config/main.php )
+
+```php
+return [
+    'controllerMap' => [
+        'migrate' => [
+            'class' => yii\console\controllers\MigrateController::class,
+            'migrationPath' => [
+                '@app/migrations',
+                '@vendor/lav45/yii2-settings/migrations',
+            ],
+        ],
+    ],
+];
+```
+
 ## Component Setup
 
 To use the Setting Component, you need to configure the components array in your application configuration:
