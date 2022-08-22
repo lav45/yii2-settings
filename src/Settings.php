@@ -253,7 +253,7 @@ class Settings extends Component implements \ArrayAccess
      * @param string $key
      * @return boolean
      */
-    public function offsetExists($key)
+    public function offsetExists($key): bool
     {
         return $this->get($key) !== null;
     }
@@ -262,7 +262,7 @@ class Settings extends Component implements \ArrayAccess
      * @param string $key
      * @return mixed
      */
-    public function offsetGet($key)
+    public function offsetGet($key): mixed
     {
         return $this->get($key);
     }
@@ -271,7 +271,7 @@ class Settings extends Component implements \ArrayAccess
      * @param string $key
      * @param mixed $value
      */
-    public function offsetSet($key, $value)
+    public function offsetSet($key, $value): void
     {
         $this->set($key, $value);
     }
@@ -279,7 +279,7 @@ class Settings extends Component implements \ArrayAccess
     /**
      * @param string $key
      */
-    public function offsetUnset($key)
+    public function offsetUnset($key): void
     {
         $this->delete($key);
     }
