@@ -9,6 +9,7 @@
 namespace lav45\settings;
 
 use yii\di\Instance;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class Model represents settings model
@@ -106,7 +107,7 @@ class Model extends \yii\base\Model
      */
     protected function setData($data)
     {
-        return $this->getSettings()->set($this->getSettingsKey(), $data);
+        return $this->getSettings()->set($this->getSettingsKey(), ArrayHelper::toArray($data));
     }
 
     /**
