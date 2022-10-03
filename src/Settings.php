@@ -21,6 +21,8 @@ use yii\helpers\StringHelper;
 /**
  * Class Settings
  * @package lav45\settings
+ * @mixin \lav45\settings\behaviors\CacheBehavior
+ * @mixin \lav45\settings\behaviors\QuickAccessBehavior
  */
 class Settings extends Component implements \ArrayAccess
 {
