@@ -24,7 +24,7 @@ You can set the console
 or add
 
 ```
-"lav45/yii2-settings": "1.3.*"
+"lav45/yii2-settings": "1.4.*"
 ```
 
 in ```require``` section in `composer.json` file.
@@ -115,6 +115,24 @@ return [
                 'class' => 'lav45\settings\storage\PhpFileStorage',
                 // 'path' => '@runtime/settings',
                 // 'fileSuffix' => '.php',
+            ],
+        ],
+        
+        /**
+         * VaultStorage this is an adapter to store data in Hashicorp Vault
+         * for use need to activate kv (key value) engine in Hashicorp Vault via api or gui with kvPath string path
+         */
+        'configVault' => [
+            'class' => lav45\settings\Settings::class,
+            'serializer' => false,
+            'storage' => [
+                'class' => lav45\settings\storage\VaultStorage::class,
+                'client' => [
+                    'class' => lav45\settings\storage\vault\Client::class,
+                    'url' => 'url',
+                    'token' => 'token',
+                    'kvPath' => 'kv',
+                ],
             ],
         ],
     ]
