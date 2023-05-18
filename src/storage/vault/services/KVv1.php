@@ -29,7 +29,7 @@ class KVv1
      */
     public function post(string $path, array $data = [])
     {
-        return $this->client->post('/v1' . $path, $data);
+        return $this->client->post($path, $data);
     }
 
     /**
@@ -39,7 +39,7 @@ class KVv1
      */
     public function get(string $path)
     {
-        return $this->client->get('/v1' . $path);
+        return $this->client->get($path);
     }
 
     /**
@@ -49,7 +49,7 @@ class KVv1
      */
     public function delete(string $path)
     {
-        return $this->client->delete('/v1' . $path);
+        return $this->client->delete($path);
     }
 
     /**
@@ -59,6 +59,6 @@ class KVv1
      */
     public function list(string $path)
     {
-        return $this->client->list('/v1' . $path);
+        return $this->client->list($path);
     }
 }

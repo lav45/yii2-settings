@@ -39,7 +39,7 @@ class KVv2
             'delete_version_after' => $delete_version_after
         ];
 
-        return $this->client->post('/v1' . $path . '/config', $data);
+        return $this->client->post($path . '/config', $data);
     }
 
     /**
@@ -51,7 +51,7 @@ class KVv2
      */
     public function getEngineConfiguration(string $path)
     {
-        return $this->client->get('/v1' . $path . '/config');
+        return $this->client->get($path . '/config');
     }
 
     /**
@@ -67,7 +67,7 @@ class KVv2
     {
         $version = $version === 0 ? '' : '?version=' . $version;
 
-        return $this->client->get('/v1' . $path . '/data' . $secret . $version);
+        return $this->client->get($path . '/data' . $secret . $version);
     }
 
     /**
@@ -90,7 +90,7 @@ class KVv2
             $result['options'] = $options;
         }
 
-        return $this->client->post('/v1' . $path . '/data' . $secret, $result);
+        return $this->client->post($path . '/data' . $secret, $result);
     }
 
     /**
@@ -113,7 +113,7 @@ class KVv2
             $result['options'] = $options;
         }
 
-        return $this->client->patch('/v1' . $path . '/data' . $secret, $result);
+        return $this->client->patch($path . '/data' . $secret, $result);
     }
 
     /**
@@ -136,7 +136,7 @@ class KVv2
             $depth = $depth === 0 ? '' : '&depth=' . $depth;
         }
 
-        return $this->client->get('/v1' . $path . '/subkeys' . $secret . $version . $depth);
+        return $this->client->get($path . '/subkeys' . $secret . $version . $depth);
     }
 
     /**
@@ -149,7 +149,7 @@ class KVv2
      */
     public function deleteSecretLatestVersion(string $path, string $secret)
     {
-        return $this->client->delete('/v1' . $path . '/data' . $secret);
+        return $this->client->delete($path . '/data' . $secret);
     }
 
     /**
@@ -166,7 +166,7 @@ class KVv2
             'versions' => $versions,
         ];
 
-        return $this->client->post('/v1' . $path . '/delete' . $secret, $data);
+        return $this->client->post($path . '/delete' . $secret, $data);
     }
 
     /**
@@ -184,7 +184,7 @@ class KVv2
             'versions' => $versions,
         ];
 
-        return $this->client->post('/v1' . $path . '/undelete' . $secret, $data);
+        return $this->client->post($path . '/undelete' . $secret, $data);
     }
 
     /**
@@ -202,7 +202,7 @@ class KVv2
             'versions' => $versions,
         ];
 
-        return $this->client->put('/v1' . $path . '/destroy' . $secret, $data);
+        return $this->client->put($path . '/destroy' . $secret, $data);
     }
 
     /**
@@ -218,7 +218,7 @@ class KVv2
      */
     public function getSecrets(string $path, string $secret)
     {
-        return $this->client->list('/v1' . $path . '/metadata' . $secret);
+        return $this->client->list($path . '/metadata' . $secret);
     }
 
     /**
@@ -231,7 +231,7 @@ class KVv2
      */
     public function getSecretMetadata(string $path, string $secret)
     {
-        return $this->client->get('/v1' . $path . '/metadata' . $secret);
+        return $this->client->get($path . '/metadata' . $secret);
     }
 
     /**
@@ -258,7 +258,7 @@ class KVv2
             $data['custom_metadata'] = $custom_metadata;
         }
 
-        return $this->client->post('/v1' . $path . '/metadata' . $secret, $data);
+        return $this->client->post($path . '/metadata' . $secret, $data);
     }
 
     /**
@@ -298,7 +298,7 @@ class KVv2
             'Content-Type' => 'application/merge-patch+json',
         ];
 
-        return $this->client->patch('/v1' . $path . '/metadata' . $secret, $data, $headers);
+        return $this->client->patch($path . '/metadata' . $secret, $data, $headers);
     }
 
     /**
@@ -311,6 +311,6 @@ class KVv2
      */
     public function deleteSecretMetadata(string $path, string $secret)
     {
-        return $this->client->delete('/v1' . $path . '/metadata' . $secret);
+        return $this->client->delete($path . '/metadata' . $secret);
     }
 }

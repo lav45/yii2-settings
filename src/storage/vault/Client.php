@@ -3,7 +3,9 @@
 namespace lav45\settings\storage\vault;
 
 use Yii;
+use yii\base\BaseObject;
 use yii\web\HttpException;
+use yii\debug\models\search\Base;
 use yii\web\ServerErrorHttpException;
 use yii\base\InvalidArgumentException;
 use yii\web\UnauthorizedHttpException;
@@ -13,7 +15,7 @@ use yii\httpclient\Client as HttpClient;
  * Class Client
  * @package lav45\settings\storage\vault
  */
-class Client
+class Client extends BaseObject
 {
     /** @var string */
     public $url = 'https://127.0.0.1:8200';
@@ -24,10 +26,12 @@ class Client
     /** @var HttpClient */
     private $http;
 
-    public function __construct()
+    public function init()
     {
+        parent::init();
+
         $this->http = new HttpClient([
-            'baseUrl' => $this->url,
+            'baseUrl' => $this->url . '/v1',
             'requestConfig' => [
                 'format' => HttpClient::FORMAT_JSON
             ],
@@ -39,6 +43,7 @@ class Client
 
     /**
      * Example returned data:
+     *
      * Array
      * (
      *      [request_id] => 6d406c62-184d-a7b1-e20a-17483fcd34fc
@@ -55,6 +60,7 @@ class Client
      *      [warnings] =>
      *      [auth] =>
      * )
+     *
      * In data array stored keys of secret
      * @param string $url
      * @param array $data
@@ -193,6 +199,9 @@ class Client
     private function getMessage(string $value)
     {
         $data = json_decode($value);
+        if (empty($data->errors)) {
+            return 'Unknown error.';
+        }
 
         return $data->errors[0];
     }

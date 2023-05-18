@@ -123,12 +123,13 @@ return [
          * for use need to activate kv (key value) engine in Hashicorp Vault via api or gui with kvPath string path
          */
         'configVault' => [
-            'class' => lav45\settings\Settings::class,
+            'class' => \lav45\settings\Settings::class,
             'serializer' => false,
+            'buildKey' => false,
             'storage' => [
-                'class' => lav45\settings\storage\VaultStorage::class,
+                'class' => \lav45\settings\storage\VaultStorage::class,
                 'client' => [
-                    'class' => lav45\settings\storage\vault\Client::class,
+                    'class' => \lav45\settings\storage\vault\Client::class,
                     'url' => 'url',
                     'token' => 'token',
                     'kvPath' => 'kv',

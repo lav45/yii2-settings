@@ -36,10 +36,6 @@ class VaultStorage extends BaseObject implements StorageInterface
     {
         parent::init();
 
-        if (empty($this->token)) {
-            throw new InvalidConfigException('Invalid configuration. Token is required!', 400);
-        }
-
         $this->client = Instance::ensure($this->client, Client::class);
     }
 
@@ -87,7 +83,7 @@ class VaultStorage extends BaseObject implements StorageInterface
     {
         [$key, $secret] = $this->getKeySecret($key);
 
-        return $this->getData()->get($secret)['data'][$key];
+        return $this->getData()->get($secret)['data'][$key] ?? false;
     }
 
     /**
