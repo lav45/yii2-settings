@@ -28,6 +28,7 @@
         "yiisoft/yii2": ">=2.0.13"
     },
     "require-dev": {
+        "ext-sqlite3": "*",
         "roave/security-advisories": "dev-master",
         "phpunit/phpunit": "4.8 - 7.5"
     },
@@ -40,6 +41,11 @@
     "extra": {
         "branch-alias": {
             "dev-master": "1.3.x-dev"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
         }
     }
 }
