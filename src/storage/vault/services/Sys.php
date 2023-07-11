@@ -2,13 +2,18 @@
 
 namespace lav45\settings\storage\vault\services;
 
+use yii\di\Instance;
+use yii\base\BaseObject;
 use lav45\settings\storage\vault\Client;
 
 /**
  * Class Sys
  * @package lav45\settings\storage\vault\services
+ *//**
+ * Class Sys (API) - System settings
+ * @package lav45\settings\storage\vault\services
  */
-class Sys
+class Sys extends BaseObject
 {
     public const METRIC_FORMAT_PROMETHEUS = 'prometheus';
     public const METRIC_FORMAT_JSON = 'json';
@@ -16,16 +21,19 @@ class Sys
     public const LOG_LEVEL_DEBUG = 'debug';
     public const LOG_FORMAT_STANDARD = 'standard';
     public const LOG_FORMAT_JSON = 'json';
-
     /** @var Client */
-    private $client;
-
+    public $client = 'vaultClient';
     /**
      * Create a new Sys service with an optional Client
      */
-    public function __construct(Client $client)
+    /**
+     * Initializes the application component.
+     */
+    public function init()
     {
-        $this->client = $client;
+        parent::init();
+
+        $this->client = Instance::ensure($this->client, Client::class);
     }
 
     /**

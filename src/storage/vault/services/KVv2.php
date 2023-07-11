@@ -2,28 +2,33 @@
 
 namespace lav45\settings\storage\vault\services;
 
+use yii\di\Instance;
+use yii\base\BaseObject;
 use lav45\settings\storage\vault\Client;
 
 /**
  * Class KVv2 - KV (Key Value) Secrets Engine - Version 2 (API)
  * @package lav45\settings\storage\vault\services
  */
-class KVv2
+class KVv2 extends BaseObject implements KVInterface
 {
-    /** @var Client */
-    private $client;
+    /** @var string */
+    public string $path = '/kv';
+    /** @var string|array|Client */
+    public $client = 'vaultClient';
 
     /**
-     * Create a new Data service with an optional Client
+     * Initializes the application component.
      */
-    public function __construct(Client $client)
+    public function init()
     {
-        $this->client = $client;
+        parent::init();
+
+        $this->client = Instance::ensure($this->client, Client::class);
     }
 
     /**
      * This path configures backend level settings that are applied to every key in the key-value store.
-     * @param string $path
      * @param int $max_versions
      * @param bool $cas_required
      * @param string $delete_version_after
@@ -31,178 +36,90 @@ class KVv2
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#configure-the-kv-engine
      * @throws \yii\base\InvalidConfigException
      */
-    public function configureEngine(string $path, int $max_versions = 0, bool $cas_required = false, string $delete_version_after = '0s')
+    public function configureEngine(int $max_versions = 0, bool $cas_required = false, string $delete_version_after = '0s')
     {
+        $url = '/v1' . $this->path . '/config';
+
         $data = [
             'max_versions' => $max_versions,
             'cas_required' => $cas_required,
             'delete_version_after' => $delete_version_after
         ];
 
-        return $this->client->post($path . '/config', $data);
+        return $this->client->post($url, $data);
     }
 
     /**
      * This path retrieves the current configuration for the secrets backend at the given path.
-     * @param string $path
      * @return false|mixed
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#read-kv-engine-configuration
      * @throws \yii\base\InvalidConfigException
      */
-    public function getEngineConfiguration(string $path)
+    public function getEngineConfiguration()
     {
-        return $this->client->get($path . '/config');
+        $url = '/v1' . $this->path . '/config';
+
+        return $this->client->get($url);
     }
 
     /**
      * This endpoint retrieves the secret at the specified location.
-     * @param string $path
      * @param string $secret
      * @param int $version
      * @return false|mixed
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#read-secret-version
      * @throws \yii\base\InvalidConfigException
      */
-    public function getSecretVersion(string $path, string $secret, int $version = 0)
+    public function getSecretVersion(string $secret, int $version = 0)
     {
+        $url = '/v1' . $this->path . '/data';
+
         $version = $version === 0 ? '' : '?version=' . $version;
 
-        return $this->client->get($path . '/data' . $secret . $version);
+        return $this->client->get($url . $secret . $version);
     }
 
     /**
      * This endpoint creates a new version of a secret at the specified location.
      * @param string $path
-     * @param string $secret
      * @param array $data
-     * @param array $options
-     * @return false|mixed
+     * @return mixed
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#create-update-secret
      * @throws \yii\base\InvalidConfigException
      */
-    public function setSecret(string $path, string $secret, array $data, array $options = [])
+    public function post(string $path, array $data = [])
     {
-        $result = [
-            'data' => $data,
-        ];
+        $url = '/v1' . $this->path . '/data' . $path;
 
-        if (empty($options) === false) {
-            $result['options'] = $options;
-        }
-
-        return $this->client->post($path . '/data' . $secret, $result);
+        return $this->client->post($url, $data);
     }
 
     /**
-     * This endpoint provides the ability to patch an existing secret at the specified location.
+     * This endpoint retrieves the secret at the specified location.
      * @param string $path
-     * @param string $secret
-     * @param array $data
-     * @param array $options
-     * @return false|mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#patch-secret
+     * @return mixed
+     * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#read-secret-version
      * @throws \yii\base\InvalidConfigException
      */
-    public function patchSecret(string $path, string $secret, array $data, array $options = [])
+    public function get(string $path)
     {
-        $result = [
-            'data' => $data,
-        ];
+        $url = '/v1' . $this->path . '/data' . $path;
 
-        if (empty($options) === false) {
-            $result['options'] = $options;
-        }
-
-        return $this->client->patch($path . '/data' . $secret, $result);
-    }
-
-    /**
-     * This endpoint provides the subkeys within a secret entry that exists at the requested path.
-     * @param string $path
-     * @param string $secret
-     * @param int $version
-     * @param int $depth
-     * @return false|mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#read-secret-subkeys
-     * @throws \yii\base\InvalidConfigException
-     */
-    public function getSecretSubkeys(string $path, string $secret, int $version = 0, int $depth = 0)
-    {
-        if ($version === 0) {
-            $version = '';
-            $depth = $depth === 0 ? '' : '?depth=' . $depth;
-        } else {
-            $version = '?version=' . $version;
-            $depth = $depth === 0 ? '' : '&depth=' . $depth;
-        }
-
-        return $this->client->get($path . '/subkeys' . $secret . $version . $depth);
+        return $this->client->get($url);
     }
 
     /**
      * This endpoint issues a soft delete of the secret's latest version at the specified location.
      * @param string $path
-     * @param string $secret
-     * @return false|mixed
+     * @return mixed
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#delete-latest-version-of-secret
      * @throws \yii\base\InvalidConfigException
      */
-    public function deleteSecretLatestVersion(string $path, string $secret)
+    public function delete(string $path)
     {
-        return $this->client->delete($path . '/data' . $secret);
-    }
+        $url = '/v1' . $this->path . '/data' . $path;
 
-    /**
-     * This endpoint issues a soft delete of the specified versions of the secret.
-     * @param string $path
-     * @param string $secret
-     * @return false|mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#delete-secret-versions
-     * @throws \yii\base\InvalidConfigException
-     */
-    public function deleteSecretVersions(string $path, string $secret, array $versions)
-    {
-        $data = [
-            'versions' => $versions,
-        ];
-
-        return $this->client->post($path . '/delete' . $secret, $data);
-    }
-
-    /**
-     * Undeletes the data for the provided version and path in the key-value store. This restores the data, allowing it to be returned on get requests.
-     * @param string $path
-     * @param string $secret
-     * @param array $versions
-     * @return false|mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#undelete-secret-versions
-     * @throws \yii\base\InvalidConfigException
-     */
-    public function restoreSecretVersions(string $path, string $secret, array $versions)
-    {
-        $data = [
-            'versions' => $versions,
-        ];
-
-        return $this->client->post($path . '/undelete' . $secret, $data);
-    }
-
-    /**
-     * Permanently removes the specified version data for the provided key and version numbers from the key-value store.
-     * @param string $path
-     * @param string $secret
-     * @param array $versions
-     * @return false|mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#destroy-secret-versions
-     * @throws \yii\base\InvalidConfigException
-     */
-    public function destroySecretVersions(string $path, string $secret, array $versions)
-    {
-        $data = [
-            'versions' => $versions,
-        ];
-
-        return $this->client->put($path . '/destroy' . $secret, $data);
+        return $this->client->delete($url);
     }
 
     /**
@@ -211,32 +128,137 @@ class KVv2
      * Note that no policy-based filtering is performed on keys; do not encode sensitive information in key names.
      * The values themselves are not accessible via this command.
      * @param string $path
-     * @param string $secret
-     * @return false|mixed
+     * @return mixed
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#list-secrets
      * @throws \yii\base\InvalidConfigException
      */
-    public function getSecrets(string $path, string $secret)
+    public function list(string $path)
     {
-        return $this->client->list($path . '/metadata' . $secret);
+        $url = '/v1' . $this->path . '/metadata' . $path;
+
+        return $this->client->list($url);
+    }
+
+    /**
+     * This endpoint provides the ability to patch an existing secret at the specified location.
+     * @param string $secret
+     * @param array $data
+     * @param array $options
+     * @return false|mixed
+     * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#patch-secret
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function patchSecret(string $secret, array $data, array $options = [])
+    {
+        $url = '/v1' . $this->path . '/data';
+
+        $result = [
+            'data' => $data,
+        ];
+
+        if (empty($options) === false) {
+            $result['options'] = $options;
+        }
+
+        return $this->client->patch($url . $secret, $result);
+    }
+
+    /**
+     * This endpoint provides the subkeys within a secret entry that exists at the requested path.
+     * @param string $secret
+     * @param int $version
+     * @param int $depth
+     * @return false|mixed
+     * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#read-secret-subkeys
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function getSecretSubkeys(string $secret, int $version = 0, int $depth = 0)
+    {
+        $url = '/v1' . $this->path . '/subkeys';
+
+        if ($version === 0) {
+            $version = '';
+            $depth = $depth === 0 ? '' : '?depth=' . $depth;
+        } else {
+            $version = '?version=' . $version;
+            $depth = $depth === 0 ? '' : '&depth=' . $depth;
+        }
+
+        return $this->client->get($url . $secret . $version . $depth);
+    }
+
+    /**
+     * This endpoint issues a soft delete of the specified versions of the secret.
+     * @param string $secret
+     * @param array $versions
+     * @return false|mixed
+     * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#delete-secret-versions
+     */
+    public function deleteSecretVersions(string $secret, array $versions)
+    {
+        $url = '/v1' . $this->path . '/delete';
+
+        $data = [
+            'versions' => $versions,
+        ];
+
+        return $this->client->post($url . $secret, $data);
+    }
+
+    /**
+     * Undeletes the data for the provided version and path in the key-value store. This restores the data, allowing it to be returned on get requests.
+     * @param string $secret
+     * @param array $versions
+     * @return false|mixed
+     * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#undelete-secret-versions
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function restoreSecretVersions(string $secret, array $versions)
+    {
+        $url = '/v1' . $this->path . '/undelete';
+
+        $data = [
+            'versions' => $versions,
+        ];
+
+        return $this->client->post($url . $secret, $data);
+    }
+
+    /**
+     * Permanently removes the specified version data for the provided key and version numbers from the key-value store.
+     * @param string $secret
+     * @param array $versions
+     * @return false|mixed
+     * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#destroy-secret-versions
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function destroySecretVersions(string $secret, array $versions)
+    {
+        $url = '/v1' . $this->path . '/destroy';
+
+        $data = [
+            'versions' => $versions,
+        ];
+
+        return $this->client->put($url . $secret, $data);
     }
 
     /**
      * This endpoint retrieves the metadata and versions for the secret at the specified path. Metadata is version-agnostic.
-     * @param string $path
      * @param string $secret
      * @return false|mixed
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#read-secret-metadata
      * @throws \yii\base\InvalidConfigException
      */
-    public function getSecretMetadata(string $path, string $secret)
+    public function getSecretMetadata(string $secret)
     {
-        return $this->client->get($path . '/metadata' . $secret);
+        $url = '/v1' . $this->path . '/metadata';
+
+        return $this->client->get($url . $secret);
     }
 
     /**
      * This endpoint creates or updates the metadata of a secret at the specified location. It does not create a new version.
-     * @param string $path
      * @param string $secret
      * @param int $max_versions
      * @param bool $cas_required
@@ -246,8 +268,10 @@ class KVv2
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#create-update-metadata
      * @throws \yii\base\InvalidConfigException
      */
-    public function setSecretMetadata(string $path, string $secret, int $max_versions = 0, bool $cas_required = false, string $delete_version_after = '0s', array $custom_metadata = [])
+    public function setSecretMetadata(string $secret, int $max_versions = 0, bool $cas_required = false, string $delete_version_after = '0s', array $custom_metadata = [])
     {
+        $url = '/v1' . $this->path . '/metadata';
+
         $data = [
             'max_versions' => $max_versions,
             'cas_required' => $cas_required,
@@ -258,7 +282,7 @@ class KVv2
             $data['custom_metadata'] = $custom_metadata;
         }
 
-        return $this->client->post($path . '/metadata' . $secret, $data);
+        return $this->client->post($url . $secret, $data);
     }
 
     /**
@@ -266,7 +290,6 @@ class KVv2
      * The calling token must have an ACL policy granting the patch capability.
      * Currently, only JSON merge patch is supported and must be specified using a Content-Type header value of application/merge-patch+json.
      * It does not create a new version.
-     * @param string $path
      * @param string $secret
      * @param int $max_versions
      * @param bool $cas_required
@@ -276,8 +299,11 @@ class KVv2
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#patch-metadata
      * @throws \yii\base\InvalidConfigException
      */
-    public function patchSecretMetadata(string $path, string $secret, int $max_versions = 0, bool $cas_required = false, string $delete_version_after = '0s', array $custom_metadata = [])
+    public function patchSecretMetadata(string $secret, int $max_versions = 0, bool $cas_required = false, string $delete_version_after = '0s', array $custom_metadata = [])
     {
+        $url = '/v1' . $this->path . '/metadata';
+
+        $data = [];
         if ($max_versions !== 0) {
             $data['max_versions'] = $max_versions;
         }
@@ -298,19 +324,20 @@ class KVv2
             'Content-Type' => 'application/merge-patch+json',
         ];
 
-        return $this->client->patch($path . '/metadata' . $secret, $data, $headers);
+        return $this->client->patch($url . $secret, $data, $headers);
     }
 
     /**
      * This endpoint permanently deletes the key metadata and all version data for the specified key. All version history will be removed.
-     * @param string $path
      * @param string $secret
      * @return false|mixed
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#delete-metadata-and-all-versions
      * @throws \yii\base\InvalidConfigException
      */
-    public function deleteSecretMetadata(string $path, string $secret)
+    public function deleteSecretMetadata(string $secret)
     {
-        return $this->client->delete($path . '/metadata' . $secret);
+        $url = '/v1' . $this->path . '/metadata';
+
+        return $this->client->delete($url . $secret);
     }
 }

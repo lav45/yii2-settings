@@ -3,6 +3,7 @@
 namespace lav45\settings\storage\vault;
 
 use Yii;
+use Exception;
 use yii\base\BaseObject;
 use yii\web\HttpException;
 use yii\debug\models\search\Base;
@@ -21,8 +22,6 @@ class Client extends BaseObject
     public $url = 'https://127.0.0.1:8200';
     /** @var string */
     public $token;
-    /** @var string */
-    public $kvPath = '/kv';
     /** @var HttpClient */
     private $http;
 
@@ -31,7 +30,7 @@ class Client extends BaseObject
         parent::init();
 
         $this->http = new HttpClient([
-            'baseUrl' => $this->url . '/v1',
+            'baseUrl' => $this->url,
             'requestConfig' => [
                 'format' => HttpClient::FORMAT_JSON
             ],
@@ -69,8 +68,6 @@ class Client extends BaseObject
      */
     public function get(string $url, array $data = [])
     {
-        $url = $this->kvPath . $url;
-
         return $this->request('GET', $url, $data);
     }
 
@@ -83,8 +80,6 @@ class Client extends BaseObject
      */
     public function post(string $url, array $data = [], array $headers = [])
     {
-        $url = $this->kvPath . $url;
-
         return $this->request('POST', $url, $data, $headers);
     }
 
@@ -96,8 +91,6 @@ class Client extends BaseObject
      */
     public function put(string $url, array $data = [])
     {
-        $url = $this->kvPath . $url;
-
         return $this->request('PUT', $url, $data);
     }
 
@@ -110,8 +103,6 @@ class Client extends BaseObject
      */
     public function patch(string $url, array $data = [], array $headers = [])
     {
-        $url = $this->kvPath . $url;
-
         return $this->request('PATCH', $url, $data, $headers);
     }
 
@@ -122,8 +113,6 @@ class Client extends BaseObject
      */
     public function delete(string $url)
     {
-        $url = $this->kvPath . $url;
-
         return $this->request('DELETE', $url);
     }
 
@@ -135,8 +124,6 @@ class Client extends BaseObject
      */
     public function list(string $url, array $headers = [])
     {
-        $url = $this->kvPath . $url;
-
         return $this->request('LIST', $url, [], $headers);
     }
 
@@ -174,7 +161,7 @@ class Client extends BaseObject
 
         try {
             $response = $request->send();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Yii::error(get_class($e) . '[' . $e->getCode() . '] ' . $e->getMessage());
             return false;
         }

@@ -122,21 +122,29 @@ return [
          * VaultStorage this is an adapter to store data in Hashicorp Vault
          * for use need to activate kv (key value) engine in Hashicorp Vault via api or gui with kvPath string path
          */
+        'vaultClient' => [
+            'class' => \lav45\settings\storage\vault\Client::class,
+            'url' => 'url',
+            'token' => 'token',
+        ]
         'configVault' => [
             'class' => \lav45\settings\Settings::class,
             'serializer' => false,
             'buildKey' => false,
             'storage' => [
                 'class' => \lav45\settings\storage\VaultStorage::class,
-                'client' => [
-                    'class' => \lav45\settings\storage\vault\Client::class,
-                    'url' => 'url',
-                    'token' => 'token',
-                    'kvPath' => 'kv',
+                'kv' => [
+                    'class' => \lav45\settings\storage\vault\services\KVv1::class,
+                    'path' => '/kv',
+                    'client' => 'vaultClient',
                 ],
+//                'sys' => [
+//                    'class' => \lav45\settings\storage\vault\services\Sys::class,
+//                    'client' => 'vaultClient',
+//                ],
             ],
         ],
-    ]
+    ],
 ];
 ```
 

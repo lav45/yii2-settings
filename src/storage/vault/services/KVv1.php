@@ -2,23 +2,29 @@
 
 namespace lav45\settings\storage\vault\services;
 
+use yii\di\Instance;
+use yii\base\BaseObject;
 use lav45\settings\storage\vault\Client;
 
 /**
  * Class KVv1 - KV (Key Value) Secrets Engine - Version 1 (API)
  * @package lav45\settings\storage\vault\services
  */
-class KVv1
+class KVv1 extends BaseObject implements KVInterface
 {
-    /** @var Client */
-    private $client;
+    /** @var string */
+    public string $path = '/kv';
+    /** @var string|array|Client */
+    public $client = 'vaultClient';
 
     /**
-     * Create a new Data service with an optional Client
+     * Initializes the application component.
      */
-    public function __construct(Client $client)
+    public function init()
     {
-        $this->client = $client;
+        parent::init();
+
+        $this->client = Instance::ensure($this->client, Client::class);
     }
 
     /**
@@ -29,7 +35,9 @@ class KVv1
      */
     public function post(string $path, array $data = [])
     {
-        return $this->client->post($path, $data);
+        $url = '/v1' . $this->path . $path;
+
+        return $this->client->post($url, $data);
     }
 
     /**
@@ -39,7 +47,9 @@ class KVv1
      */
     public function get(string $path)
     {
-        return $this->client->get($path);
+        $url = '/v1' . $this->path . $path;
+
+        return $this->client->get($url);
     }
 
     /**
@@ -49,7 +59,9 @@ class KVv1
      */
     public function delete(string $path)
     {
-        return $this->client->delete($path);
+        $url = '/v1' . $this->path . $path;
+
+        return $this->client->delete($url);
     }
 
     /**
@@ -59,6 +71,8 @@ class KVv1
      */
     public function list(string $path)
     {
-        return $this->client->list($path);
+        $url = '/v1' . $this->path . $path;
+
+        return $this->client->list($url);
     }
 }

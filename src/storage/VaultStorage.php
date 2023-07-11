@@ -2,15 +2,14 @@
 
 namespace lav45\settings\storage;
 
-use lav45\settings\storage\vault\auth\Token;
-use lav45\settings\storage\vault\auth\UsernamePassword;
-use lav45\settings\storage\vault\services\Data;
-use lav45\settings\storage\vault\services\KVv1;
-use lav45\settings\storage\vault\services\Sys;
-use yii\base\BaseObject;
 use yii\di\Instance;
-use lav45\settings\storage\vault\Client;
+use yii\base\BaseObject;
 use yii\base\InvalidConfigException;
+use lav45\settings\storage\vault\Client;
+use lav45\settings\storage\vault\services\Sys;
+use lav45\settings\storage\vault\services\KVv1;
+use lav45\settings\storage\vault\services\KVv2;
+use lav45\settings\storage\vault\services\KVInterface;
 
 /**
  * Class VaultStorage
@@ -20,14 +19,10 @@ class VaultStorage extends BaseObject implements StorageInterface
 {
     /** @var string|array|Client */
     public $client = 'client';
-    /** @var Sys */
-    private $sys;
-    /** @var KVv1|KVv2 */
-    private $data;
-    /** @var Token */
-    private $authToken;
-    /** @var UsernamePassword */
-    private $authUsernamePassword;
+    /** @var string|array|Sys */
+    public $sys = 'sys';
+    /** @var string|array|KVv1|KVv2 */
+    public $kv = 'kv';
 
     /**
      * Initializes the application component.
@@ -37,42 +32,7 @@ class VaultStorage extends BaseObject implements StorageInterface
         parent::init();
 
         $this->client = Instance::ensure($this->client, Client::class);
-    }
-
-    /**
-     * @return Sys
-     */
-    public function getSys()
-    {
-        return $this->sys ??= new Sys($this->client);
-    }
-
-    /**
-     * @return KVv1|KVv2
-     */
-    public function getData($version = 'v1')
-    {
-        if ($this->data !== null) {
-            return $this->data;
-        }
-
-        return $this->data = $version === 'v1' ? new KVv1($this->client) : new KVv2($this->client);
-    }
-
-    /**
-     * @return Token
-     */
-    public function getAuthToken()
-    {
-        return $this->authToken ??= new Token($this->client);
-    }
-
-    /**
-     * @return UsernamePassword
-     */
-    public function getAuthUsernamePassword()
-    {
-        return $this->authUsernamePassword ??= new UsernamePassword($this->client);
+        $this->kv = Instance::ensure($this->kv, KVInterface::class);
     }
 
     /**
@@ -83,7 +43,7 @@ class VaultStorage extends BaseObject implements StorageInterface
     {
         [$key, $secret] = $this->getKeySecret($key);
 
-        return $this->getData()->get($secret)['data'][$key] ?? false;
+        return $this->kv->get($secret)['data'][$key] ?? false;
     }
 
     /**
@@ -92,7 +52,7 @@ class VaultStorage extends BaseObject implements StorageInterface
      */
     public function getValues($key)
     {
-        return $this->getData()->list($key);
+        return $this->kv->list($key);
     }
 
     /**
@@ -106,7 +66,7 @@ class VaultStorage extends BaseObject implements StorageInterface
 
         $data = [$key => $value];
 
-        return $this->getData()->post($secret, $data);
+        return $this->kv->post($secret, $data);
     }
 
     /**
@@ -117,7 +77,7 @@ class VaultStorage extends BaseObject implements StorageInterface
     {
         [$key, $secret] = $this->getKeySecret($key);
 
-        return $this->getData()->delete($secret);
+        return $this->kv->delete($secret);
     }
 
     /**
