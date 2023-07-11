@@ -21,11 +21,10 @@ class Sys extends BaseObject
     const LOG_LEVEL_DEBUG = 'debug';
     const LOG_FORMAT_STANDARD = 'standard';
     const LOG_FORMAT_JSON = 'json';
-    /** @var Client */
+
+    /** @var string|array|Client */
     public $client = 'vaultClient';
-    /**
-     * Create a new Sys service with an optional Client
-     */
+
     /**
      * Initializes the application component.
      */

@@ -2,26 +2,27 @@
 
 namespace lav45\settings\storage\vault\auth;
 
+use yii\di\Instance;
+use yii\base\BaseObject;
 use lav45\settings\storage\vault\Client;
 
 /**
  * Class Token
  * @package lav45\settings\storage\vault\auth
  */
-class Token
+class Token extends BaseObject
 {
-    public const URL_CREATE_TOKEN = '/create';
-    public const URL_CREATE_ORPHAN_TOKEN = '/create-orphan';
-
-    /** @var Client */
-    private $client;
+    /** @var string|array|Client */
+    public $client = 'vaultClient';
 
     /**
-     * Create a new Token service with an optional Client
+     * Initializes the application component.
      */
-    public function __construct(Client $client)
+    public function init()
     {
-        $this->client = $client;
+        parent::init();
+
+        $this->client = Instance::ensure($this->client, Client::class);
     }
 
     /**
@@ -40,16 +41,30 @@ class Token
      * Creates a new token. Certain options are only available when called by a root token.
      * If used via the /auth/token/create-orphan endpoint, a root token is not required to create an orphan token (otherwise set with the no_parent option).
      * If used with a role name in the path, the token will be created against the specified role name; this may override options set during this call.
-     * @param string $url, value = URL_CREATE_TOKEN|URL_CREATE_ORPHAN_TOKEN
-     * @param string $roleName
      * @param array $data
+     * @param string $roleName
      * @return mixed
      * @see https://developer.hashicorp.com/vault/api-docs/auth/token#create-token
      * @throws \yii\base\InvalidConfigException
      */
-    public function createToken(string $url = self::URL_CREATE_TOKEN, string $roleName = '', array $data)
+    public function createToken(array $data, string $roleName = '')
     {
-        return $this->client->post('/v1/auth/token' . $url . $roleName, $data);
+        return $this->client->post('/v1/auth/token/create' . $roleName, $data);
+    }
+
+    /**
+     * Creates a new token. Certain options are only available when called by a root token.
+     * If used via the /auth/token/create-orphan endpoint, a root token is not required to create an orphan token (otherwise set with the no_parent option).
+     * If used with a role name in the path, the token will be created against the specified role name; this may override options set during this call.
+     * @param array $data
+     * @param string $roleName
+     * @return mixed
+     * @see https://developer.hashicorp.com/vault/api-docs/auth/token#create-token
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function createOrphanToken(array $data, string $roleName = '')
+    {
+        return $this->client->post('/v1/auth/token/create-orphan' . $roleName, $data);
     }
 
     /**

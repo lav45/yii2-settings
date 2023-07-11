@@ -25,7 +25,8 @@
     ],
     "require": {
         "php": ">=7.0",
-        "yiisoft/yii2": ">=2.0.13"
+        "yiisoft/yii2": ">=2.0.13",
+        "ext-json": "*"
     },
     "require-dev": {
         "ext-sqlite3": "*",

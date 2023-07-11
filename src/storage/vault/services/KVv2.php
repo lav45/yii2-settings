@@ -142,25 +142,16 @@ class KVv2 extends BaseObject implements KVInterface
     /**
      * This endpoint provides the ability to patch an existing secret at the specified location.
      * @param string $secret
-     * @param array $data
-     * @param array $options
+     * @param array $data example: ['data' => ['key' => 'value', ...], 'options' => ['key' => 'value', ...]]
      * @return false|mixed
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#patch-secret
      * @throws \yii\base\InvalidConfigException
      */
-    public function patchSecret(string $secret, array $data, array $options = [])
+    public function patchSecret(string $secret, array $data)
     {
         $url = '/v1' . $this->path . '/data';
 
-        $result = [
-            'data' => $data,
-        ];
-
-        if (empty($options) === false) {
-            $result['options'] = $options;
-        }
-
-        return $this->client->patch($url . $secret, $result);
+        return $this->client->patch($url . $secret, $data);
     }
 
     /**

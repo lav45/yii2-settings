@@ -2,6 +2,8 @@
 
 namespace lav45\settings\storage\vault\auth;
 
+use yii\di\Instance;
+use yii\base\BaseObject;
 use lav45\settings\storage\vault\Client;
 
 /**
@@ -10,15 +12,17 @@ use lav45\settings\storage\vault\Client;
  */
 class UsernamePassword
 {
-    /** @var Client */
-    private $client;
+    /** @var string|array|Client */
+    public $client = 'vaultClient';
 
     /**
-     * Create a new Sys service with an optional Client
+     * Initializes the application component.
      */
-    public function __construct(Client $client)
+    public function init()
     {
-        $this->client = $client;
+        parent::init();
+
+        $this->client = Instance::ensure($this->client, Client::class);
     }
 
     /**
@@ -84,7 +88,7 @@ class UsernamePassword
      * @see https://developer.hashicorp.com/vault/api-docs/auth/userpass#update-policies-on-user
      * @throws \yii\base\InvalidConfigException
      */
-    public function updateUserPolicies(string $username, array|string $policies)
+    public function updateUserPolicies(string $username, $policies)
     {
         $data = [
             'token_policies' => $policies,

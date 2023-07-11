@@ -5,8 +5,6 @@ namespace lav45\settings\storage;
 use yii\di\Instance;
 use yii\base\BaseObject;
 use yii\base\InvalidConfigException;
-use lav45\settings\storage\vault\services\KVv1;
-use lav45\settings\storage\vault\services\KVv2;
 use lav45\settings\storage\vault\services\KVInterface;
 
 /**
@@ -15,7 +13,7 @@ use lav45\settings\storage\vault\services\KVInterface;
  */
 class VaultStorage extends BaseObject implements StorageInterface
 {
-    /** @var string|array|KVv1|KVv2 */
+    /** @var string|array|KVInterface */
     public $kv = 'kv';
 
     /**

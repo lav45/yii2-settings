@@ -131,6 +131,14 @@ return [
 //            'class' => \lav45\settings\storage\vault\services\Sys::class,
 //            'client' => 'vaultClient',
 //        ],
+//        'vaultAuthToken' => [
+//            'class' => \lav45\settings\storage\vault\auth\Token::class,
+//            'client' => 'vaultClient',
+//        ],
+//        'vaultAuthUsernamePassword' => [
+//            'class' => \lav45\settings\storage\vault\auth\UsernamePassword::class,
+//            'client' => 'vaultClient',
+//        ],
         'configVault' => [
             'class' => \lav45\settings\Settings::class,
             'serializer' => false,

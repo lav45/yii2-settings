@@ -3,14 +3,9 @@
 namespace lav45\settings\storage\vault;
 
 use Yii;
-use Exception;
 use yii\base\BaseObject;
-use yii\web\HttpException;
-use yii\debug\models\search\Base;
-use yii\web\ServerErrorHttpException;
-use yii\base\InvalidArgumentException;
-use yii\web\UnauthorizedHttpException;
 use yii\httpclient\Client as HttpClient;
+use lav45\settings\storage\vault\dto\ErrorDTO;
 
 /**
  * Class Client
@@ -135,7 +130,7 @@ class Client extends BaseObject
      * @return mixed
      * @throws \yii\base\InvalidConfigException
      */
-    private function request(string $method, string|array $url, array $data = [], array $headers = [])
+    private function request(string $method, $url, array $data = [], array $headers = [])
     {
         $request = $this->http->createRequest()
             ->setMethod($method)
@@ -161,19 +156,18 @@ class Client extends BaseObject
 
         try {
             $response = $request->send();
-        } catch (Exception $e) {
-            Yii::error(get_class($e) . '[' . $e->getCode() . '] ' . $e->getMessage());
-            return false;
+        } catch (\Throwable $exception) {
+            $dto = $this->createError($exception, $exception->getCode(), $exception->getMessage(), $url);
+            Yii::info($dto->toArray(), __METHOD__);
+            return $dto;
         }
 
-        if (400 <= $response->getStatusCode()) {
+        if (400 <= $response->getStatusCode() || 500 <= $response->getStatusCode()) {
             $message = sprintf('Something went wrong when calling Hashicorp Vault (%s - %s).', $response->getStatusCode(), $this->getMessage($response->getContent()));
 
-            if (500 <= $response->getStatusCode()) {
-                throw new ServerErrorHttpException($message, $response->getStatusCode());
-            }
-
-            throw new HttpException($message, $response->getStatusCode());
+            $dto = $this->createError($response, $response->getCode(), $message, $request->getFullUrl());
+            Yii::info($dto->toArray(), __METHOD__);
+            return $dto;
         }
 
         return $response->getData();
@@ -191,5 +185,27 @@ class Client extends BaseObject
         }
 
         return $data->errors[0];
+    }
+
+    /**
+     * @param object $object
+     * @param string $code
+     * @param array|string $message
+     * @param array|string $url
+     * @return ErrorDTO
+     */
+    private function createError($object, string $code, $message, $url)
+    {
+        $dto = new ErrorDTO();
+        $dto->type = get_class($object);
+        $dto->code = $code;
+        $dto->message = $message;
+        $dto->request_url = $url;
+
+        if ($object instanceof \Throwable) {
+            $dto->trace = $object->getTrace();
+        }
+
+        return $dto;
     }
 }
