@@ -126,7 +126,11 @@ return [
             'class' => \lav45\settings\storage\vault\Client::class,
             'url' => 'url',
             'token' => 'token',
-        ]
+        ],
+//        'vaultSys' => [
+//            'class' => \lav45\settings\storage\vault\services\Sys::class,
+//            'client' => 'vaultClient',
+//        ],
         'configVault' => [
             'class' => \lav45\settings\Settings::class,
             'serializer' => false,
@@ -138,10 +142,6 @@ return [
                     'path' => '/kv',
                     'client' => 'vaultClient',
                 ],
-//                'sys' => [
-//                    'class' => \lav45\settings\storage\vault\services\Sys::class,
-//                    'client' => 'vaultClient',
-//                ],
             ],
         ],
     ],

@@ -15,12 +15,12 @@ use lav45\settings\storage\vault\Client;
  */
 class Sys extends BaseObject
 {
-    public const METRIC_FORMAT_PROMETHEUS = 'prometheus';
-    public const METRIC_FORMAT_JSON = 'json';
-    public const LOG_LEVEL_INFO = 'info';
-    public const LOG_LEVEL_DEBUG = 'debug';
-    public const LOG_FORMAT_STANDARD = 'standard';
-    public const LOG_FORMAT_JSON = 'json';
+    const METRIC_FORMAT_PROMETHEUS = 'prometheus';
+    const METRIC_FORMAT_JSON = 'json';
+    const LOG_LEVEL_INFO = 'info';
+    const LOG_LEVEL_DEBUG = 'debug';
+    const LOG_FORMAT_STANDARD = 'standard';
+    const LOG_FORMAT_JSON = 'json';
     /** @var Client */
     public $client = 'vaultClient';
     /**

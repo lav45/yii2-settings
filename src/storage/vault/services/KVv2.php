@@ -13,7 +13,7 @@ use lav45\settings\storage\vault\Client;
 class KVv2 extends BaseObject implements KVInterface
 {
     /** @var string */
-    public string $path = '/kv';
+    public $path = '/kv';
     /** @var string|array|Client */
     public $client = 'vaultClient';
 

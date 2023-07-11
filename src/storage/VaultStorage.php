@@ -5,8 +5,6 @@ namespace lav45\settings\storage;
 use yii\di\Instance;
 use yii\base\BaseObject;
 use yii\base\InvalidConfigException;
-use lav45\settings\storage\vault\Client;
-use lav45\settings\storage\vault\services\Sys;
 use lav45\settings\storage\vault\services\KVv1;
 use lav45\settings\storage\vault\services\KVv2;
 use lav45\settings\storage\vault\services\KVInterface;
@@ -17,10 +15,6 @@ use lav45\settings\storage\vault\services\KVInterface;
  */
 class VaultStorage extends BaseObject implements StorageInterface
 {
-    /** @var string|array|Client */
-    public $client = 'client';
-    /** @var string|array|Sys */
-    public $sys = 'sys';
     /** @var string|array|KVv1|KVv2 */
     public $kv = 'kv';
 
@@ -31,7 +25,6 @@ class VaultStorage extends BaseObject implements StorageInterface
     {
         parent::init();
 
-        $this->client = Instance::ensure($this->client, Client::class);
         $this->kv = Instance::ensure($this->kv, KVInterface::class);
     }
 
@@ -41,7 +34,7 @@ class VaultStorage extends BaseObject implements StorageInterface
      */
     public function getValue($key)
     {
-        [$key, $secret] = $this->getKeySecret($key);
+        list($key, $secret) = $this->getKeySecret($key);
 
         return $this->kv->get($secret)['data'][$key] ?? false;
     }
@@ -62,7 +55,7 @@ class VaultStorage extends BaseObject implements StorageInterface
      */
     public function setValue($key, $value)
     {
-        [$key, $secret] = $this->getKeySecret($key);
+        list($key, $secret) = $this->getKeySecret($key);
 
         $data = [$key => $value];
 
@@ -75,7 +68,7 @@ class VaultStorage extends BaseObject implements StorageInterface
      */
     public function deleteValue($key)
     {
-        [$key, $secret] = $this->getKeySecret($key);
+        list($key, $secret) = $this->getKeySecret($key);
 
         return $this->kv->delete($secret);
     }
