@@ -162,7 +162,7 @@ class Client extends BaseObject
             return $dto;
         }
 
-        if (400 <= $response->getStatusCode() || 500 <= $response->getStatusCode()) {
+        if (400 <= $response->getStatusCode()) {
             $message = sprintf('Something went wrong when calling Hashicorp Vault (%s - %s).', $response->getStatusCode(), $this->getMessage($response->getContent()));
 
             $dto = $this->createError($response, $response->getCode(), $message, $request->getFullUrl());
