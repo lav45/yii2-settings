@@ -7,9 +7,6 @@ use yii\base\BaseObject;
 use lav45\settings\storage\vault\Client;
 
 /**
- * Class Sys
- * @package lav45\settings\storage\vault\services
- *//**
  * Class Sys (API) - System settings
  * @package lav45\settings\storage\vault\services
  */
@@ -37,9 +34,8 @@ class Sys extends BaseObject
 
     /**
      * Endpoint is used to list audit devices
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/audit#list-enabled-audit-devices
-     * @throws \yii\base\InvalidConfigException
      */
     public function getEnabledAuditDevices()
     {
@@ -50,9 +46,8 @@ class Sys extends BaseObject
      * Endpoint is used to enable audit devices
      * @param string $path
      * @param array $data
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/audit#enable-audit-device
-     * @throws \yii\base\InvalidConfigException
      */
     public function enableAuditDevice(string $path, array $data)
     {
@@ -62,9 +57,8 @@ class Sys extends BaseObject
     /**
      * Endpoint is used to disable audit devices
      * @param string $path
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/audit#disable-audit-device
-     * @throws \yii\base\InvalidConfigException
      */
     public function disableAuditDevice(string $path)
     {
@@ -75,9 +69,8 @@ class Sys extends BaseObject
      * Endpoint is used to calculate the hash of the data used by an audit device's hash function and salt.
      * @param string $path
      * @param array $data
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/audit-hash#calculate-hash
-     * @throws \yii\base\InvalidConfigException
      */
     public function calculateHash(string $path, array $data)
     {
@@ -87,10 +80,9 @@ class Sys extends BaseObject
     /**
      * This endpoint lists all enabled auth methods.
      * @param string $path
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/auth#list-auth-methods
      * @see https://developer.hashicorp.com/vault/api-docs/system/auth#read-auth-method-configuration
-     * @throws \yii\base\InvalidConfigException
      */
     public function getAuthMethods(string $path = '')
     {
@@ -103,9 +95,8 @@ class Sys extends BaseObject
      * This auth path will be nested under the auth prefix.
      * @param string $path
      * @param array $data
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/auth#enable-auth-method
-     * @throws \yii\base\InvalidConfigException
      */
     public function enableAuthMethod(string $path, array $data)
     {
@@ -115,9 +106,8 @@ class Sys extends BaseObject
     /**
      * This endpoint disables the auth method at the given auth path.
      * @param string $path
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/auth#disable-auth-method
-     * @throws \yii\base\InvalidConfigException
      */
     public function disableAuthMethod(string $path)
     {
@@ -128,9 +118,8 @@ class Sys extends BaseObject
      * This endpoint reads the given auth path's configuration.
      * This endpoint requires sudo capability on the final path, but the same functionality can be achieved without sudo via sys/mounts/auth/[auth-path]/tune.
      * @param string $path
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/auth#read-auth-method-tuning
-     * @throws \yii\base\InvalidConfigException
      */
     public function readAuthMethodTuning(string $path)
     {
@@ -141,9 +130,8 @@ class Sys extends BaseObject
      * Tune configuration parameters for a given auth path.
      * This endpoint requires sudo capability on the final path, but the same functionality can be achieved without sudo via sys/mounts/auth/[auth-path]/tune.
      * @param string $path
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/auth#tune-auth-method
-     * @throws \yii\base\InvalidConfigException
      */
     public function tuneAuthMethod(string $path)
     {
@@ -153,9 +141,8 @@ class Sys extends BaseObject
     /**
      * Endpoint is used to fetch the capabilities of a token on the given paths.
      * @param array $data
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/capabilities#query-token-capabilities
-     * @throws \yii\base\InvalidConfigException
      */
     public function queryTokenCapabilities(array $data)
     {
@@ -165,9 +152,8 @@ class Sys extends BaseObject
     /**
      * Endpoint is used to fetch the capabilities of the token associated with the given accessor.
      * @param array $data
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/capabilities-accessor#query-token-accessor-capabilities
-     * @throws \yii\base\InvalidConfigException
      */
     public function queryTokenAccessorCapabilities(array $data)
     {
@@ -177,9 +163,8 @@ class Sys extends BaseObject
     /**
      * Endpoint is used to fetch the capabilities of the token used to make the API call, on the given paths.
      * @param array $data
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/capabilities-self#query-self-capabilities
-     * @throws \yii\base\InvalidConfigException
      */
     public function querySelfCapabilities(array $data)
     {
@@ -190,10 +175,9 @@ class Sys extends BaseObject
      * This endpoint lists the request headers that are configured to be audited.
      * This endpoint lists the information for the given request header.
      * @param string $name
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/config-auditing#read-all-audited-request-headers
      * @see https://developer.hashicorp.com/vault/api-docs/system/config-auditing#read-single-audit-request-header
-     * @throws \yii\base\InvalidConfigException
      */
     public function getAuditedRequestHeaders(string $name = '')
     {
@@ -204,9 +188,8 @@ class Sys extends BaseObject
      * This endpoint enables auditing of a header.
      * @param string $name
      * @param array $data
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/config-auditing#create-update-audit-request-header
-     * @throws \yii\base\InvalidConfigException
      */
     public function setAuditRequestHeader(string $name, array $data)
     {
@@ -216,9 +199,8 @@ class Sys extends BaseObject
     /**
      * This endpoint disables auditing of the given request header.
      * @param string $name
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/config-auditing#delete-audit-request-header
-     * @throws \yii\base\InvalidConfigException
      */
     public function deleteAuditRequestHeader(string $name)
     {
@@ -227,9 +209,8 @@ class Sys extends BaseObject
 
     /**
      * This endpoint returns the current CORS configuration.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/config-cors#read-cors-settings
-     * @throws \yii\base\InvalidConfigException
      */
     public function getCORSSettings()
     {
@@ -239,9 +220,8 @@ class Sys extends BaseObject
     /**
      * This endpoint allows configuring the origins that are permitted to make cross-origin requests, as well as headers that are allowed on cross-origin requests.
      * @param array $data
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/config-cors#configure-cors-settings
-     * @throws \yii\base\InvalidConfigException
      */
     public function setCORSSettings(array $data)
     {
@@ -250,9 +230,8 @@ class Sys extends BaseObject
 
     /**
      * This endpoint removes any CORS configuration.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/config-cors#delete-cors-settings
-     * @throws \yii\base\InvalidConfigException
      */
     public function deleteCORSSettings()
     {
@@ -263,9 +242,8 @@ class Sys extends BaseObject
      * This endpoint returns a sanitized version of the configuration state.
      * The configuration excludes certain fields and mappings in the configuration file that can potentially contain sensitive information,
      * which includes values from Storage.Config, HAStorage.Config, Seals.Config and the Telemetry.CirconusAPIToken value.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/config-state#get-sanitized-configuration-state
-     * @throws \yii\base\InvalidConfigException
      */
     public function getSanitizedConfigurationState()
     {
@@ -275,9 +253,8 @@ class Sys extends BaseObject
     /**
      * This endpoint returns the given UI header configuration.
      * @param string $name
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/config-ui#read-ui-settings
-     * @throws \yii\base\InvalidConfigException
      */
     public function getUISettings(string $name)
     {
@@ -288,9 +265,8 @@ class Sys extends BaseObject
      * This endpoint allows configuring the values to be returned for the UI header.
      * @param string $name
      * @param array $data
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/config-ui#configure-ui-headers
-     * @throws \yii\base\InvalidConfigException
      */
     public function setUIHeaders(string $name, array $data)
     {
@@ -300,9 +276,8 @@ class Sys extends BaseObject
     /**
      * This endpoint removes a UI header.
      * @param string $name
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/config-ui#delete-a-ui-header
-     * @throws \yii\base\InvalidConfigException
      */
     public function deleteUIHeader(string $name)
     {
@@ -311,9 +286,8 @@ class Sys extends BaseObject
 
     /**
      * This endpoint returns a list of configured UI headers.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/config-ui#list-ui-headers
-     * @throws \yii\base\InvalidConfigException
      */
     public function listUIHeaders()
     {
@@ -324,9 +298,8 @@ class Sys extends BaseObject
      * This endpoint returns the experiments available and enabled on the Vault node.
      * Experiments are per-node and cannot be changed while the node is running.
      * See the -experiment flag and the experiments config key documentation for details on enabling experiments.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/experiments#read-experiments
-     * @throws \yii\base\InvalidConfigException
      */
     public function getExperiments()
     {
@@ -335,9 +308,8 @@ class Sys extends BaseObject
 
     /**
      * This endpoint reads the configuration and process of the current root generation attempt.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/generate-recovery-token#read-recovery-token-generation-progress
-     * @throws \yii\base\InvalidConfigException
      */
     public function getRecoveryTokenGenerationProgress()
     {
@@ -346,9 +318,8 @@ class Sys extends BaseObject
 
     /**
      * This endpoint initializes a new recovery token generation attempt. Only a single recovery token generation attempt can take place at a time.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/generate-recovery-token#start-recovery-token-generation
-     * @throws \yii\base\InvalidConfigException
      */
     public function startRecoveryTokenGeneration()
     {
@@ -357,9 +328,8 @@ class Sys extends BaseObject
 
     /**
      * This endpoint cancels any in-progress recovery token generation attempt. This clears any progress made. This must be called to change the OTP or PGP key being used.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/generate-recovery-token#cancel-recovery-token-generation
-     * @throws \yii\base\InvalidConfigException
      */
     public function cancelRecoveryTokenGeneration()
     {
@@ -370,9 +340,8 @@ class Sys extends BaseObject
      * This endpoint is used to enter a single root key share to progress the recovery token generation attempt.
      * If the threshold number of root key shares is reached, Vault will complete the recovery token generation and issue the new token.
      * Otherwise, this API must be called multiple times until that threshold is met. The attempt nonce must be provided with each call.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/generate-recovery-token#provide-key-share-to-generate-recovery-token
-     * @throws \yii\base\InvalidConfigException
      */
     public function setGenerateRecoveryToken(array $data)
     {
@@ -381,9 +350,8 @@ class Sys extends BaseObject
 
     /**
      * This endpoint reads the configuration and process of the current root generation attempt.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/generate-root#read-root-generation-progress
-     * @throws \yii\base\InvalidConfigException
      */
     public function getRootGenerationProgress()
     {
@@ -392,9 +360,8 @@ class Sys extends BaseObject
 
     /**
      * This endpoint initializes a new root generation attempt. Only a single root generation attempt can take place at a time.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/generate-root#start-root-token-generation
-     * @throws \yii\base\InvalidConfigException
      */
     public function startRootTokenGeneration()
     {
@@ -403,9 +370,8 @@ class Sys extends BaseObject
 
     /**
      * This endpoint cancels any in-progress root generation attempt. This clears any progress made. This must be called to change the OTP or PGP key being used.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/generate-root#cancel-root-generation
-     * @throws \yii\base\InvalidConfigException
      */
     public function cancelRootTokenGeneration()
     {
@@ -416,9 +382,8 @@ class Sys extends BaseObject
      * This endpoint is used to enter a single root key share to progress the root generation attempt.
      * If the threshold number of root key shares is reached, Vault will complete the root generation and issue the new token.
      * Otherwise, this API must be called multiple times until that threshold is met. The attempt nonce must be provided with each call.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/generate-root#provide-key-share-to-generate-root
-     * @throws \yii\base\InvalidConfigException
      */
     public function setRootTokenGeneratio(array $data)
     {
@@ -428,9 +393,8 @@ class Sys extends BaseObject
     /**
      * This endpoint returns the health status of Vault.
      * This matches the semantics of a Consul HTTP health check and provides a simple way to monitor the health of a Vault instance.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/health#read-health-information
-     * @throws \yii\base\InvalidConfigException
      */
     public function getHealthInformation()
     {
@@ -440,9 +404,8 @@ class Sys extends BaseObject
     /**
      * This endpoint returns information about the host instance that the Vault server is running on.
      * The data returned includes CPU information, CPU times, disk usage, host info, and memory statistics.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/host-info#collect-host-information
-     * @throws \yii\base\InvalidConfigException
      */
     public function getHostInformation()
     {
@@ -451,9 +414,8 @@ class Sys extends BaseObject
 
     /**
      * This endpoint returns the information about the in-flight requests.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/in-flight-req#collect-in-flight-request-information
-     * @throws \yii\base\InvalidConfigException
      */
     public function getInFlightRequestInformation()
     {
@@ -462,9 +424,8 @@ class Sys extends BaseObject
 
     /**
      * This endpoint returns the initialization status of Vault.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/init#read-initialization-status
-     * @throws \yii\base\InvalidConfigException
      */
     public function getInitializationStatus()
     {
@@ -475,9 +436,8 @@ class Sys extends BaseObject
      * This endpoint initializes a new Vault. The Vault must not have been previously initialized.
      * The recovery options, as well as the stored shares option, are only available when using Auto Unseal.
      * @param array $data
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/init#start-initialization
-     * @throws \yii\base\InvalidConfigException
      */
     public function startInitialization(array $data)
     {
@@ -486,9 +446,8 @@ class Sys extends BaseObject
 
     /**
      * This endpoint returns the total number of Entities.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/internal-counters#entities
-     * @throws \yii\base\InvalidConfigException
      */
     public function getEntities()
     {
@@ -497,9 +456,8 @@ class Sys extends BaseObject
 
     /**
      * This endpoint returns the total number of Tokens.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/internal-counters#tokens
-     * @throws \yii\base\InvalidConfigException
      */
     public function getTokens()
     {
@@ -509,9 +467,8 @@ class Sys extends BaseObject
     /**
      * This endpoint returns client activity information for a given billing period,
      * which is represented by the start_time and end_time parameters.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/internal-counters#client-count
-     * @throws \yii\base\InvalidConfigException
      */
     public function getClientCount(string $params = '')
     {
@@ -521,9 +478,8 @@ class Sys extends BaseObject
     /**
      * This endpoint returns the client activity in the current month.
      * The response will have activity attributions per namespace, per mount within each namespaces, and new clients information.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/internal-counters#partial-month-client-count
-     * @throws \yii\base\InvalidConfigException
      */
     public function getPartialMonthClientCount()
     {
@@ -533,9 +489,8 @@ class Sys extends BaseObject
     /**
      * Endpoint is used to configure logging of active clients
      * @param array $data
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/internal-counters#update-the-client-count-configuration
-     * @throws \yii\base\InvalidConfigException
      */
     public function updateClientCountConfiguration(array $data)
     {
@@ -544,9 +499,8 @@ class Sys extends BaseObject
 
     /**
      * Reading the configuration shows the current settings, as well as a flag whether any data can be queried.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/internal-counters#read-the-client-count-configuration
-     * @throws \yii\base\InvalidConfigException
      */
     public function getClientCountConfiguration()
     {
@@ -557,9 +511,8 @@ class Sys extends BaseObject
      * This endpoint returns an export of the clients that had activity within the provided start and end times.
      * The returned set of client information will be deduplicated over the time window and will show the earliest activity logged for each client.
      * The output will be ordered chronologically by month of activity.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/internal-counters#activity-export
-     * @throws \yii\base\InvalidConfigException
      */
     public function getActivity()
     {
@@ -569,9 +522,8 @@ class Sys extends BaseObject
     /**
      * Endpoint is used to generate an OpenAPI document of the mounted backends
      * @param string $params
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/internal-specs-openapi#get-openapi-document
-     * @throws \yii\base\InvalidConfigException
      */
     public function getOpenAPIDocument(string $params = '')
     {
@@ -580,9 +532,8 @@ class Sys extends BaseObject
 
     /**
      * Endpoint is used to expose feature flags to the UI so that it can change its behavior in response, even before a user logs in.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/internal-ui-feature#get-enabled-feature-flags
-     * @throws \yii\base\InvalidConfigException
      */
     public function getEnabledFeatureFlags()
     {
@@ -593,9 +544,8 @@ class Sys extends BaseObject
      * Endpoint is used to manage mount listing visibility.
      * The response generated by this endpoint is based on the listing_visibility value on the mount, which can be set during mount time or via mount tuning.
      * This is currently only being used internally, for the UI and for CLI preflight checks, and is an unauthenticated endpoint.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/internal-ui-mounts#get-available-visible-mounts
-     * @throws \yii\base\InvalidConfigException
      */
     public function getAvailableVisibleMounts()
     {
@@ -606,9 +556,8 @@ class Sys extends BaseObject
      * This endpoint lists details for a specific mount path.
      * This is an authenticated endpoint, and is currently only being used internally.
      * @param string $path
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/internal-ui-mounts#get-single-mount-details
-     * @throws \yii\base\InvalidConfigException
      */
     public function getSingleMountDetails(string $path)
     {
@@ -617,9 +566,8 @@ class Sys extends BaseObject
 
     /**
      * Endpoint is used to expose namespaces to the UI so that it can change its behavior in response, even before a user logs in.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/internal-ui-namespaces#get-namespaces
-     * @throws \yii\base\InvalidConfigException
      */
     public function getNamespaces()
     {
@@ -628,9 +576,8 @@ class Sys extends BaseObject
 
     /**
      * This endpoint lists the resultant-acl relevant to the UI.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/internal-ui-resultant-acl#get-resultant-acl
-     * @throws \yii\base\InvalidConfigException
      */
     public function getResultantACL()
     {
@@ -639,9 +586,8 @@ class Sys extends BaseObject
 
     /**
      * This endpoint returns information about the current encryption key used by Vault.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/key-status#get-encryption-key-status
-     * @throws \yii\base\InvalidConfigException
      */
     public function getEncryptionKeyStatus()
     {
@@ -650,9 +596,8 @@ class Sys extends BaseObject
 
     /**
      * This endpoint returns the HA status of the Vault cluster.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/ha-status#ha-status
-     * @throws \yii\base\InvalidConfigException
      */
     public function getHAStatus()
     {
@@ -661,9 +606,8 @@ class Sys extends BaseObject
 
     /**
      * This endpoint returns the high availability status and current leader instance of Vault.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/leader#read-leader-status
-     * @throws \yii\base\InvalidConfigException
      */
     public function getLeaderStatus()
     {
@@ -673,9 +617,8 @@ class Sys extends BaseObject
     /**
      * This endpoint retrieve lease metadata.
      * @param array $data
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/leases#read-lease
-     * @throws \yii\base\InvalidConfigException
      */
     public function readLease(array $data)
     {
@@ -685,9 +628,8 @@ class Sys extends BaseObject
     /**
      * This endpoint returns a list of lease ids.
      * @param string $prefix
-     * @return mixed
+     * @return array
      * @see https://developer.hashicorp.com/vault/api-docs/system/leases#list-leases
-     * @throws \yii\base\InvalidConfigException
      */
     public function listLeases(string $prefix)
     {
@@ -698,9 +640,8 @@ class Sys extends BaseObject
      * This endpoint renews a lease, requesting to extend the lease.
      * Token leases cannot be renewed using this endpoint, use instead the auth/token/renew endpoint.
      * @param array $data
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/leases#renew-lease
-     * @throws \yii\base\InvalidConfigException
      */
     public function renewLease(array $data)
     {
@@ -710,9 +651,8 @@ class Sys extends BaseObject
     /**
      * This endpoint revokes a lease immediately.
      * @param array $data
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/system/leases#revoke-lease
-     * @throws \yii\base\InvalidConfigException
      */
     public function revokeLease(array $data)
     {
@@ -722,9 +662,8 @@ class Sys extends BaseObject
     /**
      * This endpoint revokes all secrets or tokens generated under a given prefix immediately.
      * @param string $prefix
-     * @return mixed
-     * @throws \yii\base\InvalidConfigException
-     *@see https://developer.hashicorp.com/vault/api-docs/system/leases#revoke-force
+     * @return bool|array|null|string
+     * @see https://developer.hashicorp.com/vault/api-docs/system/leases#revoke-force
      */
     public function revokeForceLease(string $prefix)
     {
@@ -734,9 +673,8 @@ class Sys extends BaseObject
     /**
      * This endpoint revokes all secrets (via a lease ID prefix) or tokens (via the tokens' path property) generated under a given prefix immediately.
      * @param string $prefix
-     * @return mixed
-     * @throws \yii\base\InvalidConfigException
-     *@see https://developer.hashicorp.com/vault/api-docs/system/leases#revoke-prefix
+     * @return bool|array|null|string
+     * @see https://developer.hashicorp.com/vault/api-docs/system/leases#revoke-prefix
      */
     public function revokePrefixLease(string $prefix)
     {
@@ -746,9 +684,9 @@ class Sys extends BaseObject
     /**
      * This endpoint cleans up the dangling storage entries for leases: for each lease entry in storage,
      * Vault will verify that it has an associated valid non-expired token in storage, and if not, the lease will be revoked.
-     * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/leases#tidy-leases
+     * @return bool|array|null|string
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/leases#tidy-leases
      */
     public function setTidyLeases()
     {
@@ -758,9 +696,9 @@ class Sys extends BaseObject
     /**
      * This endpoint returns the total count of a type of lease, as well as a count per mount point. Note that it currently only supports type "irrevocable".
      * @param array $data
-     * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/leases#lease-counts
+     * @return bool|array|null|string
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/leases#lease-counts
      */
     public function getLeaseCounts(array $data)
     {
@@ -770,9 +708,9 @@ class Sys extends BaseObject
     /**
      * This endpoint returns the total count of a type of lease, as well as a list of leases per mount point. Note that it currently only supports type "irrevocable".
      * @param array $data
-     * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/leases#leases-list
+     * @return bool|array|null|string
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/leases#leases-list
      */
     public function getLeasesList(array $data)
     {
@@ -782,9 +720,9 @@ class Sys extends BaseObject
     /**
      * This endpoint lists the locked users information in Vault.
      * @param array $data
-     * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/user-lockout#list-locked-users
+     * @return bool|array|null|string
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/user-lockout#list-locked-users
      */
     public function getLockedUsers(array $data = [])
     {
@@ -797,9 +735,9 @@ class Sys extends BaseObject
      * This endpoint was added in Vault 1.13.
      * @param string $accessor
      * @param string $identifier
-     * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/user-lockout#unlock-user
+     * @return bool|array|null|string
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/user-lockout#unlock-user
      */
     public function unlockUser(string $accessor, string $identifier)
     {
@@ -809,10 +747,10 @@ class Sys extends BaseObject
     /**
      * This endpoint returns the telemetry metrics for Vault.
      * It can be used by metrics collections systems like Prometheus that use a pull model for metrics collection.
-     * @param string $format, value METRIC_FORMAT_JSON or METRIC_FORMAT_PROMETHEUS
-     * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/metrics#read-telemetry-metrics
+     * @param string $format , value METRIC_FORMAT_JSON or METRIC_FORMAT_PROMETHEUS
+     * @return bool|array|null|string
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/metrics#read-telemetry-metrics
      */
     public function getMetrics(string $format = self::METRIC_FORMAT_PROMETHEUS)
     {
@@ -822,11 +760,11 @@ class Sys extends BaseObject
     /**
      * This endpoint streams logs back to the client from Vault. Note that unlike most API endpoints in Vault, this one does not return JSON by default.
      * This will send back data in whatever log format Vault has been configured with. By default, this is text.
-     * @param string $level, value LOG_LEVEL_INFO or LOG_LEVEL_DEBUG
-     * @param string $format, value LOG_FORMAT_STANDARD or LOG_FORMAT_JSON
-     * @return mixed
+     * @param string $level , value LOG_LEVEL_INFO or LOG_LEVEL_DEBUG
+     * @param string $format , value LOG_FORMAT_STANDARD or LOG_FORMAT_JSON
+     * @return bool|array|null|string
      * @throws \yii\base\InvalidConfigException
-     *@see https://developer.hashicorp.com/vault/api-docs/system/monitor#monitor-system-logs
+     * @see https://developer.hashicorp.com/vault/api-docs/system/monitor#monitor-system-logs
      */
     public function getSystemLogs(string $level = self::LOG_LEVEL_INFO, string $format = self::LOG_FORMAT_STANDARD)
     {
@@ -836,7 +774,7 @@ class Sys extends BaseObject
     /**
      * These endpoints list all the mounted secrets engines.
      * @see https://developer.hashicorp.com/vault/api-docs/system/mounts#list-mounted-secrets-engines
-     * @return mixed
+     * @return bool|array|null|string
      */
     public function getMountedSecretsEngines(string $path = '')
     {
@@ -847,9 +785,9 @@ class Sys extends BaseObject
      * This endpoint enables a new secrets engine at the given path.
      * @param string $path
      * @param array $data
-     * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/mounts#enable-secrets-engine
+     * @return bool|array|null|string
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/mounts#enable-secrets-engine
      */
     public function enableSecretEngine(string $path, array $data)
     {
@@ -858,10 +796,10 @@ class Sys extends BaseObject
 
     /**
      * This endpoint disables the mount point specified in the URL.
-     * @param  string $name
-     * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/mounts#disable-secrets-engine
+     * @param string $name
+     * @return bool|array|null|string
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/mounts#disable-secrets-engine
      */
     public function disableSecretEngine(string $name)
     {
@@ -872,9 +810,9 @@ class Sys extends BaseObject
      * This endpoint reads the given mount's configuration.
      * Unlike the mounts endpoint, this will return the current time in seconds for each TTL, which may be the system default or a mount-specific value.
      * @param string $path
-     * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/mounts#read-mount-configuration
+     * @return bool|array|null|string
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/mounts#read-mount-configuration
      */
     public function readMountConfiguration(string $path)
     {
@@ -886,8 +824,8 @@ class Sys extends BaseObject
      * @param string $path
      * @param array $data
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/mounts#tune-mount-configuration
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/mounts#tune-mount-configuration
      */
     public function tuneMountConfiguration(string $path, array $data)
     {
@@ -897,8 +835,8 @@ class Sys extends BaseObject
     /**
      * This endpoint lists all the namespaces.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/namespaces#list-namespaces
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/namespaces#list-namespaces
      */
     public function listNamespaces()
     {
@@ -910,8 +848,8 @@ class Sys extends BaseObject
      * @param string $path
      * @param array $data
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/namespaces#create-namespace
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/namespaces#create-namespace
      */
     public function createNamespace(string $path, array $data)
     {
@@ -923,8 +861,8 @@ class Sys extends BaseObject
      * @param string $path
      * @param array $data
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/namespaces#patch-namespace
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/namespaces#patch-namespace
      */
     public function updateNamespace(string $path, array $data)
     {
@@ -935,8 +873,8 @@ class Sys extends BaseObject
      * This endpoint deletes a namespace at the specified path.
      * @param string $path
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/namespaces#delete-namespace
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/namespaces#delete-namespace
      */
     public function deleteNamespace(string $path)
     {
@@ -947,8 +885,8 @@ class Sys extends BaseObject
      * This endpoint gets the metadata for the given namespace path.
      * @param string $path
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/namespaces#read-namespace-information
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/namespaces#read-namespace-information
      */
     public function getNamespaceInformation(string $path)
     {
@@ -961,19 +899,19 @@ class Sys extends BaseObject
      * @param string $path
      * @param string $header
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/namespaces#lock-namespace
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/namespaces#lock-namespace
      */
     public function lockNamespace(string $path = '', string $header = '')
     {
-        $headers = [];
+        $namespace = [];
         if ($header !== '') {
-            $headers = [
+            $namespace = [
                 'X-Vault-Namespace' => $header,
             ];
         }
 
-        return $this->client->post('/v1/sys/namespaces/api-lock/lock'. $path, [], $headers);
+        return $this->client->post('/v1/sys/namespaces/api-lock/lock' . $path, [], $namespace);
     }
 
     /**
@@ -981,20 +919,20 @@ class Sys extends BaseObject
      * @param string $path
      * @param array $data
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/namespaces#unlock-namespace
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/namespaces#unlock-namespace
      */
     public function unlockNamespace(string $path = '', array $data = [])
     {
-        return $this->client->post('/v1/sys/namespaces/api-lock/unlock'. $path, $data);
+        return $this->client->post('/v1/sys/namespaces/api-lock/unlock' . $path, $data);
     }
 
     /**
      * This endpoint reloads mounted plugin backends.
      * @param array $data
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/plugins-reload-backend#reload-plugins
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/plugins-reload-backend#reload-plugins
      */
     public function reloadPlugins(array $data)
     {
@@ -1004,8 +942,8 @@ class Sys extends BaseObject
     /**
      * This endpoint lists the plugins in the catalog by type.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/plugins-catalog#list-plugins
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/plugins-catalog#list-plugins
      */
     public function getPlugins()
     {
@@ -1016,8 +954,8 @@ class Sys extends BaseObject
      * This endpoint lists the plugins in the catalog by type.
      * @param string $type
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/plugins-catalog#list-plugins-1
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/plugins-catalog#list-plugins-1
      */
     public function listPlugin(string $type)
     {
@@ -1030,8 +968,8 @@ class Sys extends BaseObject
      * @param string $name
      * @param array $data
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/plugins-catalog#register-plugin
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/plugins-catalog#register-plugin
      */
     public function registerPlugin(string $type, string $name, array $data)
     {
@@ -1044,8 +982,8 @@ class Sys extends BaseObject
      * @param string $name
      * @param string $version
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/plugins-catalog#read-plugin
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/plugins-catalog#read-plugin
      */
     public function getPlugin(string $type, string $name, string $version = '')
     {
@@ -1062,8 +1000,8 @@ class Sys extends BaseObject
      * @param string $name
      * @param string $version
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/plugins-catalog#remove-plugin-from-catalog
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/plugins-catalog#remove-plugin-from-catalog
      */
     public function removePlugin(string $type, string $name, string $version = '')
     {
@@ -1077,11 +1015,11 @@ class Sys extends BaseObject
     /**
      * This endpoint lists all configured policies.
      * This endpoint retrieve the policy body for the named policy.
-     * @param  string $name
+     * @param string $name
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/policy#list-policies
-     * @see https://developer.hashicorp.com/vault/api-docs/system/policy#read-policy
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/policy#read-policy
+     * @see https://developer.hashicorp.com/vault/api-docs/system/policy#list-policies
      */
     public function policy(string $name = '')
     {
@@ -1094,8 +1032,8 @@ class Sys extends BaseObject
      * @param string $name
      * @param array $data
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/policy#create-update-policy
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/policy#create-update-policy
      */
     public function setPolicy(string $name, array $data)
     {
@@ -1105,10 +1043,10 @@ class Sys extends BaseObject
     /**
      * This endpoint deletes the policy with the given name.
      * This will immediately affect all users associated with this policy.
-     * @param  string $name
+     * @param string $name
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/policy#delete-policy
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/policy#delete-policy
      */
     public function deletePolicy(string $name)
     {
@@ -1118,8 +1056,8 @@ class Sys extends BaseObject
     /**
      * This endpoint lists all configured ACL policies.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#list-acl-policies
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#list-acl-policies
      */
     public function listACLPolicies()
     {
@@ -1130,8 +1068,8 @@ class Sys extends BaseObject
      * This endpoint retrieves information about the named ACL policy.
      * @param string $name
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#read-acl-policy
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#read-acl-policy
      */
     public function getACLPolicy(string $name)
     {
@@ -1144,8 +1082,8 @@ class Sys extends BaseObject
      * @param string $name
      * @param array $data
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#create-update-acl-policy
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#create-update-acl-policy
      */
     public function setACLPolicy(string $name, array $data)
     {
@@ -1158,8 +1096,8 @@ class Sys extends BaseObject
      * (A deleted policy set on a token acts as an empty policy.)
      * @param string $name
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#delete-acl-policy
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#delete-acl-policy
      */
     public function deleteACLPolicy(string $name)
     {
@@ -1169,8 +1107,8 @@ class Sys extends BaseObject
     /**
      * This endpoint lists all configured RGP policies.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#list-rgp-policies
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#list-rgp-policies
      */
     public function listRGPPolicies()
     {
@@ -1181,8 +1119,8 @@ class Sys extends BaseObject
      * This endpoint retrieves information about the named RGP policy.
      * @param string $name
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#read-rgp-policy
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#read-rgp-policy
      */
     public function getRGPPolicy(string $name)
     {
@@ -1195,8 +1133,8 @@ class Sys extends BaseObject
      * @param string $name
      * @param array $data
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#create-update-rgp-policy
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#create-update-rgp-policy
      */
     public function setRGPPolicy(string $name, array $data)
     {
@@ -1209,8 +1147,8 @@ class Sys extends BaseObject
      * (A deleted policy set on a token acts as an empty policy.)
      * @param string $name
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#delete-rgp-policy
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#delete-rgp-policy
      */
     public function deleteRGPPolicy(string $name)
     {
@@ -1220,8 +1158,8 @@ class Sys extends BaseObject
     /**
      * This endpoint lists all configured EGP policies.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#list-egp-policies
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#list-egp-policies
      */
     public function listEGPPolicies()
     {
@@ -1232,8 +1170,8 @@ class Sys extends BaseObject
      * This endpoint retrieves information about the named EGP policy.
      * @param string $name
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#read-egp-policy
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#read-egp-policy
      */
     public function getEGPPolicy(string $name)
     {
@@ -1246,8 +1184,8 @@ class Sys extends BaseObject
      * @param string $name
      * @param array $data
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#create-update-egp-policy
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#create-update-egp-policy
      */
     public function setEGPPolicy(string $name, array $data)
     {
@@ -1258,8 +1196,8 @@ class Sys extends BaseObject
      * This endpoint deletes the EGP policy with the given name from all paths on which it was configured.
      * @param string $name
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#delete-egp-policy
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/policies#delete-egp-policy
      */
     public function deleteEGPPolicy(string $name)
     {
@@ -1272,8 +1210,8 @@ class Sys extends BaseObject
      * @param string $name
      * @param array $data
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/policies-password#create-update-password-policy
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/policies-password#create-update-password-policy
      */
     public function setPasswordPolicy(string $name, array $data)
     {
@@ -1283,8 +1221,8 @@ class Sys extends BaseObject
     /**
      * This endpoint list the password policies.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/policies-password#list-password-policies
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/policies-password#list-password-policies
      */
     public function listPasswordPolicies()
     {
@@ -1295,8 +1233,8 @@ class Sys extends BaseObject
      * This endpoint retrieves information about the named password policy.
      * @param string $name
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/policies-password#read-password-policy
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/policies-password#read-password-policy
      */
     public function getPasswordPolicy(string $name)
     {
@@ -1310,8 +1248,8 @@ class Sys extends BaseObject
      * to a different policy (or to that engines' default behavior).
      * @param string $name
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/policies-password#delete-password-policy
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/policies-password#delete-password-policy
      */
     public function deletePasswordPolicy(string $name)
     {
@@ -1322,8 +1260,8 @@ class Sys extends BaseObject
      * This endpoint generates a password from the specified existing password policy.
      * @param string $name
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/policies-password#generate-password-from-password-policy
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/policies-password#generate-password-from-password-policy
      */
     public function generatePasswordPolicy(string $name)
     {
@@ -1333,8 +1271,8 @@ class Sys extends BaseObject
     /**
      * This endpoint returns an HTML page listing the available profiles.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/pprof#index
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/pprof#index
      */
     public function getPprof()
     {
@@ -1344,8 +1282,8 @@ class Sys extends BaseObject
     /**
      * This endpoint returns a sampling of historical memory allocations over the life of the program.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/pprof#allocs
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/pprof#allocs
      */
     public function getAllocs()
     {
@@ -1357,8 +1295,8 @@ class Sys extends BaseObject
      * It is included for completeness, but since Vault doesn't normally enable collection of this data,
      * it won't return anything useful with the standard Vault binary.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/pprof#block
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/pprof#block
      */
     public function getBlock()
     {
@@ -1368,8 +1306,8 @@ class Sys extends BaseObject
     /**
      * This endpoint returns the running program's command line, with arguments separated by NUL bytes.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/pprof#cmdline
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/pprof#cmdline
      */
     public function getCmdline()
     {
@@ -1379,8 +1317,8 @@ class Sys extends BaseObject
     /**
      * This endpoint returns stack traces of all current goroutines.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/pprof#goroutine
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/pprof#goroutine
      */
     public function getGoroutine()
     {
@@ -1390,8 +1328,8 @@ class Sys extends BaseObject
     /**
      * This endpoint returns a sampling of memory allocations of live object.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/pprof#heap
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/pprof#heap
      */
     public function getHeap()
     {
@@ -1403,8 +1341,8 @@ class Sys extends BaseObject
      * It is included for completeness, but since Vault doesn't normally enable collection of this data,
      * it won't return anything useful with the standard Vault binary.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/pprof#mutex
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/pprof#mutex
      */
     public function getMutex()
     {
@@ -1415,8 +1353,8 @@ class Sys extends BaseObject
      * This endpoint returns a pprof-formatted cpu profile payload.
      * Profiling lasts for duration specified in seconds GET parameter, or for 30 seconds if not specified.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/pprof#profile
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/pprof#profile
      */
     public function getProfile()
     {
@@ -1426,8 +1364,8 @@ class Sys extends BaseObject
     /**
      * This endpoint returns the program counters listed in the request.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/pprof#symbol
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/pprof#symbol
      */
     public function getSymbol()
     {
@@ -1437,8 +1375,8 @@ class Sys extends BaseObject
     /**
      * This endpoint returns stack traces of goroutines that led to the creation of new OS threads.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/pprof#threadcreate
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/pprof#threadcreate
      */
     public function getThreadcreate()
     {
@@ -1449,8 +1387,8 @@ class Sys extends BaseObject
      * This endpoint returns the execution trace in binary form.
      * Tracing lasts for duration specified in seconds GET parameter, or for 1 second if not specified.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/pprof#trace
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/pprof#trace
      */
     public function getTrace()
     {
@@ -1460,8 +1398,8 @@ class Sys extends BaseObject
     /**
      * Endpoint is used to show rate limit quotas
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/quotas-config#get-the-rate-limit-configuration
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/quotas-config#get-the-rate-limit-configuration
      */
     public function getRateLimit()
     {
@@ -1472,8 +1410,8 @@ class Sys extends BaseObject
      * Endpoint is used to configure rate limit quotas
      * @param array $data
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/quotas-config#create-or-update-the-rate-limit-configuration
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/quotas-config#create-or-update-the-rate-limit-configuration
      */
     public function setRateLimit(array $data)
     {
@@ -1485,8 +1423,8 @@ class Sys extends BaseObject
      * This is the raw path in the storage backend and not the logical path that is exposed via the mount system.
      * @param string $path
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/raw#read-raw
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/raw#read-raw
      */
     public function getRaw(string $path)
     {
@@ -1499,8 +1437,8 @@ class Sys extends BaseObject
      * @param string $path
      * @param array $data
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/raw#create-update-raw
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/raw#create-update-raw
      */
     public function setRaw(string $path, array $data)
     {
@@ -1511,8 +1449,8 @@ class Sys extends BaseObject
      * This endpoint returns a list keys for a given path prefix.
      * @param string $prefix
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/raw#list-raw
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/raw#list-raw
      */
     public function listRaw(string $prefix)
     {
@@ -1524,8 +1462,8 @@ class Sys extends BaseObject
      * This is the raw path in the storage backend and not the logical path that is exposed via the mount system.
      * @param string $path
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/raw#delete-raw
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/raw#delete-raw
      */
     public function deleteRaw(string $path)
     {
@@ -1536,11 +1474,11 @@ class Sys extends BaseObject
      * Endpoint moves an already-mounted backend to a new mount point. This process works for both secret engines and auth methods.
      * The remount operation returns a migration ID to the user. The user may utilize the migration ID to look up the status of the mount migration.
      * More details about the remount operation are described in Mount Migration.
-     * @param  string $from
-     * @param  string $to
+     * @param string $from
+     * @param string $to
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/remount#move-backend
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/remount#move-backend
      */
     public function moveBackend(string $from, string $to)
     {
@@ -1557,8 +1495,8 @@ class Sys extends BaseObject
      * The response contains the passed-in ID, the source and target mounts, and a status field that displays in-progress, success or failure.
      * @param string $migration_id
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/remount#monitor-migration-status
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/remount#monitor-migration-status
      */
     public function monitorMigrationStatus(string $migration_id)
     {
@@ -1571,8 +1509,8 @@ class Sys extends BaseObject
      * This operation is done online.
      * Future values are encrypted with the new key, while old values are decrypted with previous encryption keys.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/rotate#rotate-encryption-key
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/rotate#rotate-encryption-key
      */
     public function setRotate()
     {
@@ -1584,8 +1522,8 @@ class Sys extends BaseObject
      * By default, the key is rotated after just under 4 billion encryptions, to satisfy the recommendation of NIST SP 800-38D.
      * One can configure rotations after fewer encryptions or on a time based schedule.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/rotate-config#get-the-auto-rotation-configuration
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/rotate-config#get-the-auto-rotation-configuration
      */
     public function getAutoRotation()
     {
@@ -1598,8 +1536,8 @@ class Sys extends BaseObject
      * One can configure rotations after fewer encryptions or on a time based schedule.
      * @param array $data
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/rotate-config#create-or-update-the-auto-rotation-configuration
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/rotate-config#create-or-update-the-auto-rotation-configuration
      */
     public function setAutoRotation(array $data)
     {
@@ -1610,8 +1548,8 @@ class Sys extends BaseObject
      * This endpoint seals the Vault. In HA mode, only an active node can be sealed.
      * Standby nodes should be restarted to get the same effect.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/seal#seal
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/seal#seal
      */
     public function setSeal()
     {
@@ -1622,8 +1560,8 @@ class Sys extends BaseObject
      * This endpoint returns the seal status of the Vault.
      * This is an unauthenticated endpoint.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/seal-status#seal-status
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/seal-status#seal-status
      */
     public function getSealStatus()
     {
@@ -1636,8 +1574,8 @@ class Sys extends BaseObject
      * Note that the node will sleep for ten seconds before attempting to grab the active lock again,
      * but if no standby nodes grab the active lock in the interim, the same node may become the active node again.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/step-down#step-down-leader
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/step-down#step-down-leader
      */
     public function stepDownLeader()
     {
@@ -1650,8 +1588,8 @@ class Sys extends BaseObject
      * Otherwise, this API must be called multiple times until that threshold is met.
      * @param array $data
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/unseal#submit-unseal-key
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/unseal#submit-unseal-key
      */
     public function unseal(array $data)
     {
@@ -1661,8 +1599,8 @@ class Sys extends BaseObject
     /**
      * This endpoint returns the version history of the Vault.
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/version-history#read-version-history
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/version-history#read-version-history
      */
     public function getVersionHistory()
     {
@@ -1673,8 +1611,8 @@ class Sys extends BaseObject
      * This endpoint looks up wrapping properties for the given token.
      * @param string $token
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/wrapping-lookup#wrapping-lookup
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/wrapping-lookup#wrapping-lookup
      */
     public function getWrappingLookup(string $token)
     {
@@ -1690,8 +1628,8 @@ class Sys extends BaseObject
      * The old token will be invalidated. This can be used for long-term storage of a secret in a response-wrapped token when rotation is a requirement.
      * @param string $token
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/wrapping-rewrap#wrapping-rewrap
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/wrapping-rewrap#wrapping-rewrap
      */
     public function setWrappingRewrap(string $token)
     {
@@ -1712,8 +1650,8 @@ class Sys extends BaseObject
      * as it will basically be a double-use of the token!
      * @param string $token
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/wrapping-unwrap#wrapping-unwrap
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/wrapping-unwrap#wrapping-unwrap
      */
     public function getWrappingUnwrap(string $token)
     {
@@ -1729,8 +1667,8 @@ class Sys extends BaseObject
      * @param array $data
      * @param array $headers
      * @return mixed
-     * @see https://developer.hashicorp.com/vault/api-docs/system/wrapping-wrap#wrapping-wrap
      * @throws \yii\base\InvalidConfigException
+     * @see https://developer.hashicorp.com/vault/api-docs/system/wrapping-wrap#wrapping-wrap
      */
     public function setWrappingWrap(array $data, array $headers = [])
     {

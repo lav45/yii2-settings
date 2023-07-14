@@ -58,8 +58,7 @@ class Client extends BaseObject
      * In data array stored keys of secret
      * @param string $url
      * @param array $data
-     * @return mixed
-     * @throws \yii\base\InvalidConfigException
+     * @return bool|array|null|string
      */
     public function get(string $url, array $data = [])
     {
@@ -70,8 +69,7 @@ class Client extends BaseObject
      * @param string $url
      * @param array $headers
      * @param array $data
-     * @return mixed
-     * @throws \yii\base\InvalidConfigException
+     * @return bool|array|null|string
      */
     public function post(string $url, array $data = [], array $headers = [])
     {
@@ -81,8 +79,7 @@ class Client extends BaseObject
     /**
      * @param string $url
      * @param array $data
-     * @return mixed
-     * @throws \yii\base\InvalidConfigException
+     * @return bool|array|null|string
      */
     public function put(string $url, array $data = [])
     {
@@ -93,8 +90,7 @@ class Client extends BaseObject
      * @param string $url
      * @param array $data
      * @param array $headers
-     * @return mixed
-     * @throws \yii\base\InvalidConfigException
+     * @return bool|array|null|string
      */
     public function patch(string $url, array $data = [], array $headers = [])
     {
@@ -103,8 +99,7 @@ class Client extends BaseObject
 
     /**
      * @param string $url
-     * @return mixed
-     * @throws \yii\base\InvalidConfigException
+     * @return bool|array|null|string
      */
     public function delete(string $url)
     {
@@ -114,8 +109,7 @@ class Client extends BaseObject
     /**
      * @param string $url
      * @param array $headers
-     * @return mixed
-     * @throws \yii\base\InvalidConfigException
+     * @return bool|array|null|string
      */
     public function list(string $url, array $headers = [])
     {
@@ -127,8 +121,7 @@ class Client extends BaseObject
      * @param string|array $url
      * @param array $headers
      * @param array $data
-     * @return mixed
-     * @throws \yii\base\InvalidConfigException
+     * @return bool|array|null|string|ErrorDTO
      */
     private function request(string $method, $url, array $data = [], array $headers = [])
     {
@@ -142,15 +135,15 @@ class Client extends BaseObject
             'X-Vault-Token' => $this->token,
         ];
 
-        if (empty($headers) === false) {
-            $headers = array_merge($headers, $defaultHeaders);
+        if ($headers) {
+            $headers = array_merge($defaultHeaders, $headers);
         } else {
             $headers = $defaultHeaders;
         }
 
         $request->setHeaders($headers);
 
-        if (empty($data) === false) {
+        if ($data) {
             $request->setData($data);
         }
 
@@ -175,12 +168,12 @@ class Client extends BaseObject
 
     /**
      * @param string $value
-     * @return mixed
+     * @return string
      */
     private function getMessage(string $value)
     {
-        $data = json_decode($value);
-        if (empty($data->errors)) {
+        $data = json_decode($value, true);
+        if (empty($data['errors'])) {
             return 'Unknown error.';
         }
 

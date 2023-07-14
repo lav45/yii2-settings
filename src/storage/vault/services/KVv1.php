@@ -30,8 +30,7 @@ class KVv1 extends BaseObject implements KVInterface
     /**
      * @param string $path
      * @param array $data
-     * @return mixed
-     * @throws \yii\base\InvalidConfigException
+     * @return bool|array
      */
     public function post(string $path, array $data = [])
     {
@@ -42,8 +41,7 @@ class KVv1 extends BaseObject implements KVInterface
 
     /**
      * @param string $path
-     * @return mixed
-     * @throws \yii\base\InvalidConfigException
+     * @return bool|array|null|string
      */
     public function get(string $path)
     {
@@ -54,8 +52,7 @@ class KVv1 extends BaseObject implements KVInterface
 
     /**
      * @param string $path
-     * @return mixed
-     * @throws \yii\base\InvalidConfigException
+     * @return bool|array
      */
     public function delete(string $path)
     {
@@ -66,8 +63,7 @@ class KVv1 extends BaseObject implements KVInterface
 
     /**
      * @param string $path
-     * @return mixed
-     * @throws \yii\base\InvalidConfigException
+     * @return array
      */
     public function list(string $path)
     {

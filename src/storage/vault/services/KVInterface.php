@@ -7,29 +7,25 @@ interface KVInterface
     /**
      * @param string $path
      * @param array $data
-     * @return mixed
-     * @throws \yii\base\InvalidConfigException
+     * @return bool|array
      */
     public function post(string $path, array $data = []);
 
     /**
      * @param string $path
-     * @return mixed
-     * @throws \yii\base\InvalidConfigException
+     * @return bool|array
      */
     public function get(string $path);
 
     /**
      * @param string $path
-     * @return mixed
-     * @throws \yii\base\InvalidConfigException
+     * @return bool|array
      */
     public function delete(string $path);
 
     /**
      * @param string $path
-     * @return mixed
-     * @throws \yii\base\InvalidConfigException
+     * @return array
      */
     public function list(string $path);
 }

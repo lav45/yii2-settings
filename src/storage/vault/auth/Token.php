@@ -28,9 +28,8 @@ class Token extends BaseObject
     /**
      * This endpoint lists token accessor. This requires sudo capability,and access to it should be tightly controlled as
      * the accessors can be used to revoke very large numbers of tokens and their associated leases at once.
-     * @return mixed
+     * @return array
      * @see https://developer.hashicorp.com/vault/api-docs/auth/token#list-accessors
-     * @throws \yii\base\InvalidConfigException
      */
     public function listAccessors()
     {
@@ -43,9 +42,8 @@ class Token extends BaseObject
      * If used with a role name in the path, the token will be created against the specified role name; this may override options set during this call.
      * @param array $data
      * @param string $roleName
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/auth/token#create-token
-     * @throws \yii\base\InvalidConfigException
      */
     public function createToken(array $data, string $roleName = '')
     {
@@ -58,9 +56,8 @@ class Token extends BaseObject
      * If used with a role name in the path, the token will be created against the specified role name; this may override options set during this call.
      * @param array $data
      * @param string $roleName
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/auth/token#create-token
-     * @throws \yii\base\InvalidConfigException
      */
     public function createOrphanToken(array $data, string $roleName = '')
     {
@@ -70,9 +67,8 @@ class Token extends BaseObject
     /**
      * Returns information about the client token.
      * @param string $token
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/auth/token#lookup-a-token
-     * @throws \yii\base\InvalidConfigException
      */
     public function getToken(string $token)
     {
@@ -85,9 +81,8 @@ class Token extends BaseObject
 
     /**
      * Returns information about the current client token.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/auth/token#lookup-a-token-self
-     * @throws \yii\base\InvalidConfigException
      */
     public function getSelfToken()
     {
@@ -97,9 +92,8 @@ class Token extends BaseObject
     /**
      * Returns information about the client token from the accessor.
      * @param string $accessor
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/auth/token#lookup-a-token-accessor
-     * @throws \yii\base\InvalidConfigException
      */
     public function getAccessorToken(string $accessor)
     {
@@ -115,9 +109,8 @@ class Token extends BaseObject
      * Token renewal is possible only if there is a lease associated with it.
      * @param string $token
      * @param string $increment
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/auth/token#renew-a-token
-     * @throws \yii\base\InvalidConfigException
      */
     public function renewToken(string $token, string $increment = '')
     {
@@ -133,9 +126,8 @@ class Token extends BaseObject
      * Renews a lease associated with the calling token. This is used to prevent the expiration of a token, and the automatic revocation of it.
      * Token renewal is possible only if there is a lease associated with it.
      * @param string $increment
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/auth/token#renew-a-token-self
-     * @throws \yii\base\InvalidConfigException
      */
     public function renewSelfToken(string $increment)
     {
@@ -151,9 +143,8 @@ class Token extends BaseObject
      * and the automatic revocation of it. Token renewal is possible only if there is a lease associated with it.
      * @param string $accessor
      * @param string $increment
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/auth/token#renew-a-token-accessor
-     * @throws \yii\base\InvalidConfigException
      */
     public function renewAccessorToken(string $accessor, string $increment = '')
     {
@@ -168,9 +159,8 @@ class Token extends BaseObject
     /**
      * Revokes a token and all child tokens. When the token is revoked, all dynamic secrets generated with it are also revoked.
      * @param string $token
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/auth/token#revoke-a-token
-     * @throws \yii\base\InvalidConfigException
      */
     public function revokeToken(string $token)
     {
@@ -184,9 +174,8 @@ class Token extends BaseObject
     /**
      * Revokes the token used to call it and all child tokens.
      * When the token is revoked, all dynamic secrets generated with it are also revoked.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/auth/token#revoke-a-token-self
-     * @throws \yii\base\InvalidConfigException
      */
     public function revokeSelfToken()
     {
@@ -197,9 +186,8 @@ class Token extends BaseObject
      * Revoke the token associated with the accessor and all the child tokens.
      * This is meant for purposes where there is no access to token ID but there is need to revoke a token and its children.
      * @param string $accessor
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/auth/token#revoke-a-token-accessor
-     * @throws \yii\base\InvalidConfigException
      */
     public function revokeAccessorToken(string $accessor)
     {
@@ -215,9 +203,8 @@ class Token extends BaseObject
      * All child tokens are orphaned, but can be revoked sub-sequently using /auth/token/revoke/.
      * This is a root-protected endpoint.
      * @param string $token
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/auth/token#revoke-token-and-orphan-children
-     * @throws \yii\base\InvalidConfigException
      */
     public function revokeOrphanToken(string $token)
     {
@@ -231,9 +218,8 @@ class Token extends BaseObject
     /**
      * Fetches the named role configuration.
      * @param string $name
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/auth/token#read-token-role
-     * @throws \yii\base\InvalidConfigException
      */
     public function getRole(string $name)
     {
@@ -242,9 +228,8 @@ class Token extends BaseObject
 
     /**
      * List available token roles.
-     * @return mixed
+     * @return array
      * @see https://developer.hashicorp.com/vault/api-docs/auth/token#list-token-roles
-     * @throws \yii\base\InvalidConfigException
      */
     public function getRoles()
     {
@@ -258,7 +243,7 @@ class Token extends BaseObject
      * allowing all tokens created against a role to be revoked using the /sys/leases/revoke-prefix endpoint.
      * @param string $name
      * @param array $data
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/auth/token#create-update-token-role
      */
     public function setRole(string $name, array $data)
@@ -269,9 +254,8 @@ class Token extends BaseObject
     /**
      * This endpoint deletes the named token role.
      * @param string $name
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/auth/token#delete-token-role
-     * @throws \yii\base\InvalidConfigException
      */
     public function deleteRole(string $name)
     {
@@ -281,9 +265,8 @@ class Token extends BaseObject
     /**
      * Performs some maintenance tasks to clean up invalid entries that may remain in the token store.
      * On Enterprise, Tidy will only impact the tokens in the specified namespace, or the root namespace if unspecified.
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/auth/token#tidy-tokens
-     * @throws \yii\base\InvalidConfigException
      */
     public function getTidyTokens()
     {

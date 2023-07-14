@@ -30,9 +30,8 @@ class UsernamePassword
      * This path honors the distinction between the create and update capabilities inside ACL policies.
      * @param string $username
      * @param array $data
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/auth/userpass#create-update-user
-     * @throws \yii\base\InvalidConfigException
      */
     public function setUser(string $username, array $data)
     {
@@ -42,9 +41,8 @@ class UsernamePassword
     /**
      * Reads the properties of an existing username.
      * @param string $username
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/auth/userpass#read-user
-     * @throws \yii\base\InvalidConfigException
      */
     public function getUser(string $username)
     {
@@ -54,9 +52,8 @@ class UsernamePassword
     /**
      * This endpoint deletes the user from the method.
      * @param string $username
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/auth/userpass#delete-user
-     * @throws \yii\base\InvalidConfigException
      */
     public function deleteUser(string $username)
     {
@@ -67,9 +64,8 @@ class UsernamePassword
      * Update password for an existing user.
      * @param string $username
      * @param string $password
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/auth/userpass#update-password-on-user
-     * @throws \yii\base\InvalidConfigException
      */
     public function updateUserPassword(string $username, string $password)
     {
@@ -84,9 +80,8 @@ class UsernamePassword
      * Update policies for an existing user.
      * @param string $username
      * @param array|string $policies
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/auth/userpass#update-policies-on-user
-     * @throws \yii\base\InvalidConfigException
      */
     public function updateUserPolicies(string $username, $policies)
     {
@@ -99,9 +94,8 @@ class UsernamePassword
 
     /**
      * List available userpass users.
-     * @return mixed
+     * @return array
      * @see https://developer.hashicorp.com/vault/api-docs/auth/userpass#list-users
-     * @throws \yii\base\InvalidConfigException
      */
     public function getUsers()
     {
@@ -112,9 +106,8 @@ class UsernamePassword
      * Login with the username and password.
      * @param string $username
      * @param string $password
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/auth/userpass#login
-     * @throws \yii\base\InvalidConfigException
      */
     public function login(string $username, string $password)
     {

@@ -32,9 +32,8 @@ class KVv2 extends BaseObject implements KVInterface
      * @param int $max_versions
      * @param bool $cas_required
      * @param string $delete_version_after
-     * @return false|mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#configure-the-kv-engine
-     * @throws \yii\base\InvalidConfigException
      */
     public function configureEngine(int $max_versions = 0, bool $cas_required = false, string $delete_version_after = '0s')
     {
@@ -51,9 +50,8 @@ class KVv2 extends BaseObject implements KVInterface
 
     /**
      * This path retrieves the current configuration for the secrets backend at the given path.
-     * @return false|mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#read-kv-engine-configuration
-     * @throws \yii\base\InvalidConfigException
      */
     public function getEngineConfiguration()
     {
@@ -66,9 +64,8 @@ class KVv2 extends BaseObject implements KVInterface
      * This endpoint retrieves the secret at the specified location.
      * @param string $secret
      * @param int $version
-     * @return false|mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#read-secret-version
-     * @throws \yii\base\InvalidConfigException
      */
     public function getSecretVersion(string $secret, int $version = 0)
     {
@@ -83,9 +80,8 @@ class KVv2 extends BaseObject implements KVInterface
      * This endpoint creates a new version of a secret at the specified location.
      * @param string $path
      * @param array $data
-     * @return mixed
+     * @return bool|array
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#create-update-secret
-     * @throws \yii\base\InvalidConfigException
      */
     public function post(string $path, array $data = [])
     {
@@ -97,9 +93,8 @@ class KVv2 extends BaseObject implements KVInterface
     /**
      * This endpoint retrieves the secret at the specified location.
      * @param string $path
-     * @return mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#read-secret-version
-     * @throws \yii\base\InvalidConfigException
      */
     public function get(string $path)
     {
@@ -111,9 +106,8 @@ class KVv2 extends BaseObject implements KVInterface
     /**
      * This endpoint issues a soft delete of the secret's latest version at the specified location.
      * @param string $path
-     * @return mixed
+     * @return bool|array
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#delete-latest-version-of-secret
-     * @throws \yii\base\InvalidConfigException
      */
     public function delete(string $path)
     {
@@ -128,9 +122,8 @@ class KVv2 extends BaseObject implements KVInterface
      * Note that no policy-based filtering is performed on keys; do not encode sensitive information in key names.
      * The values themselves are not accessible via this command.
      * @param string $path
-     * @return mixed
+     * @return array
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#list-secrets
-     * @throws \yii\base\InvalidConfigException
      */
     public function list(string $path)
     {
@@ -143,9 +136,8 @@ class KVv2 extends BaseObject implements KVInterface
      * This endpoint provides the ability to patch an existing secret at the specified location.
      * @param string $secret
      * @param array $data example: ['data' => ['key' => 'value', ...], 'options' => ['key' => 'value', ...]]
-     * @return false|mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#patch-secret
-     * @throws \yii\base\InvalidConfigException
      */
     public function patchSecret(string $secret, array $data)
     {
@@ -159,30 +151,34 @@ class KVv2 extends BaseObject implements KVInterface
      * @param string $secret
      * @param int $version
      * @param int $depth
-     * @return false|mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#read-secret-subkeys
-     * @throws \yii\base\InvalidConfigException
      */
     public function getSecretSubkeys(string $secret, int $version = 0, int $depth = 0)
     {
         $url = '/v1' . $this->path . '/subkeys';
 
-        if ($version === 0) {
-            $version = '';
-            $depth = $depth === 0 ? '' : '?depth=' . $depth;
-        } else {
-            $version = '?version=' . $version;
-            $depth = $depth === 0 ? '' : '&depth=' . $depth;
+        $data = [];
+        if ($version !== 0) {
+            $data['version'] = $version;
+        }
+        if ($depth !== 0) {
+            $data['depth'] = $depth;
         }
 
-        return $this->client->get($url . $secret . $version . $depth);
+        $params = '';
+        if ($data) {
+            $params = '?' . http_build_query($data, '', '?');
+        }
+
+        return $this->client->get($url . $secret . $params);
     }
 
     /**
      * This endpoint issues a soft delete of the specified versions of the secret.
      * @param string $secret
      * @param array $versions
-     * @return false|mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#delete-secret-versions
      */
     public function deleteSecretVersions(string $secret, array $versions)
@@ -200,9 +196,8 @@ class KVv2 extends BaseObject implements KVInterface
      * Undeletes the data for the provided version and path in the key-value store. This restores the data, allowing it to be returned on get requests.
      * @param string $secret
      * @param array $versions
-     * @return false|mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#undelete-secret-versions
-     * @throws \yii\base\InvalidConfigException
      */
     public function restoreSecretVersions(string $secret, array $versions)
     {
@@ -219,9 +214,8 @@ class KVv2 extends BaseObject implements KVInterface
      * Permanently removes the specified version data for the provided key and version numbers from the key-value store.
      * @param string $secret
      * @param array $versions
-     * @return false|mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#destroy-secret-versions
-     * @throws \yii\base\InvalidConfigException
      */
     public function destroySecretVersions(string $secret, array $versions)
     {
@@ -237,9 +231,8 @@ class KVv2 extends BaseObject implements KVInterface
     /**
      * This endpoint retrieves the metadata and versions for the secret at the specified path. Metadata is version-agnostic.
      * @param string $secret
-     * @return false|mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#read-secret-metadata
-     * @throws \yii\base\InvalidConfigException
      */
     public function getSecretMetadata(string $secret)
     {
@@ -255,9 +248,8 @@ class KVv2 extends BaseObject implements KVInterface
      * @param bool $cas_required
      * @param string $delete_version_after
      * @param array $custom_metadata
-     * @return false|mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#create-update-metadata
-     * @throws \yii\base\InvalidConfigException
      */
     public function setSecretMetadata(string $secret, int $max_versions = 0, bool $cas_required = false, string $delete_version_after = '0s', array $custom_metadata = [])
     {
@@ -269,7 +261,7 @@ class KVv2 extends BaseObject implements KVInterface
             'delete_version_after' => $delete_version_after
         ];
 
-        if (empty($custom_metadata) === false) {
+        if ($custom_metadata) {
             $data['custom_metadata'] = $custom_metadata;
         }
 
@@ -286,9 +278,8 @@ class KVv2 extends BaseObject implements KVInterface
      * @param bool $cas_required
      * @param string $delete_version_after
      * @param array $custom_metadata
-     * @return false|mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#patch-metadata
-     * @throws \yii\base\InvalidConfigException
      */
     public function patchSecretMetadata(string $secret, int $max_versions = 0, bool $cas_required = false, string $delete_version_after = '0s', array $custom_metadata = [])
     {
@@ -307,7 +298,7 @@ class KVv2 extends BaseObject implements KVInterface
             $data['delete_version_after'] = $delete_version_after;
         }
 
-        if (empty($custom_metadata) === false) {
+        if ($custom_metadata) {
             $data['custom_metadata'] = $custom_metadata;
         }
 
@@ -321,9 +312,8 @@ class KVv2 extends BaseObject implements KVInterface
     /**
      * This endpoint permanently deletes the key metadata and all version data for the specified key. All version history will be removed.
      * @param string $secret
-     * @return false|mixed
+     * @return bool|array|null|string
      * @see https://developer.hashicorp.com/vault/api-docs/secret/kv/kv-v2#delete-metadata-and-all-versions
-     * @throws \yii\base\InvalidConfigException
      */
     public function deleteSecretMetadata(string $secret)
     {

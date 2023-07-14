@@ -24,7 +24,7 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.1",
         "yiisoft/yii2": ">=2.0.13",
         "yiisoft/yii2-httpclient": "2.0.*",
         "ext-json": "*"
