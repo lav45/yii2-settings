@@ -148,7 +148,6 @@ return [
 //            'class' => \lav45\settings\storage\vault\auth\Token::class,
 //            'client' => 'vaultClient',
 //        ],
-//        'vaultAuthUsernamePassword' => [
 //            'class' => \lav45\settings\storage\vault\auth\UsernamePassword::class,
 //            'client' => 'vaultClient',
 //        ],
