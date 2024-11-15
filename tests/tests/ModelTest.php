@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class ModelTest extends TestCase
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         Yii::$app->set('settings', [
             'class' => Settings::class,

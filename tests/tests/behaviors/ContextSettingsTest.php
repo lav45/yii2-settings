@@ -32,11 +32,11 @@ class ContextSettingsTest extends TestCase
         $ruSettings = $this->getSettings()->context('ru-RU');
 
         $items = [
-            uniqid(),
-            uniqid(),
-            uniqid(),
-            uniqid(),
-            uniqid(),
+            uniqid('', true),
+            uniqid('', true),
+            uniqid('', true),
+            uniqid('', true),
+            uniqid('', true),
         ];
 
         foreach ($items as $key => $data) {

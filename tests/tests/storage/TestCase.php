@@ -19,7 +19,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                md5(uniqid()) . md5(uniqid()), // key max length 64
+                md5(uniqid('', true)) . md5(uniqid('', true)), // key max length 64
                 'a:1:{s:13:"template";s:1:"1";}'
             ]
         ];

@@ -12,16 +12,13 @@ nbproject
 # composer vendor dir
 vendor
 
-# composer itself is not needed
-composer.phar
+# composer
+/composer.lock
+/.composer
 
 # Mac DS_Store Files
 .DS_Store
 
-# phpunit itself is not needed
-phpunit.phar
-# local phpunit config
+# phpunit
 phpunit.xml
-
-/composer.lock
-/.composer
+.phpunit.result.cache

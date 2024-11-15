@@ -1,6 +1,6 @@
 <?php
 /**
- * @link https://github.com/LAV45/yii2-settings
+ * @link https://github.com/lav45/yii2-settings
  * @copyright Copyright (c) 2016 LAV45
  * @author Alexey Loban <lav451@gmail.com>
  * @license http://opensource.org/licenses/BSD-3-Clause
@@ -8,6 +8,8 @@
 
 namespace lav45\settings;
 
+use lav45\settings\behaviors\CacheBehavior;
+use lav45\settings\behaviors\QuickAccessBehavior;
 use lav45\settings\events\DecodeEvent;
 use lav45\settings\events\DeleteEvent;
 use lav45\settings\events\GetEvent;
@@ -21,18 +23,18 @@ use yii\helpers\StringHelper;
 /**
  * Class Settings
  * @package lav45\settings
- * @mixin \lav45\settings\behaviors\CacheBehavior
- * @mixin \lav45\settings\behaviors\QuickAccessBehavior
+ * @mixin CacheBehavior
+ * @mixin QuickAccessBehavior
  */
 class Settings extends Component implements \ArrayAccess
 {
-    const EVENT_BEFORE_GET = 'beforeGetValue';
-    const EVENT_AFTER_GET = 'afterGetValue';
-    const EVENT_AFTER_DECODE_VALUE = 'afterDecodeValue';
-    const EVENT_BEFORE_SET = 'beforeSetValue';
-    const EVENT_AFTER_SET = 'afterSetValue';
-    const EVENT_BEFORE_DELETE = 'beforeDeleteValue';
-    const EVENT_AFTER_DELETE = 'afterDeleteValue';
+    public const EVENT_BEFORE_GET = 'beforeGetValue';
+    public const EVENT_AFTER_GET = 'afterGetValue';
+    public const EVENT_AFTER_DECODE_VALUE = 'afterDecodeValue';
+    public const EVENT_BEFORE_SET = 'beforeSetValue';
+    public const EVENT_AFTER_SET = 'afterSetValue';
+    public const EVENT_BEFORE_DELETE = 'beforeDeleteValue';
+    public const EVENT_AFTER_DELETE = 'afterDeleteValue';
 
     /**
      * @var string
@@ -70,7 +72,7 @@ class Settings extends Component implements \ArrayAccess
             if (is_string($key)) {
                 $key = StringHelper::byteLength($key) <= 32 ? $key : md5($key);
             } else {
-                $key = md5(json_encode($key));
+                $key = md5(json_encode($key, JSON_THROW_ON_ERROR));
             }
         }
         return $this->keyPrefix . $key;
@@ -98,7 +100,7 @@ class Settings extends Component implements \ArrayAccess
     public function decode($value)
     {
         if ($this->serializer === null) {
-            return @unserialize($value);
+            return @unserialize($value, ['allowed_classes' => true]);
         }
         if ($this->serializer !== false) {
             return call_user_func($this->serializer[1], $value);
@@ -124,9 +126,7 @@ class Settings extends Component implements \ArrayAccess
         }
 
         $value = $this->decode($value);
-        $value = $this->afterDecodeValue($key, $value, $default);
-
-        return $value;
+        return $this->afterDecodeValue($key, $value, $default);
     }
 
     /**
@@ -252,37 +252,34 @@ class Settings extends Component implements \ArrayAccess
     }
 
     /**
-     * @param string $key
-     * @return boolean
+     * @inheritDoc
      */
-    public function offsetExists($key): bool
+    public function offsetExists($offset): bool
     {
-        return $this->get($key) !== null;
+        return $this->get($offset) !== null;
     }
 
     /**
-     * @param string $key
-     * @return mixed
+     * @inheritDoc
      */
-    public function offsetGet($key): mixed
+    public function offsetGet($offset)
     {
-        return $this->get($key);
+        return $this->get($offset);
     }
 
     /**
-     * @param string $key
-     * @param mixed $value
+     * @inheritDoc
      */
-    public function offsetSet($key, $value): void
+    public function offsetSet($offset, $value): void
     {
-        $this->set($key, $value);
+        $this->set($offset, $value);
     }
 
     /**
-     * @param string $key
+     * @inheritDoc
      */
-    public function offsetUnset($key): void
+    public function offsetUnset($offset): void
     {
-        $this->delete($key);
+        $this->delete($offset);
     }
 }

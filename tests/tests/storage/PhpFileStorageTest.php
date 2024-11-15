@@ -17,10 +17,10 @@ class PhpFileStorageTest extends TestCase
 
         $obj = new \StdClass();
         $obj->template = 'test';
-        $data[] = [uniqid(), $obj];
+        $data[] = [uniqid('', true), $obj];
 
         $value = ['key' => 'array', 1, false, null, ['a', 'b'], $obj];
-        $data[] = [uniqid(), $value];
+        $data[] = [uniqid('', true), $value];
 
         return $data;
     }

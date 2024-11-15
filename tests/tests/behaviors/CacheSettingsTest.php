@@ -22,7 +22,7 @@ class CacheSettingsTest extends TestCase
         return Yii::$app->get('settings');
     }
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         Yii::$app->set('settings', [
             'class' => Settings::class,
@@ -33,7 +33,7 @@ class CacheSettingsTest extends TestCase
         ]);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         /** @var LocalStorage $storage */
         $storage = $this->getSettings()->storage;

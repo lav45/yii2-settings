@@ -1,6 +1,6 @@
 <?php
 /**
- * @link https://github.com/LAV45/yii2-settings
+ * @link https://github.com/lav45/yii2-settings
  * @copyright Copyright (c) 2016 LAV45
  * @author Alexey Loban <lav451@gmail.com>
  * @license http://opensource.org/licenses/BSD-3-Clause
@@ -88,7 +88,7 @@ class Model extends \yii\base\Model
     protected function getSaveAttributes($safeOnly = false)
     {
         $data = $this->getAttributes($this->getSaveAttributeList($safeOnly));
-        return array_filter($data, function ($val) {
+        return array_filter($data, static function ($val) {
             return $val !== '' || $val !== [] || $val !== null;
         });
     }
