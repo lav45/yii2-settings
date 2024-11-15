@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+docker run --rm -it \
+  -u $(id -u):$(id -g) \
+  -v $(pwd):/var/www \
+  -e COMPOSER_HOME=/var/www/.composer \
+  -w /var/www \
+  --entrypoint composer \
+  php-container $@
