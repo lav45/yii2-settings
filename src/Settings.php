@@ -26,7 +26,7 @@ use yii\helpers\StringHelper;
  * @mixin CacheBehavior
  * @mixin QuickAccessBehavior
  */
-class Settings extends Component implements \ArrayAccess
+class Settings extends Component implements SettingsInterface
 {
     public const EVENT_BEFORE_GET = 'beforeGetValue';
     public const EVENT_AFTER_GET = 'afterGetValue';
@@ -82,7 +82,7 @@ class Settings extends Component implements \ArrayAccess
      * @param mixed $value
      * @return string
      */
-    public function encode($value)
+    protected function encode($value)
     {
         if ($this->serializer === null) {
             return serialize($value);
@@ -97,7 +97,7 @@ class Settings extends Component implements \ArrayAccess
      * @param string $value
      * @return mixed
      */
-    public function decode($value)
+    protected function decode($value)
     {
         if ($this->serializer === null) {
             return @unserialize($value, ['allowed_classes' => true]);
