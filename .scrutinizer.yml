@@ -1,14 +1,21 @@
 imports:
-    - php
+  - php
 
 tools:
-    external_code_coverage:
-        timeout: 2100
+  external_code_coverage:
+    timeout: 2100
 
-    php_sim: false
-    php_cpd: false
+  php_sim: false
+  php_cpd: false
 
 filter:
-    excluded_paths:
-        - 'example/*'
-        - 'tests/*'
+  excluded_paths:
+    - 'example/*'
+    - 'tests/*'
+
+build:
+  nodes:
+    analysis:
+      tests:
+        override:
+          - php-scrutinizer-run
