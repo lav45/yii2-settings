@@ -128,6 +128,11 @@ $settings->get('key'); // => null
 // Get default value if key exist
 $settings->get('key', []); // => []
 
+// Get default value from the callback function
+$settings->get('enable', function () {
+    return true;
+}); // => true
+
 // Save and get data
 $settings->set('array', ['data']); // => true
 $settings->get('array'); // => [0 => 'data']

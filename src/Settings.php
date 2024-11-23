@@ -110,7 +110,7 @@ class Settings extends Component implements SettingsInterface
 
     /**
      * @param string|array $key
-     * @param null $default
+     * @param mixed|\Closure $default
      * @return mixed
      */
     public function get($key, $default = null)
@@ -122,9 +122,11 @@ class Settings extends Component implements SettingsInterface
             $value = $this->afterGetValue($key, $value);
         }
         if ($value === false) {
+            if ($default instanceof \Closure) {
+                return $default();
+            }
             return $default;
         }
-
         $value = $this->decode($value);
         return $this->afterDecodeValue($key, $value, $default);
     }
@@ -232,7 +234,7 @@ class Settings extends Component implements SettingsInterface
     }
 
     /**
-     * @param string $key
+     * @param string|array $key
      */
     protected function beforeDeleteValue($key)
     {
@@ -242,7 +244,7 @@ class Settings extends Component implements SettingsInterface
     }
 
     /**
-     * @param string $key
+     * @param string|array $key
      */
     protected function afterDeleteValue($key)
     {

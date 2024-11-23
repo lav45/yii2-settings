@@ -28,6 +28,7 @@ class SettingsTest extends TestCase
         $settings = $this->getSettings();
         $this->assertNull($settings->get('key'));
         $this->assertEquals($settings->get('key', []), []);
+        $this->assertEquals($settings->get('key', function () { return true; }), true);
     }
 
     /**

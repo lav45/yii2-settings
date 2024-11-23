@@ -10,7 +10,7 @@ class LocalStorage implements StorageInterface
 
     public function getValue($key)
     {
-        return isset($this->data[$key]) ? $this->data[$key] : false;
+        return array_key_exists($key, $this->data) ? $this->data[$key] : false;
     }
 
     public function setValue($key, $value)
@@ -21,7 +21,7 @@ class LocalStorage implements StorageInterface
 
     public function deleteValue($key)
     {
-        if (isset($this->data[$key])) {
+        if (array_key_exists($key, $this->data)) {
             unset($this->data[$key]);
             return true;
         }
