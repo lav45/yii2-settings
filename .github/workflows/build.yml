@@ -18,29 +18,24 @@ jobs:
       matrix:
         include:
           - php: 7.3
-            extensions: apc, curl, dom, mbstring, pdo, pdo_sqlite, sqlite3, json, xml, xmlwriter, tokenizer, openssl, iconv
           - php: 7.4
-            extensions: apc, curl, dom, mbstring, pdo, pdo_sqlite, sqlite3, json, xml, xmlwriter, tokenizer, openssl, iconv
           - php: 8.0
-            extensions: apcu, curl, dom, mbstring, pdo, pdo_sqlite, sqlite3, json, xml, xmlwriter, tokenizer, openssl, iconv
           - php: 8.1
-            extensions: apcu, curl, dom, mbstring, pdo, pdo_sqlite, sqlite3, json, xml, xmlwriter, tokenizer, openssl, iconv
           - php: 8.2
-            extensions: apcu, curl, dom, mbstring, pdo, pdo_sqlite, sqlite3, json, xml, xmlwriter, tokenizer, openssl, iconv
           - php: 8.3
-            extensions: apcu, curl, dom, mbstring, pdo, pdo_sqlite, sqlite3, json, xml, xmlwriter, tokenizer, openssl, iconv
           - php: 8.4
-            extensions: apcu, curl, dom, mbstring, pdo, pdo_sqlite, sqlite3, json, xml, xmlwriter, tokenizer, openssl, iconv
 
     steps:
       - name: Checkout.
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 10
 
       - name: Install PHP.
         uses: shivammathur/setup-php@v2
         with:
-          extensions:
-          ini-values: apc.enabled=1, apc.shm_size=32M, apc.enable_cli=1
+          extensions: opcache, curl, dom, mbstring, pdo, pdo_sqlite, sqlite3, json, xml, xmlwriter, tokenizer, openssl, iconv
+          ini-values: opcache.enabled=on, opcache.enable_cli=on
           php-version: ${{ matrix.php }}
 
       - name: Install dependencies.
@@ -52,4 +47,15 @@ jobs:
         run: composer update $DEFAULT_COMPOSER_FLAGS --ignore-platform-reqs
 
       - name: Run tests with PHPUnit.
+        if: matrix.php != '7.4'
         run: vendor/bin/phpunit --verbose --colors=always
+
+      - name: Run tests with PHPUnit and generate coverage.
+        if: matrix.php == '7.4'
+        run: vendor/bin/phpunit --verbose --colors=always --coverage-clover=coverage.xml
+
+      - name: Upload Scrutinizer coverage
+        uses: sudo-bot/action-scrutinizer@latest
+        if: github.repository == 'lav45/yii2-settings' && matrix.php == '7.4'
+        with:
+          cli-args: "--format=php-clover coverage.xml --revision=${{ github.event.pull_request.head.sha || github.sha }}"

@@ -16,14 +16,8 @@ The preferred way to install this extension through [composer](http://getcompose
 
 You can set the console
 
-```
+```shell
 ~$ composer require lav45/yii2-settings
-```
-
-or add
-
-```
-"lav45/yii2-settings": "1.3.*"
 ```
 
 in ```require``` section in `composer.json` file.
@@ -31,6 +25,7 @@ in ```require``` section in `composer.json` file.
 ### Migrate
 
 Apply with the console command:
+
 ```
 ~$ yii migrate/up --migrationPath=vendor/lav45/yii2-settings/migrations
 ```
@@ -122,7 +117,7 @@ return [
 
 ## Using
 
-### Can default 
+### Can default
 
 ```php
 $settings = Yii::$app->settings;
@@ -174,6 +169,7 @@ The extension, which will help to speed up data loading by caching.
 If the data changes, the cache will be updated automatically.
 
 To clean the cache, you can use this method
+
 ```php
 Yii::$app->settings->cache->flush(); // => true
 ```
