@@ -34,7 +34,7 @@ class QuickAccessBehavior extends Behavior
     {
         parent::attach($owner);
         $owner->on(Settings::EVENT_BEFORE_GET, [$this, 'beforeGetValue'], null, false);
-        $owner->on(Settings::EVENT_AFTER_DECODE_VALUE, [$this, 'afterDecodeValue']);
+        $owner->on(Settings::EVENT_AFTER_DECODE, [$this, 'afterDecodeValue']);
     }
 
     /**

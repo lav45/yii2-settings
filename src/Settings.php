@@ -28,13 +28,13 @@ use yii\helpers\StringHelper;
  */
 class Settings extends Component implements SettingsInterface
 {
-    public const EVENT_BEFORE_GET = 'beforeGetValue';
-    public const EVENT_AFTER_GET = 'afterGetValue';
-    public const EVENT_AFTER_DECODE_VALUE = 'afterDecodeValue';
-    public const EVENT_BEFORE_SET = 'beforeSetValue';
-    public const EVENT_AFTER_SET = 'afterSetValue';
-    public const EVENT_BEFORE_DELETE = 'beforeDeleteValue';
-    public const EVENT_AFTER_DELETE = 'afterDeleteValue';
+    public const EVENT_BEFORE_GET = 'beforeGet';
+    public const EVENT_AFTER_GET = 'afterGet';
+    public const EVENT_AFTER_DECODE = 'afterDecode';
+    public const EVENT_BEFORE_SET = 'beforeSet';
+    public const EVENT_AFTER_SET = 'afterSet';
+    public const EVENT_BEFORE_DELETE = 'beforeDelete';
+    public const EVENT_AFTER_DELETE = 'afterDelete';
 
     /**
      * @var string
@@ -203,7 +203,7 @@ class Settings extends Component implements SettingsInterface
         $event->key = $key;
         $event->value = $value;
         $event->default = $default;
-        $this->trigger(self::EVENT_AFTER_DECODE_VALUE, $event);
+        $this->trigger(self::EVENT_AFTER_DECODE, $event);
         return $event->value;
     }
 
