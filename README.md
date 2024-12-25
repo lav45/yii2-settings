@@ -4,6 +4,7 @@ yii2-settings
 [![Latest Stable Version](https://poser.pugx.org/lav45/yii2-settings/v/stable?cache=clear)](https://packagist.org/packages/lav45/yii2-settings)
 [![License](https://poser.pugx.org/lav45/yii2-settings/license)](https://packagist.org/packages/lav45/yii2-settings)
 [![Total Downloads](https://poser.pugx.org/lav45/yii2-settings/downloads)](https://packagist.org/packages/lav45/yii2-settings)
+[![Test Status](https://github.com/lav45/yii2-settings/workflows/test/badge.svg)](https://github.com/lav45/yii2-settings/actions)
 [![Code Coverage](https://scrutinizer-ci.com/g/lav45/yii2-settings/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/lav45/yii2-settings/)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/lav45/yii2-settings/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/lav45/yii2-settings/)
 

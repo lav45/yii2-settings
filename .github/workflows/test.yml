@@ -1,0 +1,54 @@
+name: test
+
+on:
+  push:
+    branches:
+      - '**'
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'migrations/**'
+      - '.github/workflows/test.yml'
+      - 'composer.json'
+      - 'phpunit.xml.dist'
+
+  pull_request:
+    paths-ignore:
+      - 'src/**'
+      - 'test/**'
+      - 'migrations/**'
+      - '.github/workflows/test.yml'
+      - 'composer.json'
+      - 'phpunit.xml.dist'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  phpunit:
+    name: PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [7.3, 7.4, 8.0, 8.1, 8.2, 8.3, 8.4]
+
+    steps:
+      - name: Checkout.
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install PHP.
+        uses: shivammathur/setup-php@v2
+        with:
+          extensions: opcache, curl, dom, mbstring, pdo, pdo_sqlite, sqlite3, json, xml, xmlwriter, tokenizer, openssl, iconv
+          ini-values: opcache.enabled=on, opcache.enable_cli=on
+          php-version: ${{ matrix.php }}
+
+      - name: Install composer with dev dependencies
+        run: composer update --optimize-autoloader --classmap-authoritative --prefer-dist --no-progress --no-interaction --ansi
+
+      - name: Run tests with PHPUnit.
+        run: vendor/bin/phpunit --verbose --colors=always

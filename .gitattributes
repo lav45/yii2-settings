@@ -1,7 +1,11 @@
 # Ignore all test and documentation for archive
+/.github            export-ignore
 /examples           export-ignore
 /tests              export-ignore
 /phpunit.xml.dist   export-ignore
+/.gitignore         export-ignore
 /.gitattributes     export-ignore
 /.scrutinizer.yml   export-ignore
-/.codeclimate.yml   export-ignore
+/build.sh           export-ignore
+/composer           export-ignore
+/Dockerfile         export-ignore

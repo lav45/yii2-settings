@@ -32,6 +32,7 @@
     "require-dev": {
         "ext-pdo": "*",
         "ext-sqlite3": "*",
+        "ext-pdo_sqlite": "*",
         "phpunit/phpunit": "^9.6",
         "roave/security-advisories": "dev-latest"
     },

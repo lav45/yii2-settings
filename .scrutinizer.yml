@@ -9,9 +9,8 @@ tools:
   php_cpd: false
 
 filter:
-  excluded_paths:
-    - 'example/*'
-    - 'tests/*'
+  paths:
+    - 'src/*'
 
 build:
   nodes:
@@ -19,3 +18,6 @@ build:
       tests:
         override:
           - php-scrutinizer-run
+  tests:
+    override:
+      - command: 'php -v'
