@@ -20,18 +20,11 @@ use yii\base\BaseObject;
  */
 class DbStorage extends BaseObject implements StorageInterface
 {
-    /**
-     * @var Connection|array|string
-     */
+    /** @var Connection|array|string */
     public $db = 'db';
-    /**
-     * @var string
-     */
+    /** @var string */
     public $tableName = '{{%settings}}';
 
-    /**
-     * Initializes the application component.
-     */
     public function init()
     {
         parent::init();
@@ -39,10 +32,9 @@ class DbStorage extends BaseObject implements StorageInterface
     }
 
     /**
-     * @param string $key
      * @return false|null|string
      */
-    public function getValue($key)
+    public function getValue(string $key)
     {
         return (new Query())
             ->select(['data'])
@@ -54,11 +46,9 @@ class DbStorage extends BaseObject implements StorageInterface
     }
 
     /**
-     * @param string $key
      * @param string $value
-     * @return bool
      */
-    public function setValue($key, $value)
+    public function setValue(string $key, $value): bool
     {
         $exists = (new Query())
             ->from($this->tableName)
@@ -80,11 +70,7 @@ class DbStorage extends BaseObject implements StorageInterface
         return true;
     }
 
-    /**
-     * @param string $key
-     * @return bool
-     */
-    public function deleteValue($key)
+    public function deleteValue(string $key): bool
     {
         $result = (new Query())->createCommand($this->db)
             ->delete($this->tableName, ['id' => $key])

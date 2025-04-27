@@ -8,18 +8,18 @@ class LocalStorage implements StorageInterface
 {
     private $data = [];
 
-    public function getValue($key)
+    public function getValue(string $key)
     {
         return array_key_exists($key, $this->data) ? $this->data[$key] : false;
     }
 
-    public function setValue($key, $value)
+    public function setValue(string $key, $value): bool
     {
         $this->data[$key] = $value;
         return true;
     }
 
-    public function deleteValue($key)
+    public function deleteValue(string $key): bool
     {
         if (array_key_exists($key, $this->data)) {
             unset($this->data[$key]);

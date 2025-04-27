@@ -22,10 +22,9 @@ class PhpFileStorage extends FileStorage
     public $fileSuffix = '.php';
 
     /**
-     * @param string $key
      * @return mixed
      */
-    public function getValue($key)
+    public function getValue(string $key)
     {
         $fileName = $this->getFile($key);
         if (file_exists($fileName)) {
@@ -34,12 +33,7 @@ class PhpFileStorage extends FileStorage
         return false;
     }
 
-    /**
-     * @param string $key
-     * @param mixed $value
-     * @return bool
-     */
-    public function setValue($key, $value)
+    public function setValue(string $key, $value): bool
     {
         $value = is_string($value) ? "'{$value}'" : VarDumper::export($value);
         $value = "<?php\nreturn {$value};\n";

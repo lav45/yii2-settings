@@ -47,14 +47,13 @@ class FileStorage extends BaseObject implements StorageInterface
     {
         parent::init();
         $this->path = Yii::getAlias($this->path);
-        FileHelper::createDirectory($this->path, $this->dirMode, true);
+        FileHelper::createDirectory($this->path, $this->dirMode);
     }
 
     /**
-     * @param string $key
      * @return false|null|string
      */
-    public function getValue($key)
+    public function getValue(string $key)
     {
         $file = $this->getFile($key);
 
@@ -70,12 +69,7 @@ class FileStorage extends BaseObject implements StorageInterface
         return false;
     }
 
-    /**
-     * @param string $key
-     * @param string $value
-     * @return bool
-     */
-    public function setValue($key, $value)
+    public function setValue(string $key, $value): bool
     {
         $file = $this->getFile($key);
 
@@ -90,21 +84,15 @@ class FileStorage extends BaseObject implements StorageInterface
         return false;
     }
 
-    /**
-     * @param string $key
-     * @return bool
-     */
-    public function deleteValue($key)
+    public function deleteValue(string $key): bool
     {
         return @unlink($this->getFile($key));
     }
 
     /**
      * Returns the storage file path given the key.
-     * @param string $key
-     * @return string the file path
      */
-    protected function getFile($key)
+    protected function getFile(string $key): string
     {
         return $this->path . DIRECTORY_SEPARATOR . $key . $this->fileSuffix;
     }
